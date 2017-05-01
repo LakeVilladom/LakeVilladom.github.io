@@ -4,25 +4,26 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>Visual Studio Code 配置指南 | Lake Villadom&#39;Blog</title>
+    <title>Linux磁盘或文件大小查看 | Lake Villadom&#39;Blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="Lake Villadom">
     
 
     
-    <meta name="description" content="Visual Studio Code 配置总结。">
+    <meta name="description" content="df:查看磁盘空间使用情况 
+ du:查看各目录或文件所占空间">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Visual Studio Code 配置指南">
-<meta property="og:url" content="http://www.lakevilladom.com/2017/01/11/Visual-Studio-Code-配置指南/index.html">
+<meta property="og:title" content="Linux磁盘或文件大小查看">
+<meta property="og:url" content="http://www.lakevilladom.com/2017/05/01/Linux磁盘或文件大小查看/index.html">
 <meta property="og:site_name" content="Lake Villadom'Blog">
-<meta property="og:description" content="Visual Studio Code 配置总结。">
-<meta property="og:image" content="http://www.lakevilladom.com/img/20170111/VSCode_settings.png">
-<meta property="og:updated_time" content="2017-01-11T13:53:50.000Z">
+<meta property="og:description" content="df:查看磁盘空间使用情况 
+ du:查看各目录或文件所占空间">
+<meta property="og:updated_time" content="2017-05-01T12:25:38.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Visual Studio Code 配置指南">
-<meta name="twitter:description" content="Visual Studio Code 配置总结。">
-<meta name="twitter:image" content="http://www.lakevilladom.com/img/20170111/VSCode_settings.png">
+<meta name="twitter:title" content="Linux磁盘或文件大小查看">
+<meta name="twitter:description" content="df:查看磁盘空间使用情况 
+ du:查看各目录或文件所占空间">
 
     
     <link rel="alternative" href="/atom.xml" title="Lake Villadom&#39;Blog" type="application/atom+xml">
@@ -83,14 +84,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2017/01/11/Visual-Studio-Code-配置指南/" title="Visual Studio Code 配置指南" itemprop="url">Visual Studio Code 配置指南</a>
+      <a href="/2017/05/01/Linux磁盘或文件大小查看/" title="Linux磁盘或文件大小查看" itemprop="url">Linux磁盘或文件大小查看</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="Lake Villadom" target="_blank" itemprop="author">Lake Villadom</a>
 		
   <p class="article-time">
-    <time datetime="2017-01-11T13:35:00.000Z" itemprop="datePublished"> 发表于 2017-01-11</time>
+    <time datetime="2017-05-01T12:09:00.000Z" itemprop="datePublished"> 发表于 2017-05-01</time>
     
   </p>
 </header>
@@ -99,25 +100,65 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#关联特殊代码文件"><span class="toc-number">1.</span> <span class="toc-text">关联特殊代码文件</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#df"><span class="toc-number">1.</span> <span class="toc-text">df</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#du"><span class="toc-number">2.</span> <span class="toc-text">du</span></a></li></ol>
 		
 		</div>
 		
 		<script src="/assets/js/APlayer.min.js"> </script><blockquote>
 <ul>
-<li><strong> Visual Studio Code 配置总结。</strong></li>
+<li><strong> df:查看磁盘空间使用情况 </strong></li>
+<li><strong> du:查看各目录或文件所占空间</strong></li>
 </ul>
 </blockquote>
-<h2 id="关联特殊代码文件"><a href="#关联特殊代码文件" class="headerlink" title="关联特殊代码文件"></a>关联特殊代码文件</h2><blockquote>
-<p>VS Code 能识别大部分主流代码文件，但当碰到某些特殊文件如:tpl文件时，需要进行关联语法设置。</p>
+<hr>
+<blockquote>
+<p>经常需要查看Linux文件大小，只记得<code>df -h</code>,经常忘了<code>du -h</code>,故此总结记录。</p>
 </blockquote>
-<ul>
-<li>配置：<code>文件-&gt;首选项-&gt;工作区设置</code><pre><code>    &quot;files.associations&quot;: {
-       &quot;*.tpl&quot;: &quot;html&quot; 
-    }
-</code></pre></li>
-</ul>
-<p><img src="/img/20170111/VSCode_settings.png" alt=""></p>
+<h2 id="df"><a href="#df" class="headerlink" title="df"></a>df</h2><pre><code>1．命令格式：
+  df [选项] [文件]
+2．命令功能：
+  显示指定磁盘文件的可用空间。如果没有文件名被指定，则所有当前被挂载的文件系统的可用空间将被显示。默认情况下，磁盘空间将以 1KB 为单位进行显示，除非环境变量 POSIXLY_CORRECT 被指定，那样将以512字节为单位进行显示
+3．命令参数：
+  必要参数：
+  -a 全部文件系统列表
+  -h 方便阅读方式显示
+  -H 等于“-h”，但是计算式，1K=1000，而不是1K=1024
+  -i 显示inode信息
+  -k 区块为1024字节
+  -l 只显示本地文件系统
+  -m 区块为1048576字节
+  --no-sync 忽略 sync 命令
+  -P 输出格式为POSIX
+  --sync 在取得磁盘信息前，先执行sync命令
+  -T 文件系统类型
+  选择参数：
+  --block-size=&lt;区块大小&gt; 指定区块大小
+  -t&lt;文件系统类型&gt; 只显示选定文件系统的磁盘信息
+  -x&lt;文件系统类型&gt; 不显示选定文件系统的磁盘信息
+  --help 显示帮助信息
+  --version 显示版本信息
+</code></pre><p><code>常用命令：df -hi</code></p>
+<h2 id="du"><a href="#du" class="headerlink" title="du"></a>du</h2><pre><code>1．命令格式：
+  du [选项][文件]
+2．命令功能：
+  显示每个文件和目录的磁盘使用空间。
+3．命令参数：
+  -a或-all  显示目录中个别文件的大小。   
+  -b或-bytes  显示目录或文件大小时，以byte为单位。   
+  -c或--total  除了显示个别目录或文件的大小外，同时也显示所有目录或文件的总和。 
+  -k或--kilobytes  以KB(1024bytes)为单位输出。
+  -m或--megabytes  以MB为单位输出。   
+  -s或--summarize  仅显示总计，只列出最后加总的值。
+  -h或--human-readable  以K，M，G为单位，提高信息的可读性。
+  -x或--one-file-xystem  以一开始处理时的文件系统为准，若遇上其它不同的文件系统目录则略过。 
+  -L&lt;符号链接&gt;或--dereference&lt;符号链接&gt; 显示选项中所指定符号链接的源文件大小。   
+  -S或--separate-dirs   显示个别目录的大小时，并不含其子目录的大小。 
+  -X&lt;文件&gt;或--exclude-from=&lt;文件&gt;  在&lt;文件&gt;指定目录或文件。   
+  --exclude=&lt;目录或文件&gt;         略过指定的目录或文件。    
+  -D或--dereference-args   显示指定符号链接的源文件大小。   
+  -H或--si  与-h参数相同，但是K，M，G是以1000为换算单位。   
+  -l或--count-links   重复计算硬件链接的文件。
+</code></pre><p><code>常用命令：du -a</code></p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -125,13 +166,13 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/工具/">工具</a>
+  <a class="article-category-link" href="/categories/Linux/">Linux</a>
 </div>
 
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/工具/">工具</a><a href="/tags/Visual-Studio-Code/">Visual Studio Code</a>
+  <span></span> <a href="/tags/Linux/">Linux</a>
   </div>
 
 </div>
@@ -140,7 +181,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://www.lakevilladom.com/2017/01/11/Visual-Studio-Code-配置指南/" data-title="Visual Studio Code 配置指南 | Lake Villadom&#39;Blog" data-tsina="null" class="share clearfix">
+	  <div data-url="http://www.lakevilladom.com/2017/05/01/Linux磁盘或文件大小查看/" data-title="Linux磁盘或文件大小查看 | Lake Villadom&#39;Blog" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -153,19 +194,11 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2017/01/24/zsh配置/" title="zsh配置实用技巧">
-  <strong>上一篇：</strong><br/>
-  <span>
-  zsh配置实用技巧</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2017/01/02/一年又一年之2016年终总结与2017新年计划/"  title="一年又一年之2016年终总结与2017新年计划">
+<a href="/2017/05/01/Go-Struct-Tag/"  title="Go Struct Tag">
  <strong>下一篇：</strong><br/> 
- <span>一年又一年之2016年终总结与2017新年计划
+ <span>Go Struct Tag
 </span>
 </a>
 </div>
@@ -180,7 +213,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
  
- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#关联特殊代码文件"><span class="toc-number">1.</span> <span class="toc-text">关联特殊代码文件</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#df"><span class="toc-number">1.</span> <span class="toc-text">df</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#du"><span class="toc-number">2.</span> <span class="toc-text">du</span></a></li></ol>
  
   </div>
 
