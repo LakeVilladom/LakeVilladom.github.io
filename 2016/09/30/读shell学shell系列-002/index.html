@@ -1,0 +1,693 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>读shell学shell系列:002 | Lake Villadom&#39;Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Lake Villadom">
+    
+
+    
+    <meta name="description" content="通过阅读shell脚本来达到学习shell编程的目的不失为一种好的学习方法!">
+<meta property="og:type" content="article">
+<meta property="og:title" content="读shell学shell系列:002">
+<meta property="og:url" content="http://www.lakevilladom.com/2016/09/30/读shell学shell系列-002/index.html">
+<meta property="og:site_name" content="Lake Villadom'Blog">
+<meta property="og:description" content="通过阅读shell脚本来达到学习shell编程的目的不失为一种好的学习方法!">
+<meta property="og:updated_time" content="2016-11-05T13:39:07.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="读shell学shell系列:002">
+<meta name="twitter:description" content="通过阅读shell脚本来达到学习shell编程的目的不失为一种好的学习方法!">
+
+    
+    <link rel="alternative" href="/atom.xml" title="Lake Villadom&#39;Blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="Lake Villadom&#39;Blog" title="Lake Villadom&#39;Blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Lake Villadom&#39;Blog">Lake Villadom&#39;Blog</a></h1>
+				<h2 class="blog-motto">难自弃</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:www.lakevilladom.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2016/09/30/读shell学shell系列-002/" title="读shell学shell系列:002" itemprop="url">读shell学shell系列:002</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Lake Villadom" target="_blank" itemprop="author">Lake Villadom</a>
+		
+  <p class="article-time">
+    <time datetime="2016-09-30T12:05:00.000Z" itemprop="datePublished"> 发表于 2016-09-30</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#脚本"><span class="toc-number">1.</span> <span class="toc-text">脚本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">2.</span> <span class="toc-text">总结</span></a></li></ol>
+		
+		</div>
+		
+		<script src="/assets/js/APlayer.min.js"> </script><blockquote>
+<ul>
+<li><strong> 通过阅读shell脚本来达到学习shell编程的目的不失为一种好的学习方法! </strong></li>
+</ul>
+</blockquote>
+<h2 id="脚本"><a href="#脚本" class="headerlink" title="脚本"></a>脚本</h2><pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true">#！ /bin/env bash</span>
+<span class="token keyword">if</span> <span class="token punctuation">[</span> <span class="token operator">!</span> -f /usr/bin/git <span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token keyword">then</span>
+    yum <span class="token function">install</span> -y <span class="token function">git</span>
+<span class="token keyword">fi</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p> 如上是一个简单的shell脚本，用来判断是否安装有git，因为判断git命令时候将路径写死了，希望改进为类似shell脚本Shebang这样，如下：</p>
+<pre><code>if [ -e /bin/env git ]
+then
+  echo $(/bin/env git)
+else
+  echo &#39;no&#39;
+fi
+</code></pre><p>结果报错。<br>参考:<a href="https://segmentfault.com/q/1010000000156870" target="_blank" rel="external">Shell(Bash)中如何判断是否存在某个命令</a></p>
+<ul>
+<li><strong> 可以使用which命令(不推荐)：</strong></li>
+</ul>
+<pre><code>if [ -n $(which git) ]  # -n判读字符串不为null -z判读字符串为”null”（长度为0）  此处也可用-e  判断是否存在
+then
+  echo $(/bin/env git)
+else
+  echo &#39;no&#39;
+fi
+</code></pre><ul>
+<li><strong> 推荐使用：</strong></li>
+</ul>
+<blockquote>
+<p>　　最好避免使用 which，首先做为一个外部的工具，并不一定存在，在发行版之间也会有区别，有的系统的 which 命令不会设置有效的 exit status，存在一定的不确定性。<br>　　Bash 有提供一些内建命令如 hash、type、command 也能达到要求。</p>
+<p>```<br>  $ command -v foo &gt;/dev/null 2&gt;&amp;1 || { echo &gt;&amp;2 “I require foo but it’s not installed.  Aborting.”; exit 1; }<br>  $ type foo &gt;/dev/null 2&gt;&amp;1 || { echo &gt;&amp;2 “I require foo but it’s not installed.  Aborting.”; exit 1; }<br>  $ hash foo 2&gt;/dev/null || { echo &gt;&amp;2 “I require foo but it’s not installed.  Aborting.”; exit 1; }</p>
+</blockquote>
+<pre><code>
+&gt;
+</code></pre><p>#! /bin/env bash<br>if [ -e $(command -v git) ]<br>then<br>      echo $(command -v git)<br>else<br>      echo ‘no’<br>fi</p>
+<pre><code>
+## 扩展
+
+** Shell预定义变量与参数**
+1. Shell 常用变量:
+  + $n：命令的参数，比如$1、$2等等。其中$0表示参数名，其实就是main()的argv[0]
+  + $$ : Shell本身的PID（ProcessID） 
+  + $! : Shell最后运行的后台Process的PID 
+  + $#：命令参数的数量（添加到Shell的参数个数）
+  + $?：上一个命令的返回值（最后运行的命令的结束代码（返回值） ）
+  + $$：当前shell程序的pid
+  + $1：上一个程序的pid
+  + \$\*: 所有参数列表。如“\$\* ”用「&quot;」括起来的情况、以&quot;$1 $2 … $n&quot;的形式输出所有参数。 
+  + \$\@ : 所有参数列表。如“\$@&quot;用「&quot;」括起来的情况、以&quot;$1&quot; &quot;$2&quot; … &quot;$n&quot; 的形式输出所有参数。
+  + $- ：使用Set命令设定的Flag一览 
+  + $0 ：Shell本身的文件名
+  + $1～$n： 添加到Shell的各参数值。$1是第1参数、$2是第2参数…。 
+
+2. 数值比较:
+
+  + -eq：等于
+  + -ne：不等于
+  + -gt：大于
+  + -ge：大于等于
+  + -lt：小于
+  + -le：小于等于
+  + &lt;, &lt;=, &gt;, &gt;=：这四个顾名思义。不过使用的时候要注意双括号，比如((&quot;$a&quot; &lt; &quot;$b&quot;))。
+
+3. 字符串比较:
+  + =：等于
+  + !=：不等于
+  + ** -z：字符串为”null”，即字符串长度为零**
+  + ** -n：字符串不为”null” **
+4. 文件判断:
+  + 注：以下条件返回真的必要条件是目标要存在
+  + -b：block，块设备
+  + -c：char，字符设备
+  + -d：directory，目录
+  + -e：exist，存在，目录或文件
+  + -f：file，是否一个普通文件
+  + -g：目标是否设置了SGID位
+  + -h：目标是否符号文件。老的系统可能不支持这一项
+  + -k：目标是否设置了粘滞位
+  + -p：pipe，是否管道
+  + -r：readable，是否可读
+  + -s：大小不为零
+  + -u：目标是否设置了SUID
+  + -w：writable，是否可写
+  + -o：owned，是否为当前用户所拥有
+  + -x：executable：是否可执行
+
+
+如果要表示上述条件的“非”，则加上“!”即可，如：
+```bash
+if [ ! -d ${SOME_DIR} ]; then
+    ...
+fi
+</code></pre><p>exit 就是退出脚本的意思，后面接的数字是退出的状态，保存在$?里面</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Linux/">Linux</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Shell/">Shell</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://www.lakevilladom.com/2016/09/30/读shell学shell系列-002/" data-title="读shell学shell系列:002 | Lake Villadom&#39;Blog" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2016/10/01/Docker学习笔记系列-Dockerfile-1/" title="Docker学习笔记系列:Dockerfile">
+  <strong>上一篇：</strong><br/>
+  <span>
+  Docker学习笔记系列:Dockerfile</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2016/09/30/Git命令大全/"  title="Git命令大全">
+ <strong>下一篇：</strong><br/> 
+ <span>Git命令大全
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#脚本"><span class="toc-number">1.</span> <span class="toc-text">脚本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">2.</span> <span class="toc-text">总结</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Docker/" title="Docker">Docker<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Golang/" title="Golang">Golang<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Hexo/" title="Hexo">Hexo<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Linux/" title="Linux">Linux<sup>6</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Node-js/" title="Node.js">Node.js<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Oracle/" title="Oracle">Oracle<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/grep/" title="grep">grep<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/如歌如梭/" title="如歌如梭">如歌如梭<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/工具/" title="工具">工具<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/年终总结/" title="年终总结">年终总结<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/爬虫/" title="爬虫">爬虫<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Linux/跬步小流/" title="跬步小流">跬步小流<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/跬步小流/" title="跬步小流">跬步小流<sup>4</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/Linux/" title="Linux">Linux<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Hexo/" title="Hexo">Hexo<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Oracle/" title="Oracle">Oracle<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Git/" title="Git">Git<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Shell/" title="Shell">Shell<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/递归查询/" title="递归查询">递归查询<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/备份/" title="备份">备份<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/立碑/" title="立碑">立碑<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Alpine/" title="Alpine">Alpine<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/CSS选择器/" title="CSS选择器">CSS选择器<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/爬虫/" title="爬虫">爬虫<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/scp/" title="scp">scp<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Linux/" title="Linux ">Linux <sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/LVM/" title="LVM">LVM<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/逻辑卷/" title="逻辑卷">逻辑卷<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Node-js/" title="Node.js">Node.js<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Dockerfile/" title="Dockerfile">Dockerfile<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/拼接/" title="拼接">拼接<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/正则表达式/" title="正则表达式">正则表达式<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/工具/" title="工具">工具<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://coderq.com" target="_blank" title="一个面向程序员交流分享的新一代社区">码农圈</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://wuchong.me" target="_blank" title="Jark&#39;s Blog">Jark&#39;s Blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">新浪微博</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=null&verifier=b3593ceb&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Larry Page in Google. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2176287895" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2017 
+		
+		<a href="/about" target="_blank" title="Lake Villadom">Lake Villadom</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

@@ -1,0 +1,832 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Go标准库01之os包 | Lake Villadom&#39;Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Lake Villadom">
+    
+
+    
+    <meta name="description" content="Go标准库之os包。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Go标准库01之os包">
+<meta property="og:url" content="http://www.lakevilladom.com/2017/02/21/Go标准库01之os包/index.html">
+<meta property="og:site_name" content="Lake Villadom'Blog">
+<meta property="og:description" content="Go标准库之os包。">
+<meta property="og:updated_time" content="2017-03-06T05:51:45.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Go标准库01之os包">
+<meta name="twitter:description" content="Go标准库之os包。">
+
+    
+    <link rel="alternative" href="/atom.xml" title="Lake Villadom&#39;Blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="Lake Villadom&#39;Blog" title="Lake Villadom&#39;Blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Lake Villadom&#39;Blog">Lake Villadom&#39;Blog</a></h1>
+				<h2 class="blog-motto">难自弃</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:www.lakevilladom.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2017/02/21/Go标准库01之os包/" title="Go标准库01之os包" itemprop="url">Go标准库01之os包</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Lake Villadom" target="_blank" itemprop="author">Lake Villadom</a>
+		
+  <p class="article-time">
+    <time datetime="2017-02-21T12:18:00.000Z" itemprop="datePublished"> 发表于 2017-02-21</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#FileMode"><span class="toc-number">1.</span> <span class="toc-text">FileMode</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#常量-Constants"><span class="toc-number"></span> <span class="toc-text">常量(Constants)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#变量-Variables"><span class="toc-number"></span> <span class="toc-text">变量(Variables)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#常用函数"><span class="toc-number"></span> <span class="toc-text">常用函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Chdir"><span class="toc-number">1.</span> <span class="toc-text">Chdir()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Chmod"><span class="toc-number">2.</span> <span class="toc-text">Chmod()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Chown"><span class="toc-number">3.</span> <span class="toc-text">Chown()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Chtimes"><span class="toc-number">4.</span> <span class="toc-text">Chtimes()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Clearenv"><span class="toc-number">5.</span> <span class="toc-text">Clearenv()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Environ"><span class="toc-number">6.</span> <span class="toc-text">Environ()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Executable"><span class="toc-number">7.</span> <span class="toc-text">Executable()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Exit"><span class="toc-number">8.</span> <span class="toc-text">Exit()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Expand"><span class="toc-number">9.</span> <span class="toc-text">Expand()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ExpandEnv"><span class="toc-number">10.</span> <span class="toc-text">ExpandEnv()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Geteuid"><span class="toc-number">11.</span> <span class="toc-text">Geteuid()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Getuid"><span class="toc-number">12.</span> <span class="toc-text">Getuid()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Getegid"><span class="toc-number">13.</span> <span class="toc-text">Getegid()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Getgid"><span class="toc-number">14.</span> <span class="toc-text">Getgid()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Getenv"><span class="toc-number">15.</span> <span class="toc-text">Getenv()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Getgroups"><span class="toc-number">16.</span> <span class="toc-text">Getgroups()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Getpagesize"><span class="toc-number">17.</span> <span class="toc-text">Getpagesize()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Getpid"><span class="toc-number">18.</span> <span class="toc-text">Getpid()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Getppid"><span class="toc-number">19.</span> <span class="toc-text">Getppid()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Getwd"><span class="toc-number">20.</span> <span class="toc-text">Getwd()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Hostname"><span class="toc-number">21.</span> <span class="toc-text">Hostname()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IsExist"><span class="toc-number">22.</span> <span class="toc-text">IsExist()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IsNotExist"><span class="toc-number">23.</span> <span class="toc-text">IsNotExist()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IsPathSeparator"><span class="toc-number">24.</span> <span class="toc-text">IsPathSeparator()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IsPermission"><span class="toc-number">25.</span> <span class="toc-text">IsPermission()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Lchown"><span class="toc-number">26.</span> <span class="toc-text">Lchown()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Link"><span class="toc-number">27.</span> <span class="toc-text">Link()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LookupEnv"><span class="toc-number">28.</span> <span class="toc-text">LookupEnv()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Mkdir"><span class="toc-number">29.</span> <span class="toc-text">Mkdir()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MkdirAll"><span class="toc-number">30.</span> <span class="toc-text">MkdirAll()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#NewSyscallError"><span class="toc-number">31.</span> <span class="toc-text">NewSyscallError()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Readlink"><span class="toc-number">32.</span> <span class="toc-text">Readlink()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Remove"><span class="toc-number">33.</span> <span class="toc-text">Remove()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RemoveAll"><span class="toc-number">34.</span> <span class="toc-text">RemoveAll()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Rename"><span class="toc-number">35.</span> <span class="toc-text">Rename()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SameFile"><span class="toc-number">36.</span> <span class="toc-text">SameFile()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Symlink"><span class="toc-number">37.</span> <span class="toc-text">Symlink()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TempDir"><span class="toc-number">38.</span> <span class="toc-text">TempDir()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Truncate"><span class="toc-number">39.</span> <span class="toc-text">Truncate()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Unsetenv"><span class="toc-number">40.</span> <span class="toc-text">Unsetenv()</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#文件操作"><span class="toc-number"></span> <span class="toc-text">文件操作</span></a>
+		
+		</div>
+		
+		<script src="/assets/js/APlayer.min.js"> </script><blockquote>
+<ul>
+<li><strong> Go标准库之os包。</strong></li>
+</ul>
+</blockquote>
+<h3 id="FileMode"><a href="#FileMode" class="headerlink" title="FileMode"></a>FileMode</h3><h2 id="常量-Constants"><a href="#常量-Constants" class="headerlink" title="常量(Constants)"></a>常量(Constants)</h2><pre><code>const (
+    O_RDONLY int = syscall.O_RDONLY // 值为0，以只读的方式打开
+    O_WRONLY int = syscall.O_WRONLY // 值为1，以只写的方式打开
+    O_RDWR   int = syscall.O_RDWR  // 值为2，以读写的方式打开
+    O_APPEND int = syscall.O_APPEND // 值为1024，以追加的方式写入
+    O_CREATE int = syscall.O_CREAT  // 值为64，如果文件不存在，将会新建
+    O_EXCL   int = syscall.O_EXCL   // used with O_CREATE, file must not exist
+    O_SYNC   int = syscall.O_SYNC   // open for synchronous I/O.
+    O_TRUNC  int = syscall.O_TRUNC  // if possible, truncate file when opened.
+)
+</code></pre><pre><code>const (
+    SEEK_SET int = 0 // seek relative to the origin of the file
+    SEEK_CUR int = 1 // seek relative to the current offset
+    SEEK_END int = 2 // seek relative to the end
+)
+</code></pre><pre><code>const (
+    PathSeparator     = &#39;\\&#39; // OS-specific path separator
+    PathListSeparator = &#39;;&#39;  // OS-specific path list separator
+)
+</code></pre><h2 id="变量-Variables"><a href="#变量-Variables" class="headerlink" title="变量(Variables)"></a>变量(Variables)</h2><pre><code>var (
+    ErrInvalid    = errors.New(&quot;invalid argument&quot;) // methods on File will return this error when the receiver is nil
+    ErrPermission = errors.New(&quot;permission denied&quot;)
+    ErrExist      = errors.New(&quot;file already exists&quot;)
+    ErrNotExist   = errors.New(&quot;file does not exist&quot;)
+    ErrClosed     = errors.New(&quot;file already closed&quot;)
+)
+</code></pre><pre><code>var (
+    Stdin  = NewFile(uintptr(syscall.Stdin), &quot;/dev/stdin&quot;)
+    Stdout = NewFile(uintptr(syscall.Stdout), &quot;/dev/stdout&quot;)
+    Stderr = NewFile(uintptr(syscall.Stderr), &quot;/dev/stderr&quot;)
+)
+</code></pre><pre><code>var Args []string
+</code></pre><h2 id="常用函数"><a href="#常用函数" class="headerlink" title="常用函数"></a>常用函数</h2><h3 id="Chdir"><a href="#Chdir" class="headerlink" title="Chdir()"></a><code>Chdir()</code></h3><pre><code>func Chdir(dir string) error
+</code></pre><blockquote>
+<p>Chdir()函数更改当前目录,参数可以是相对路径，也可以是绝对路径,可以通过<code>os.Getwd()</code>获取当前路径。</p>
+</blockquote>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">package</span> main
+<span class="token keyword">import</span> <span class="token string">"os"</span>
+
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    os<span class="token punctuation">.</span><span class="token function">Chdir</span><span class="token punctuation">(</span><span class="token string">"../"</span><span class="token punctuation">)</span>
+    os<span class="token punctuation">.</span><span class="token function">Chdir</span><span class="token punctuation">(</span><span class="token string">"home/hxxz"</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="Chmod"><a href="#Chmod" class="headerlink" title="Chmod()"></a><code>Chmod()</code></h3><pre><code>func Chmod(name string, mode FileMode) error
+</code></pre><blockquote>
+<p>修改文件或文件夹权限</p>
+</blockquote>
+<h3 id="Chown"><a href="#Chown" class="headerlink" title="Chown()"></a><code>Chown()</code></h3><pre><code>func Chown(name string, uid, gid int) error
+</code></pre><blockquote>
+<p>该函数用来修改文件或文件夹的拥有者</p>
+<p>注意:1、Chown()一般要root用户执行go脚本才会生效，非root用户无法修改权限owner为root,非root用户也无法将owner为root修改为其他用户(go能正常执行，但是在系统上不会产生效果);<br>　　　2、uid,gid必须用int型的ID,不支持Name,uid、gid在Linux下可通过<code>id</code>命令查询，具体相关用法参考<code>id --help</code>或博文<a href="http://blog.csdn.net/ahangliu/article/details/7567444" target="_blank" rel="external"><strong>Linux系统下如果查看用户的UID和GID</strong></a></p>
+</blockquote>
+<h3 id="Chtimes"><a href="#Chtimes" class="headerlink" title="Chtimes()"></a><code>Chtimes()</code></h3><pre><code>func Chtimes(name string, atime time.Time, mtime time.Time) error
+</code></pre><blockquote>
+<p>该函数用来修改name值描述的文件的访问时间和修改时间</p>
+</blockquote>
+<h3 id="Clearenv"><a href="#Clearenv" class="headerlink" title="Clearenv()"></a><code>Clearenv()</code></h3><pre><code>func Clearenv()
+</code></pre><blockquote>
+<p>清除所有环境变量(慎用)。</p>
+</blockquote>
+<h3 id="Environ"><a href="#Environ" class="headerlink" title="Environ()"></a><span id="Environ">Environ()</span></h3><pre><code>func Environ() []string
+</code></pre><blockquote>
+<p> 以”key=value”的方式返回一组的环境变量,该函数与<code>Getenv(key string)</code>函数同样都是返回环境变量,但是<code>Getenv(key)</code>通过一个key获取相应的环境变量。相关函数：<a href="#Getenv">Getenv()</a>、<a href="#LookupEnv">LookupEnv()</a>。</p>
+</blockquote>
+<pre><code>fmt.Println(os.Environ())
+</code></pre><h3 id="Executable"><a href="#Executable" class="headerlink" title="Executable()"></a><code>Executable()</code></h3><pre><code>func Executable() (string, error)
+</code></pre><blockquote>
+<p>（该函数是go1.8版本新增加的）用于返回正在运行的可执行文件的路径名，这么看来和<code>os.Args[0]</code>作用大致相同，只是<code>Executable()</code>有俩返回值string和error俩返回值。</p>
+</blockquote>
+<h3 id="Exit"><a href="#Exit" class="headerlink" title="Exit()"></a>Exit()</h3><pre><code>func Exit(code int)
+</code></pre><blockquote>
+<p>执行<code>Exit()</code>系统退出，并返回code，其中０表示执行成功并退出，非０表示错误并退出，其中执行Exit后程序会直接退出，defer函数不会执行。</p>
+</blockquote>
+<h3 id="Expand"><a href="#Expand" class="headerlink" title="Expand()"></a>Expand()</h3><pre><code>func Expand(s string, mapping func(string) string) string
+</code></pre><blockquote>
+<p>Expand用mapping 函数指定的规则替换字符串中的<code>${var}</code>或者<code>$var</code>（注：变量之前必须有$符号）。摘抄网上例子如下：</p>
+</blockquote>
+<pre><code>mapping := func(s string) string {
+   m := map[string]string{&quot;str&quot;: &quot;我会替换$str变量&quot;, &quot;hello&quot;: &quot;我会替换$hello变量&quot;}
+   return m[s]
+}
+    str := os.Expand(&quot;你好世界 $str $hello world&quot;, mapping) //替换字符串中的$xxx 变量
+    fmt.Println(str)    //你好世界 我会替换$str变量 我会替换$hello变量 world
+    path := os.ExpandEnv(&quot;gopath is $GOPATH&quot;) //替换字符串中的环境变量
+    fmt.Println(path)   //gopath is /wide/gogogo
+</code></pre><h3 id="ExpandEnv"><a href="#ExpandEnv" class="headerlink" title="ExpandEnv()"></a>ExpandEnv()</h3><pre><code>func ExpandEnv(s string) string
+</code></pre><blockquote>
+<p>和<code>Expand()</code>相似，<code>os.ExpandEnv(s)</code>等效于<code>os.Expand(s, os.Getenv())</code>。</p>
+</blockquote>
+<h3 id="Geteuid"><a href="#Geteuid" class="headerlink" title="Geteuid()"></a>Geteuid()</h3><pre><code>func Geteuid() int
+</code></pre><blockquote>
+<p>返回调用者有效的用户ID</p>
+</blockquote>
+<h3 id="Getuid"><a href="#Getuid" class="headerlink" title="Getuid()"></a>Getuid()</h3><pre><code>func Geteuid() int
+</code></pre><blockquote>
+<p>返回调用者实际的用户ID。</p>
+<p>应用：判断当前用户是否是root用户 os.Geteuid() != 0</p>
+<p>uid与guid区别可参见<a href="https://zh.wikipedia.org/zh-hans/%E7%94%A8%E6%88%B7ID" target="_blank" rel="external">维基百科</a></p>
+</blockquote>
+<h3 id="Getegid"><a href="#Getegid" class="headerlink" title="Getegid()"></a>Getegid()</h3><pre><code>func Getegid() int
+</code></pre><blockquote>
+<p>返回调用者有效的组ID。</p>
+</blockquote>
+<h3 id="Getgid"><a href="#Getgid" class="headerlink" title="Getgid()"></a>Getgid()</h3><pre><code>func Getegid() int
+</code></pre><blockquote>
+<p>返回调用者实际的组ID</p>
+</blockquote>
+<h3 id="Getenv"><a href="#Getenv" class="headerlink" title="Getenv()"></a><span id="Getenv">Getenv()</span></h3><pre><code>func Getenv(key string) string
+</code></pre><blockquote>
+<p>返回指定环境变量名的环境变量值。相关函数：<a href="#Environ">Environ()</a>、<a href="#LookupEnv">LookupEnv()</a>。</p>
+</blockquote>
+<h3 id="Getgroups"><a href="#Getgroups" class="headerlink" title="Getgroups()"></a>Getgroups()</h3><pre><code>func Getgroups() ([]int, error)
+</code></pre><blockquote>
+<p>返回调用者所属组的一组ID</p>
+</blockquote>
+<h3 id="Getpagesize"><a href="#Getpagesize" class="headerlink" title="Getpagesize()"></a>Getpagesize()</h3><pre><code>func Getpagesize() int
+</code></pre><blockquote>
+<p>获取底层系统内存页的大小</p>
+</blockquote>
+<h3 id="Getpid"><a href="#Getpid" class="headerlink" title="Getpid()"></a>Getpid()</h3><pre><code>func Getpid() int
+</code></pre><blockquote>
+<p>获取调用者的进程ID</p>
+</blockquote>
+<h3 id="Getppid"><a href="#Getppid" class="headerlink" title="Getppid()"></a>Getppid()</h3><pre><code>func Getppid() int
+</code></pre><blockquote>
+<p>获取调用者的进程的父进程ID</p>
+</blockquote>
+<h3 id="Getwd"><a href="#Getwd" class="headerlink" title="Getwd()"></a>Getwd()</h3><pre><code>func Getwd() (dir string, err error)
+</code></pre><blockquote>
+<p>Getwd()也是获取当前路径</p>
+<p>go语言中获取路径的方法很多，需要总结了</p>
+<blockquote>
+<p>1<br>2</p>
+</blockquote>
+</blockquote>
+<h3 id="Hostname"><a href="#Hostname" class="headerlink" title="Hostname()"></a>Hostname()</h3><pre><code>func Hostname() (name string, err error)
+</code></pre><blockquote>
+<p>获取主机名</p>
+</blockquote>
+<h3 id="IsExist"><a href="#IsExist" class="headerlink" title="IsExist()"></a>IsExist()</h3><pre><code>func IsExist(err error) bool
+</code></pre><blockquote>
+<p>返回一个bool，说明err是否表示一个关于文件或目录已经存在的错误,如：</p>
+</blockquote>
+<pre><code>err := os.Mkdir(&quot;/hmoe&quot;, 0755)
+fmt.Println(os.IsExist(err))    //true
+</code></pre><h3 id="IsNotExist"><a href="#IsNotExist" class="headerlink" title="IsNotExist()"></a>IsNotExist()</h3><pre><code>func IsNotExist(err error) bool
+</code></pre><blockquote>
+<p>返回一个bool，说明err是否表示一个关于文件或目录不存在的错误,如：</p>
+</blockquote>
+<h3 id="IsPathSeparator"><a href="#IsPathSeparator" class="headerlink" title="IsPathSeparator()"></a>IsPathSeparator()</h3><pre><code>func IsPathSeparator(c uint8) bool
+</code></pre><blockquote>
+<p>判断是不是目录分隔符，其中传入的参数c是uint8类型，通过<code>&#39;/&#39;</code>可以将<code>/</code>转换成47(uint8类型)，可以将<code>\\</code>转换成92(uint8类型)</p>
+</blockquote>
+<h3 id="IsPermission"><a href="#IsPermission" class="headerlink" title="IsPermission()"></a>IsPermission()</h3><pre><code>func IsPermission(err error) bool
+</code></pre><blockquote>
+<p>判定err错误是否是权限错误。</p>
+</blockquote>
+<h3 id="Lchown"><a href="#Lchown" class="headerlink" title="Lchown()"></a>Lchown()</h3><pre><code>func Lchown(name string, uid, gid int) error
+</code></pre><blockquote>
+<p>修改文件的uid和gid，如果这个文件是个软链接，则只修改软链接本身。</p>
+</blockquote>
+<h3 id="Link"><a href="#Link" class="headerlink" title="Link()"></a>Link()</h3><pre><code>func Link(oldname, newname string) error
+</code></pre><blockquote>
+<p>创建一个从oldname指向newname的硬连接，对一个进行操作，另外一个文件不受影响,创建软链接可使用<a href="#Symlink">Symlink()</a></p>
+</blockquote>
+<h3 id="LookupEnv"><a href="#LookupEnv" class="headerlink" title="LookupEnv()"></a><span id="LookupEnv">LookupEnv()</span></h3><pre><code>func LookupEnv(key string) (string, bool)
+</code></pre><blockquote>
+<p>1、<code>Getenv()</code>、<code>LookupEnv()</code>传入参数与环境变量名严格一致（包括大小写）,这点不像在Linux系统:<code>echo $PATH</code>与<code>echo $path</code>都能输出PATH路径。相关函数：<a href="#Environ">Environ()</a>、<a href="#Getenv">Getenv()</a>。<br>2、<code>LookupEnv()</code>与<code>Getenv()</code>区别在于：<code>LookupEnv()</code>可以区分空环境变量或者缺失环境变量，更加清晰的显示环境变量的真实情况。比如：</p>
+</blockquote>
+<pre><code>//如果有环境变量v，内容为空
+fmt.Println(os.Getenv(&quot;v&quot;))     //返回`空`
+fmt.Println(os.LookupEnv(&quot;v&quot;))  //俩返回值，会返回`空`以及`true`
+//如果不存在环境变量n
+fmt.Println(os.Getenv(&quot;n&quot;))     //返回`空`
+fmt.Println(os.LookupEnv(&quot;n&quot;))  //俩返回值，会返回`空`以及`false`
+</code></pre><h3 id="Mkdir"><a href="#Mkdir" class="headerlink" title="Mkdir()"></a><code>Mkdir()</code></h3><pre><code>func Mkdir(name string, perm FileMode) error
+</code></pre><blockquote>
+<p>新建文件夹，需要调用者有相关权限,当创建一个已经存在的目录时会报错。</p>
+</blockquote>
+<h3 id="MkdirAll"><a href="#MkdirAll" class="headerlink" title="MkdirAll()"></a><code>MkdirAll()</code></h3><pre><code>func MkdirAll(path string, perm FileMode) error
+</code></pre><blockquote>
+<p>级联新建文件夹，类似与Linux命令的<code>-p</code>参数，需要调用者有相关权限,当创建一个已经存在的目录时不会报错。</p>
+</blockquote>
+<h3 id="NewSyscallError"><a href="#NewSyscallError" class="headerlink" title="NewSyscallError()"></a><code>NewSyscallError()</code></h3><pre><code>func NewSyscallError(syscall string, err error) error
+</code></pre><blockquote>
+<p>返回一个SyscallError 错误，带有给出的系统调用名字和详细的错误信息。也就是说，如果err为空，则返回空</p>
+</blockquote>
+<h3 id="Readlink"><a href="#Readlink" class="headerlink" title="Readlink()"></a><code>Readlink()</code></h3><pre><code>func Readlink(name string) (string, error)
+</code></pre><blockquote>
+<p>获取软链接指向的目标文件。</p>
+</blockquote>
+<h3 id="Remove"><a href="#Remove" class="headerlink" title="Remove()"></a><code>Remove()</code></h3><pre><code>func Remove(name string) (string, error)
+</code></pre><blockquote>
+<p>删除目录或文件，需要相应权限，参数为目录或文件。</p>
+</blockquote>
+<h3 id="RemoveAll"><a href="#RemoveAll" class="headerlink" title="RemoveAll()"></a><code>RemoveAll()</code></h3><pre><code>func RemoveAll(path string) error
+</code></pre><blockquote>
+<p>删除目录以及目录下的全部内容，path不存在的话，返回nil，需要相应权限，参数为路径名。</p>
+</blockquote>
+<h3 id="Rename"><a href="#Rename" class="headerlink" title="Rename()"></a><code>Rename()</code></h3><pre><code>func Rename(oldpath, newpath string) error
+</code></pre><blockquote>
+<p>对文件，文件夹重命名，参数可以文件，可以是文件夹，可以是绝对路径，可以是相对路径。</p>
+</blockquote>
+<pre><code>err := os.Rename(&quot;main.go1&quot;, &quot;main.go2&quot;)  
+err1 := os.Rename(&quot;pkg2&quot;, &quot;pkg2.new&quot;)
+err2 := os.Rename(&quot;../1.go&quot;, &quot;2.go&quot;) // 这里会将1.go从上级目录直接移动到本级目录并重命名为2.go
+err3 := os.Rename(&quot;/home/2.go2&quot;, &quot;../1.go&quot;)
+</code></pre><h3 id="SameFile"><a href="#SameFile" class="headerlink" title="SameFile()"></a><code>SameFile()</code></h3><pre><code>func SameFile(fi1, fi2 FileInfo) bool
+</code></pre><blockquote>
+<p>检测文件的信息是否相同，所谓文件信息指的是os.Stat()的值是否完全相同。</p>
+</blockquote>
+<h3 id="Symlink"><a href="#Symlink" class="headerlink" title="Symlink()"></a><span id="Symlink">Symlink()</span></h3><pre><code>func Symlink(oldname, newname string) error
+</code></pre><blockquote>
+<p>创建一个newname的指向oldname的软链接。</p>
+</blockquote>
+<h3 id="TempDir"><a href="#TempDir" class="headerlink" title="TempDir()"></a><code>TempDir()</code></h3><pre><code>func TempDir() string
+</code></pre><blockquote>
+<p>返回你本地的系统temp目录。</p>
+</blockquote>
+<h3 id="Truncate"><a href="#Truncate" class="headerlink" title="Truncate()"></a><code>Truncate()</code></h3><pre><code>func Truncate(name string, size int64) error
+</code></pre><blockquote>
+<p>该函数改变文件的size，即<code>f.Size()</code></p>
+</blockquote>
+<h3 id="Unsetenv"><a href="#Unsetenv" class="headerlink" title="Unsetenv()"></a><code>Unsetenv()</code></h3><pre><code>func Unsetenv(key string) error
+</code></pre><blockquote>
+<p>取消设置某个环境变量。</p>
+</blockquote>
+<h2 id="文件操作"><a href="#文件操作" class="headerlink" title="文件操作"></a>文件操作</h2><pre><code>type File struct {
+    *file // 定义struct类型的File文件，返回File的地址
+}
+
+type file struct {
+    fd      int
+    name    string
+    dirinfo *dirInfo // nil unless directory being read
+}
+</code></pre><hr>
+<p>—file</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://www.lakevilladom.com/2017/02/21/Go标准库01之os包/" data-title="Go标准库01之os包 | Lake Villadom&#39;Blog" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2017/04/23/CSS-选择器/" title="CSS 选择器">
+  <strong>上一篇：</strong><br/>
+  <span>
+  CSS 选择器</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2017/01/24/zsh配置/"  title="zsh配置实用技巧">
+ <strong>下一篇：</strong><br/> 
+ <span>zsh配置实用技巧
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#FileMode"><span class="toc-number">1.</span> <span class="toc-text">FileMode</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#常量-Constants"><span class="toc-number"></span> <span class="toc-text">常量(Constants)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#变量-Variables"><span class="toc-number"></span> <span class="toc-text">变量(Variables)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#常用函数"><span class="toc-number"></span> <span class="toc-text">常用函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Chdir"><span class="toc-number">1.</span> <span class="toc-text">Chdir()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Chmod"><span class="toc-number">2.</span> <span class="toc-text">Chmod()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Chown"><span class="toc-number">3.</span> <span class="toc-text">Chown()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Chtimes"><span class="toc-number">4.</span> <span class="toc-text">Chtimes()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Clearenv"><span class="toc-number">5.</span> <span class="toc-text">Clearenv()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Environ"><span class="toc-number">6.</span> <span class="toc-text">Environ()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Executable"><span class="toc-number">7.</span> <span class="toc-text">Executable()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Exit"><span class="toc-number">8.</span> <span class="toc-text">Exit()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Expand"><span class="toc-number">9.</span> <span class="toc-text">Expand()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ExpandEnv"><span class="toc-number">10.</span> <span class="toc-text">ExpandEnv()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Geteuid"><span class="toc-number">11.</span> <span class="toc-text">Geteuid()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Getuid"><span class="toc-number">12.</span> <span class="toc-text">Getuid()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Getegid"><span class="toc-number">13.</span> <span class="toc-text">Getegid()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Getgid"><span class="toc-number">14.</span> <span class="toc-text">Getgid()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Getenv"><span class="toc-number">15.</span> <span class="toc-text">Getenv()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Getgroups"><span class="toc-number">16.</span> <span class="toc-text">Getgroups()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Getpagesize"><span class="toc-number">17.</span> <span class="toc-text">Getpagesize()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Getpid"><span class="toc-number">18.</span> <span class="toc-text">Getpid()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Getppid"><span class="toc-number">19.</span> <span class="toc-text">Getppid()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Getwd"><span class="toc-number">20.</span> <span class="toc-text">Getwd()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Hostname"><span class="toc-number">21.</span> <span class="toc-text">Hostname()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IsExist"><span class="toc-number">22.</span> <span class="toc-text">IsExist()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IsNotExist"><span class="toc-number">23.</span> <span class="toc-text">IsNotExist()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IsPathSeparator"><span class="toc-number">24.</span> <span class="toc-text">IsPathSeparator()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IsPermission"><span class="toc-number">25.</span> <span class="toc-text">IsPermission()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Lchown"><span class="toc-number">26.</span> <span class="toc-text">Lchown()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Link"><span class="toc-number">27.</span> <span class="toc-text">Link()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LookupEnv"><span class="toc-number">28.</span> <span class="toc-text">LookupEnv()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Mkdir"><span class="toc-number">29.</span> <span class="toc-text">Mkdir()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MkdirAll"><span class="toc-number">30.</span> <span class="toc-text">MkdirAll()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#NewSyscallError"><span class="toc-number">31.</span> <span class="toc-text">NewSyscallError()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Readlink"><span class="toc-number">32.</span> <span class="toc-text">Readlink()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Remove"><span class="toc-number">33.</span> <span class="toc-text">Remove()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RemoveAll"><span class="toc-number">34.</span> <span class="toc-text">RemoveAll()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Rename"><span class="toc-number">35.</span> <span class="toc-text">Rename()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SameFile"><span class="toc-number">36.</span> <span class="toc-text">SameFile()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Symlink"><span class="toc-number">37.</span> <span class="toc-text">Symlink()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TempDir"><span class="toc-number">38.</span> <span class="toc-text">TempDir()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Truncate"><span class="toc-number">39.</span> <span class="toc-text">Truncate()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Unsetenv"><span class="toc-number">40.</span> <span class="toc-text">Unsetenv()</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#文件操作"><span class="toc-number"></span> <span class="toc-text">文件操作</span></a>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Docker/" title="Docker">Docker<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Golang/" title="Golang">Golang<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Hexo/" title="Hexo">Hexo<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Linux/" title="Linux">Linux<sup>6</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Node-js/" title="Node.js">Node.js<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Oracle/" title="Oracle">Oracle<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/grep/" title="grep">grep<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/如歌如梭/" title="如歌如梭">如歌如梭<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/工具/" title="工具">工具<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/年终总结/" title="年终总结">年终总结<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/爬虫/" title="爬虫">爬虫<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Linux/跬步小流/" title="跬步小流">跬步小流<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/跬步小流/" title="跬步小流">跬步小流<sup>4</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/Linux/" title="Linux">Linux<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Hexo/" title="Hexo">Hexo<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Oracle/" title="Oracle">Oracle<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Git/" title="Git">Git<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Shell/" title="Shell">Shell<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/递归查询/" title="递归查询">递归查询<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/备份/" title="备份">备份<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/立碑/" title="立碑">立碑<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Alpine/" title="Alpine">Alpine<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/CSS选择器/" title="CSS选择器">CSS选择器<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/爬虫/" title="爬虫">爬虫<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/scp/" title="scp">scp<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Linux/" title="Linux ">Linux <sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/LVM/" title="LVM">LVM<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/逻辑卷/" title="逻辑卷">逻辑卷<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Node-js/" title="Node.js">Node.js<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Dockerfile/" title="Dockerfile">Dockerfile<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/拼接/" title="拼接">拼接<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/正则表达式/" title="正则表达式">正则表达式<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/工具/" title="工具">工具<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://coderq.com" target="_blank" title="一个面向程序员交流分享的新一代社区">码农圈</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://wuchong.me" target="_blank" title="Jark&#39;s Blog">Jark&#39;s Blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">新浪微博</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=null&verifier=b3593ceb&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Larry Page in Google. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2176287895" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2017 
+		
+		<a href="/about" target="_blank" title="Lake Villadom">Lake Villadom</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

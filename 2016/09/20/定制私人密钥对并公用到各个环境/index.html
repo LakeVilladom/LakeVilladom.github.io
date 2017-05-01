@@ -1,0 +1,718 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>定制私人密钥并共用到git、coding | Lake Villadom&#39;Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Lake Villadom">
+    
+
+    
+    <meta name="description" content="缘起：构想能否定制一个自己的私人密钥对，保存下来，在自己的需要的环境拿过来通过配置直接使用,是为序。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="定制私人密钥并共用到git、coding">
+<meta property="og:url" content="http://www.lakevilladom.com/2016/09/20/定制私人密钥对并公用到各个环境/index.html">
+<meta property="og:site_name" content="Lake Villadom'Blog">
+<meta property="og:description" content="缘起：构想能否定制一个自己的私人密钥对，保存下来，在自己的需要的环境拿过来通过配置直接使用,是为序。">
+<meta property="og:updated_time" content="2016-11-05T13:39:31.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="定制私人密钥并共用到git、coding">
+<meta name="twitter:description" content="缘起：构想能否定制一个自己的私人密钥对，保存下来，在自己的需要的环境拿过来通过配置直接使用,是为序。">
+
+    
+    <link rel="alternative" href="/atom.xml" title="Lake Villadom&#39;Blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="Lake Villadom&#39;Blog" title="Lake Villadom&#39;Blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Lake Villadom&#39;Blog">Lake Villadom&#39;Blog</a></h1>
+				<h2 class="blog-motto">难自弃</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:www.lakevilladom.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2016/09/20/定制私人密钥对并公用到各个环境/" title="定制私人密钥并共用到git、coding" itemprop="url">定制私人密钥并共用到git、coding</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Lake Villadom" target="_blank" itemprop="author">Lake Villadom</a>
+		
+  <p class="article-time">
+    <time datetime="2016-09-20T18:20:00.000Z" itemprop="datePublished"> 发表于 2016-09-20</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#概述"><span class="toc-number">1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#定制密钥对"><span class="toc-number">2.</span> <span class="toc-text">定制密钥对</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#上传私钥并设定权限"><span class="toc-number">3.</span> <span class="toc-text">上传私钥并设定权限</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置过程"><span class="toc-number">4.</span> <span class="toc-text">配置过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">5.</span> <span class="toc-text">总结</span></a></li></ol>
+		
+		</div>
+		
+		<script src="/assets/js/APlayer.min.js"> </script><blockquote>
+<ul>
+<li><strong> 缘起：构想能否定制一个自己的私人密钥对，保存下来，在自己的需要的环境拿过来通过配置直接使用,是为序。</strong></li>
+</ul>
+</blockquote>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><blockquote>
+<p>　　定制自己的密钥对(rsa_nkey.lvc、rsa_nkey.lvc.pub)时候修改了密钥对名称，导致在连接git、coding时报错，这时候可以通过<code>配置/etc/ssh/ssh_config文件</code>或<code>在.ssh/下添加config文件</code>实现。</p>
+</blockquote>
+<h2 id="定制密钥对"><a href="#定制密钥对" class="headerlink" title="定制密钥对"></a>定制密钥对</h2><pre class="line-numbers language-bash"><code class="language-bash"><span class="token punctuation">[</span>LV@LV-Cloud<span class="token punctuation">]</span>$ ssh-keygen -t rsa -C XX@XX.com -f my-key-file
+ ● -t 定义的是加密方式，一般有rsa和dsa两种
+ ● -C 定义的是注释，一般写邮箱，也可以不写
+ ● -f 定义了输出的证书文件名，不需要写后缀
+ ● -b 指定密钥长度,对于RSA密钥默认是2048位
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="上传私钥并设定权限"><a href="#上传私钥并设定权限" class="headerlink" title="上传私钥并设定权限"></a>上传私钥并设定权限</h2><pre><code>[LV@LV-Cloud]$ scp rsa_nkey.lvc loginname@yourdomain.com:.ssh
+[LV@LV-Cloud]$ chmod 600 ~/.ssh/rsa_nkey.lvc     #将ssh认证文件权限设置为只有自己可以读写
+[LV@LV-Cloud]$ chmod 700 ~/.ssh                  #将~/.ssh目录设置权限为只有自己可以访问
+</code></pre><h2 id="配置过程"><a href="#配置过程" class="headerlink" title="配置过程"></a>配置过程</h2><ul>
+<li>通过配置/etc/ssh_config文件</li>
+</ul>
+<ol>
+<li><p>用<code>ssh -vT git@github.com</code> 测试连接情况的过程中有如下发现：</p>
+<pre class="line-numbers language-bash"><code class="language-bash">debug1: Next authentication method: publickey
+debug1: Trying private key: /home/hxxz/.ssh/id_rsa
+debug1: Trying private key: /home/hxxz/.ssh/id_dsa
+debug1: Trying private key: /home/hxxz/.ssh/id_ecdsa
+debug1: Trying private key: /home/hxxz/.ssh/id_ed25519
+debug1: No <span class="token function">more</span> authentication methods to try.
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><p>应该该是通过配置设置了查找私钥的路径即名称，那么把我自定义的私钥加入到配置文件就应该可以了，最后在<code>/etc/ssh/ssh_config</code>下找到配置位置：</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true">#   StrictHostKeyChecking ask</span>
+<span class="token comment" spellcheck="true">#   IdentityFile ~/.ssh/identity</span>
+<span class="token comment" spellcheck="true">#   IdentityFile ~/.ssh/id_rsa</span>
+<span class="token comment" spellcheck="true">#   IdentityFile ~/.ssh/id_dsa</span>
+   IdentityFile ~/.ssh/rsa_nkey.lvc  <span class="token comment" spellcheck="true">#添加</span>
+<span class="token comment" spellcheck="true">#   Port 22</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><p><strong>重启服务</strong>，测试通过，刚开始用这种思路这么配置一直无法通过，遂采用了第二种方法配置，后来想是没重启服务的原因，遂重新测试，写博客前测试通过。</p>
+<pre><code>[LV@LV-Cloud]$ sudo service ssh restart
+[LV@LV-Cloud]$ ssh  git@github.com
+Hi LakeVilladom! You&#39;ve successfully authenticated, but GitHub   does not provide shell access.
+Connection to github.com closed.
+</code></pre></li>
+</ol>
+<ul>
+<li>通过在.ssh/下添加config文件</li>
+</ul>
+<blockquote>
+<p>其实道理和上面一样，一个是全局用户生效，一个是当前用户生效,主要参考网上关于一个主机上管理多个ssh密钥对的方法，不同的应用方向，相同的原理。</p>
+<p>配置文件(.ssh/config)参数说明:</p>
+<pre><code>  Host         #配置项标识了一个配置区段，配置项参数值可以使用通配符，可以随意命名
+   HostName     #指定远程主机名，必须是正确的主机名，可以直接使用数字IP地址
+   IdentityFile #指定密钥认证使用的私钥文件路径
+   Port         #指定远程主机端口号，默认为 22
+   User         #指定登录用户名
+</code></pre><p>这些参数很多都是可有可无的，可根据实际情况选择使用。</p>
+</blockquote>
+<ol>
+<li><p>创建.ssh/config文件</p>
+<pre><code>[LV@LV-Cloud]$ vim .ssh/config
+Host mygithub   #Host自定义
+hostname github.com
+User user_github
+IdentityFile ~/.ssh/rsa_nkey.lvc
+Host mycoding    #Host自定义
+hostname git.coding.net
+User user_github
+IdentityFile ~/.ssh/rsa_nkey.lvc
+</code></pre></li>
+<li><p>测试：</p>
+<pre><code>
+[LV@LV-Cloud]$ ssh -vT git@mygithub  #直接可以通过自定义的Host:mygithub访问github.com
+......
+Hi ! You&#39;ve successfully authenticated, but GitHub does not provide shell access.
+[LV@LV-Cloud]$ ssh -vT git@mycoding  #直接可以通过自定义的Host:mycoding访问git.coding.net
+......
+Hello ! You&#39;ve connected to Coding.net via SSH successfully!
+</code></pre><blockquote>
+<p>通过<code>-v</code>参数可以梳理出通过ssh大致的匹配流程：</p>
+<ol>
+<li>读取/home/hxxz/.ssh/config，匹配其中的Host；</li>
+<li>匹配成功，读取config下该Host块下内容：读取Hostname做为真实的Host，读取IdentityFile与git上的公钥匹配；</li>
+<li>匹配失败直接使用命令中@后的内容做为真实Host，这时候永远不能成功，因为你@后的内容为错误Host,直接报<code>Name or service not known</code>,@后的内容为正确Host，也会因为找不到公钥报<code>Permission denied (publickey)</code>(除非在/etc/ssh_config文件中加入自定义私钥路径)</li>
+</ol>
+</blockquote>
+</li>
+<li><p>通过如下多种配置方式验证配置情况：</p>
+<pre><code>[LV@LV-Cloud]$ vim .ssh/config
+Host *      #host直接使用通配符
+IdentityFile ~/.ssh/rsa_nkey.lvc
+[LV@LV-Cloud]$ ssh -T git@github.com  # 此处必须使用正确的hostname才能成功
+[LV@LV-Cloud]$ ssh -T git@git.coding.com   # 此处必须使用正确的hostname才能成功
+</code></pre><pre><code>[LV@LV-Cloud]$ vim .ssh/config
+Host git.coding.net
+IdentityFile ~/.ssh/rsa_nkey.lvc
+Host github.com
+IdentityFile ~/.ssh/rsa_nkey.lvc
+ssh -T git@git.coding.net  #成功
+ssh -T git@github.com    #成功
+</code></pre><pre><code>[LV@LV-Cloud]$ vim .ssh/config
+Host gitcoding  
+IdentityFile ~/.ssh/rsa_nkey.lvc
+Host github
+IdentityFile ~/.ssh/rsa_nkey.lvc
+
+[LV@LV-Cloud]$ ssh -T git@gitcoding   #失败&quot;Name or service not known&quot;，匹配到Host,但是无法找到真实的Hostname
+[LV@LV-Cloud]$ ssh -T git@github.com   #失败&quot;Name or service not known&quot;，匹配到Host,但是无法找到真实的Hostname
+[LV@LV-Cloud]$ ssh -T git@git.coding.net #失败&quot;Permission denied (publickey)&quot;,匹配不到Host,直接使用@后面的内容，能连接到真实的Hostname,但是不能读取IdentityFile，得不到正确的私钥
+[LV@LV-Cloud]$ ssh -T git@github.com  #失败&quot;Permission denied (publickey)&quot;,匹配不到Host,直接使用@后面的内容，能连接到真实的Hostname,但是不能读取IdentityFile，得不到正确的私钥
+</code></pre><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2></li>
+</ol>
+<blockquote>
+<ul>
+<li>总体来说，在/etc/ssh/ssh_config下配置更为简单。</li>
+<li>可以运用到各种场景：多Linux免密码登录、多站点使用不同的ssh key、同一站点不同用户使用不同的ssh key等。</li>
+</ul>
+<p><strong> 　后记:其实像Docker容器那样即时生成、用完即弃来玩密钥对，也是很简单方便的，只是突发奇想，想定制一个自己专属永久的密钥对，过程中遇到一些弯，跳过一些坑，google折腾了很长时间，最后索性把整个过程中的整理记录下来，但是总体来说，理解不深刻，思路不清晰，比较凌乱，是为记。</strong></p>
+</blockquote>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/跬步小流/">跬步小流</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/SSH/">SSH</a><a href="/tags/密钥/">密钥</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://www.lakevilladom.com/2016/09/20/定制私人密钥对并公用到各个环境/" data-title="定制私人密钥并共用到git、coding | Lake Villadom&#39;Blog" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2016/09/25/20160925Hexo博客搭建历程从简单玩到专注写/" title="Hexo博客搭建历程—从简单玩到专注写">
+  <strong>上一篇：</strong><br/>
+  <span>
+  Hexo博客搭建历程—从简单玩到专注写</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2016/09/17/Linux目录文件显示统计/"  title="Linux目录文件显示统计">
+ <strong>下一篇：</strong><br/> 
+ <span>Linux目录文件显示统计
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#概述"><span class="toc-number">1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#定制密钥对"><span class="toc-number">2.</span> <span class="toc-text">定制密钥对</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#上传私钥并设定权限"><span class="toc-number">3.</span> <span class="toc-text">上传私钥并设定权限</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置过程"><span class="toc-number">4.</span> <span class="toc-text">配置过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">5.</span> <span class="toc-text">总结</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Docker/" title="Docker">Docker<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Golang/" title="Golang">Golang<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Hexo/" title="Hexo">Hexo<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Linux/" title="Linux">Linux<sup>6</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Node-js/" title="Node.js">Node.js<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Oracle/" title="Oracle">Oracle<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/grep/" title="grep">grep<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/如歌如梭/" title="如歌如梭">如歌如梭<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/工具/" title="工具">工具<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/年终总结/" title="年终总结">年终总结<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/爬虫/" title="爬虫">爬虫<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Linux/跬步小流/" title="跬步小流">跬步小流<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/跬步小流/" title="跬步小流">跬步小流<sup>4</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/Linux/" title="Linux">Linux<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Hexo/" title="Hexo">Hexo<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Oracle/" title="Oracle">Oracle<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Git/" title="Git">Git<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Shell/" title="Shell">Shell<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/递归查询/" title="递归查询">递归查询<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/备份/" title="备份">备份<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/立碑/" title="立碑">立碑<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Alpine/" title="Alpine">Alpine<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/CSS选择器/" title="CSS选择器">CSS选择器<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/爬虫/" title="爬虫">爬虫<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/scp/" title="scp">scp<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Linux/" title="Linux ">Linux <sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/LVM/" title="LVM">LVM<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/逻辑卷/" title="逻辑卷">逻辑卷<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Node-js/" title="Node.js">Node.js<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Dockerfile/" title="Dockerfile">Dockerfile<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/拼接/" title="拼接">拼接<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/正则表达式/" title="正则表达式">正则表达式<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/工具/" title="工具">工具<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://coderq.com" target="_blank" title="一个面向程序员交流分享的新一代社区">码农圈</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://wuchong.me" target="_blank" title="Jark&#39;s Blog">Jark&#39;s Blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">新浪微博</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=null&verifier=b3593ceb&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Larry Page in Google. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2176287895" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2017 
+		
+		<a href="/about" target="_blank" title="Lake Villadom">Lake Villadom</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
