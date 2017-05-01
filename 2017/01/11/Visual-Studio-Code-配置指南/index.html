@@ -28,7 +28,7 @@
     <link rel="alternative" href="/atom.xml" title="Lake Villadom&#39;Blog" type="application/atom+xml">
     
     
-    <link rel="icon" href="/img/favicon.ico">
+    <link rel="icon" href="/img/lv.ico">
     
     
     <link rel="apple-touch-icon" href="/img/jacman.jpg">
@@ -189,6 +189,13 @@
 <aside class="clearfix">
 
   
+<div class="github-card">
+<p class="asidetitle">Github 名片</p>
+<div class="github-card" data-github="https://github.com/LakeVilladom" data-width="220" data-height="119" data-theme="medium">
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+  </div>
+
 
 
   
@@ -373,13 +380,16 @@
 	
 	
 	<section class="info">
-		<p> Hello ,I&#39;m Larry Page in Google. <br/>
-			This is my blog,believe it or not.</p>
+		<p> May every day of your life bring you fresh hopes for tomorrow. <br/>
+			Expect the best, and you&#39;ll get it..</p>
 	</section>
 	 
 	<div class="social-font" class="clearfix">
 		
-		<a href="http://weibo.com/2176287895" target="_blank" class="icon-weibo" title="微博"></a>
+		<a href="http://weibo.com/1800807704" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/https://github.com/LakeVilladom" target="_blank" class="icon-github" title="github"></a>
 		
 		
 		
@@ -389,6 +399,7 @@
 		
 		
 		
+		<a href="mailto:lakevilladom@aliyun.com" target="_blank" class="icon-email" title="Email Me"></a>
 		
 	</div>
 			
@@ -438,6 +449,11 @@ $(document).ready(function(){
   $(window).scroll(function(){
     o.css("top",Math.max(80,260-$(this).scrollTop()));
   });
+  
+        getSize();
+        if (myWidth >= 1024) {
+          c.click();
+        }
   
   $(window).resize(function(){
     getSize(); 
