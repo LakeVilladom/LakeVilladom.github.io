@@ -4,23 +4,23 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>定制私人密钥并共用到git、coding | Lake Villadom&#39;Blog</title>
+    <title>Go Struct Tag | Lake Villadom&#39;Blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="Lake Villadom">
     
 
     
-    <meta name="description" content="缘起：构想能否定制一个自己的私人密钥对，保存下来，在自己的需要的环境拿过来通过配置直接使用,是为序。">
+    <meta name="description" content="在Go语言里，StructTag是一个标记字符串，此字符串可跟随在Struct中字段定义的后面。StructTag就是一系列的key:”value”形式的组合，其中key是一个不可为空的字符串，key-value组合可以有多个，空格分隔。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="定制私人密钥并共用到git、coding">
-<meta property="og:url" content="http://www.lakevilladom.com/2016/09/20/定制私人密钥对并公用到各个环境/index.html">
+<meta property="og:title" content="Go Struct Tag">
+<meta property="og:url" content="http://www.lakevilladom.com/2017/05/01/Go-Struct-Tag/index.html">
 <meta property="og:site_name" content="Lake Villadom'Blog">
-<meta property="og:description" content="缘起：构想能否定制一个自己的私人密钥对，保存下来，在自己的需要的环境拿过来通过配置直接使用,是为序。">
-<meta property="og:updated_time" content="2016-11-05T13:39:31.000Z">
+<meta property="og:description" content="在Go语言里，StructTag是一个标记字符串，此字符串可跟随在Struct中字段定义的后面。StructTag就是一系列的key:”value”形式的组合，其中key是一个不可为空的字符串，key-value组合可以有多个，空格分隔。">
+<meta property="og:updated_time" content="2017-05-01T07:37:39.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="定制私人密钥并共用到git、coding">
-<meta name="twitter:description" content="缘起：构想能否定制一个自己的私人密钥对，保存下来，在自己的需要的环境拿过来通过配置直接使用,是为序。">
+<meta name="twitter:title" content="Go Struct Tag">
+<meta name="twitter:description" content="在Go语言里，StructTag是一个标记字符串，此字符串可跟随在Struct中字段定义的后面。StructTag就是一系列的key:”value”形式的组合，其中key是一个不可为空的字符串，key-value组合可以有多个，空格分隔。">
 
     
     <link rel="alternative" href="/atom.xml" title="Lake Villadom&#39;Blog" type="application/atom+xml">
@@ -81,14 +81,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2016/09/20/定制私人密钥对并公用到各个环境/" title="定制私人密钥并共用到git、coding" itemprop="url">定制私人密钥并共用到git、coding</a>
+      <a href="/2017/05/01/Go-Struct-Tag/" title="Go Struct Tag" itemprop="url">Go Struct Tag</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="Lake Villadom" target="_blank" itemprop="author">Lake Villadom</a>
 		
   <p class="article-time">
-    <time datetime="2016-09-20T18:20:00.000Z" itemprop="datePublished"> 发表于 2016-09-20</time>
+    <time datetime="2017-05-01T07:34:00.000Z" itemprop="datePublished"> 发表于 2017-05-01</time>
     
   </p>
 </header>
@@ -97,130 +97,27 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#概述"><span class="toc-number">1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#定制密钥对"><span class="toc-number">2.</span> <span class="toc-text">定制密钥对</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#上传私钥并设定权限"><span class="toc-number">3.</span> <span class="toc-text">上传私钥并设定权限</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置过程"><span class="toc-number">4.</span> <span class="toc-text">配置过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">5.</span> <span class="toc-text">总结</span></a></li></ol>
+			
 		
 		</div>
 		
 		<script src="/assets/js/APlayer.min.js"> </script><blockquote>
 <ul>
-<li><strong> 缘起：构想能否定制一个自己的私人密钥对，保存下来，在自己的需要的环境拿过来通过配置直接使用,是为序。</strong></li>
+<li><strong>在Go语言里，StructTag是一个标记字符串，此字符串可跟随在Struct中字段定义的后面。StructTag就是一系列的key:”value”形式的组合，其中key是一个不可为空的字符串，key-value组合可以有多个，空格分隔。</strong></li>
 </ul>
 </blockquote>
-<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><blockquote>
-<p>　　定制自己的密钥对(rsa_nkey.lvc、rsa_nkey.lvc.pub)时候修改了密钥对名称，导致在连接git、coding时报错，这时候可以通过<code>配置/etc/ssh/ssh_config文件</code>或<code>在.ssh/下添加config文件</code>实现。</p>
-</blockquote>
-<h2 id="定制密钥对"><a href="#定制密钥对" class="headerlink" title="定制密钥对"></a>定制密钥对</h2><pre class="line-numbers language-bash"><code class="language-bash"><span class="token punctuation">[</span>LV@LV-Cloud<span class="token punctuation">]</span>$ ssh-keygen -t rsa -C XX@XX.com -f my-key-file
- ● -t 定义的是加密方式，一般有rsa和dsa两种
- ● -C 定义的是注释，一般写邮箱，也可以不写
- ● -f 定义了输出的证书文件名，不需要写后缀
- ● -b 指定密钥长度,对于RSA密钥默认是2048位
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="上传私钥并设定权限"><a href="#上传私钥并设定权限" class="headerlink" title="上传私钥并设定权限"></a>上传私钥并设定权限</h2><pre><code>[LV@LV-Cloud]$ scp rsa_nkey.lvc loginname@yourdomain.com:.ssh
-[LV@LV-Cloud]$ chmod 600 ~/.ssh/rsa_nkey.lvc     #将ssh认证文件权限设置为只有自己可以读写
-[LV@LV-Cloud]$ chmod 700 ~/.ssh                  #将~/.ssh目录设置权限为只有自己可以访问
-</code></pre><h2 id="配置过程"><a href="#配置过程" class="headerlink" title="配置过程"></a>配置过程</h2><ul>
-<li>通过配置/etc/ssh_config文件</li>
-</ul>
-<ol>
-<li><p>用<code>ssh -vT git@github.com</code> 测试连接情况的过程中有如下发现：</p>
-<pre class="line-numbers language-bash"><code class="language-bash">debug1: Next authentication method: publickey
-debug1: Trying private key: /home/hxxz/.ssh/id_rsa
-debug1: Trying private key: /home/hxxz/.ssh/id_dsa
-debug1: Trying private key: /home/hxxz/.ssh/id_ecdsa
-debug1: Trying private key: /home/hxxz/.ssh/id_ed25519
-debug1: No <span class="token function">more</span> authentication methods to try.
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><p>应该该是通过配置设置了查找私钥的路径即名称，那么把我自定义的私钥加入到配置文件就应该可以了，最后在<code>/etc/ssh/ssh_config</code>下找到配置位置：</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true">#   StrictHostKeyChecking ask</span>
-<span class="token comment" spellcheck="true">#   IdentityFile ~/.ssh/identity</span>
-<span class="token comment" spellcheck="true">#   IdentityFile ~/.ssh/id_rsa</span>
-<span class="token comment" spellcheck="true">#   IdentityFile ~/.ssh/id_dsa</span>
-   IdentityFile ~/.ssh/rsa_nkey.lvc  <span class="token comment" spellcheck="true">#添加</span>
-<span class="token comment" spellcheck="true">#   Port 22</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><p><strong>重启服务</strong>，测试通过，刚开始用这种思路这么配置一直无法通过，遂采用了第二种方法配置，后来想是没重启服务的原因，遂重新测试，写博客前测试通过。</p>
-<pre><code>[LV@LV-Cloud]$ sudo service ssh restart
-[LV@LV-Cloud]$ ssh  git@github.com
-Hi LakeVilladom! You&#39;ve successfully authenticated, but GitHub   does not provide shell access.
-Connection to github.com closed.
-</code></pre></li>
-</ol>
-<ul>
-<li>通过在.ssh/下添加config文件</li>
-</ul>
+<hr>
 <blockquote>
-<p>其实道理和上面一样，一个是全局用户生效，一个是当前用户生效,主要参考网上关于一个主机上管理多个ssh密钥对的方法，不同的应用方向，相同的原理。</p>
-<p>配置文件(.ssh/config)参数说明:</p>
-<pre><code>  Host         #配置项标识了一个配置区段，配置项参数值可以使用通配符，可以随意命名
-   HostName     #指定远程主机名，必须是正确的主机名，可以直接使用数字IP地址
-   IdentityFile #指定密钥认证使用的私钥文件路径
-   Port         #指定远程主机端口号，默认为 22
-   User         #指定登录用户名
-</code></pre><p>这些参数很多都是可有可无的，可根据实际情况选择使用。</p>
+<p>阅读Go项目代码时候，经常看到类似如下代码，这就是<code>Go Struct Tag</code></p>
 </blockquote>
-<ol>
-<li><p>创建.ssh/config文件</p>
-<pre><code>[LV@LV-Cloud]$ vim .ssh/config
-Host mygithub   #Host自定义
-hostname github.com
-User user_github
-IdentityFile ~/.ssh/rsa_nkey.lvc
-Host mycoding    #Host自定义
-hostname git.coding.net
-User user_github
-IdentityFile ~/.ssh/rsa_nkey.lvc
-</code></pre></li>
-<li><p>测试：</p>
-<pre><code>
-[LV@LV-Cloud]$ ssh -vT git@mygithub  #直接可以通过自定义的Host:mygithub访问github.com
-......
-Hi ! You&#39;ve successfully authenticated, but GitHub does not provide shell access.
-[LV@LV-Cloud]$ ssh -vT git@mycoding  #直接可以通过自定义的Host:mycoding访问git.coding.net
-......
-Hello ! You&#39;ve connected to Coding.net via SSH successfully!
-</code></pre><blockquote>
-<p>通过<code>-v</code>参数可以梳理出通过ssh大致的匹配流程：</p>
-<ol>
-<li>读取/home/hxxz/.ssh/config，匹配其中的Host；</li>
-<li>匹配成功，读取config下该Host块下内容：读取Hostname做为真实的Host，读取IdentityFile与git上的公钥匹配；</li>
-<li>匹配失败直接使用命令中@后的内容做为真实Host，这时候永远不能成功，因为你@后的内容为错误Host,直接报<code>Name or service not known</code>,@后的内容为正确Host，也会因为找不到公钥报<code>Permission denied (publickey)</code>(除非在/etc/ssh_config文件中加入自定义私钥路径)</li>
-</ol>
-</blockquote>
-</li>
-<li><p>通过如下多种配置方式验证配置情况：</p>
-<pre><code>[LV@LV-Cloud]$ vim .ssh/config
-Host *      #host直接使用通配符
-IdentityFile ~/.ssh/rsa_nkey.lvc
-[LV@LV-Cloud]$ ssh -T git@github.com  # 此处必须使用正确的hostname才能成功
-[LV@LV-Cloud]$ ssh -T git@git.coding.com   # 此处必须使用正确的hostname才能成功
-</code></pre><pre><code>[LV@LV-Cloud]$ vim .ssh/config
-Host git.coding.net
-IdentityFile ~/.ssh/rsa_nkey.lvc
-Host github.com
-IdentityFile ~/.ssh/rsa_nkey.lvc
-ssh -T git@git.coding.net  #成功
-ssh -T git@github.com    #成功
-</code></pre><pre><code>[LV@LV-Cloud]$ vim .ssh/config
-Host gitcoding  
-IdentityFile ~/.ssh/rsa_nkey.lvc
-Host github
-IdentityFile ~/.ssh/rsa_nkey.lvc
-
-[LV@LV-Cloud]$ ssh -T git@gitcoding   #失败&quot;Name or service not known&quot;，匹配到Host,但是无法找到真实的Hostname
-[LV@LV-Cloud]$ ssh -T git@github.com   #失败&quot;Name or service not known&quot;，匹配到Host,但是无法找到真实的Hostname
-[LV@LV-Cloud]$ ssh -T git@git.coding.net #失败&quot;Permission denied (publickey)&quot;,匹配不到Host,直接使用@后面的内容，能连接到真实的Hostname,但是不能读取IdentityFile，得不到正确的私钥
-[LV@LV-Cloud]$ ssh -T git@github.com  #失败&quot;Permission denied (publickey)&quot;,匹配不到Host,直接使用@后面的内容，能连接到真实的Hostname,但是不能读取IdentityFile，得不到正确的私钥
-</code></pre><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2></li>
-</ol>
-<blockquote>
-<ul>
-<li>总体来说，在/etc/ssh/ssh_config下配置更为简单。</li>
-<li>可以运用到各种场景：多Linux免密码登录、多站点使用不同的ssh key、同一站点不同用户使用不同的ssh key等。</li>
-</ul>
-<p><strong> 　后记:其实像Docker容器那样即时生成、用完即弃来玩密钥对，也是很简单方便的，只是突发奇想，想定制一个自己专属永久的密钥对，过程中遇到一些弯，跳过一些坑，google折腾了很长时间，最后索性把整个过程中的整理记录下来，但是总体来说，理解不深刻，思路不清晰，比较凌乱，是为记。</strong></p>
-</blockquote>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">type</span> MultiUsage <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+    Id         <span class="token builtin">int64</span>                 <span class="token string">`param:"-" xorm:"not null pk autoincr INT(11)"`</span>
+    Name       <span class="token builtin">string</span>                <span class="token string">`param:"&lt;in:formData>&lt;required>" xorm:"not null VARCHAR(25)"`</span>
+    Age        <span class="token builtin">uint8</span>                 <span class="token string">`param:"&lt;in:formData>&lt;range: 1:100>" xorm:"INT(3)"`</span>
+    AvatarFile <span class="token operator">*</span>multipart<span class="token punctuation">.</span>FileHeader <span class="token string">`param:"&lt;in:formData>&lt;maxmb:30>&lt;name:avatar>&lt;desc:(not more than 30 MB)>" xorm:"-"`</span>
+    Avatar     <span class="token builtin">string</span>                <span class="token string">`param:"-" xorm:"not null VARCHAR(250)"`</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -228,13 +125,13 @@ IdentityFile ~/.ssh/rsa_nkey.lvc
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/跬步小流/">跬步小流</a>
+  <a class="article-category-link" href="/categories/Go/">Go</a>
 </div>
 
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/SSH/">SSH</a><a href="/tags/密钥/">密钥</a>
+  <span></span> <a href="/tags/Go/">Go</a>
   </div>
 
 </div>
@@ -243,7 +140,7 @@ IdentityFile ~/.ssh/rsa_nkey.lvc
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://www.lakevilladom.com/2016/09/20/定制私人密钥对并公用到各个环境/" data-title="定制私人密钥并共用到git、coding | Lake Villadom&#39;Blog" data-tsina="null" class="share clearfix">
+	  <div data-url="http://www.lakevilladom.com/2017/05/01/Go-Struct-Tag/" data-title="Go Struct Tag | Lake Villadom&#39;Blog" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -256,19 +153,11 @@ IdentityFile ~/.ssh/rsa_nkey.lvc
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2016/09/25/20160925Hexo博客搭建历程从简单玩到专注写/" title="Hexo博客搭建历程—从简单玩到专注写">
-  <strong>上一篇：</strong><br/>
-  <span>
-  Hexo博客搭建历程—从简单玩到专注写</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2016/09/17/Linux目录文件显示统计/"  title="Linux目录文件显示统计">
+<a href="/2017/05/01/go语言中包的导入/"  title=" go语言中包的导入">
  <strong>下一篇：</strong><br/> 
- <span>Linux目录文件显示统计
+ <span> go语言中包的导入
 </span>
 </a>
 </div>
@@ -283,7 +172,7 @@ IdentityFile ~/.ssh/rsa_nkey.lvc
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
  
- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#概述"><span class="toc-number">1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#定制密钥对"><span class="toc-number">2.</span> <span class="toc-text">定制密钥对</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#上传私钥并设定权限"><span class="toc-number">3.</span> <span class="toc-text">上传私钥并设定权限</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置过程"><span class="toc-number">4.</span> <span class="toc-text">配置过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">5.</span> <span class="toc-text">总结</span></a></li></ol>
+ 
  
   </div>
 
