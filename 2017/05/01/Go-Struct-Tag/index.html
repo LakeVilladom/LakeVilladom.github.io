@@ -17,7 +17,7 @@
 <meta property="og:url" content="http://www.lakevilladom.com/2017/05/01/Go-Struct-Tag/index.html">
 <meta property="og:site_name" content="Lake Villadom'Blog">
 <meta property="og:description" content="在Go语言里，StructTag是一个标记字符串，此字符串可跟随在Struct中字段定义的后面。StructTag就是一系列的key:”value”形式的组合，其中key是一个不可为空的字符串，key-value组合可以有多个，空格分隔。">
-<meta property="og:updated_time" content="2017-05-01T07:37:39.000Z">
+<meta property="og:updated_time" content="2017-06-14T14:47:39.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Go Struct Tag">
 <meta name="twitter:description" content="在Go语言里，StructTag是一个标记字符串，此字符串可跟随在Struct中字段定义的后面。StructTag就是一系列的key:”value”形式的组合，其中key是一个不可为空的字符串，key-value组合可以有多个，空格分隔。">
@@ -97,7 +97,7 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
 		
-			
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#JSON或XML的数据映射"><span class="toc-number">1.</span> <span class="toc-text">JSON或XML的数据映射:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-解析JSON到结构体"><span class="toc-number">2.</span> <span class="toc-text">1. 解析JSON到结构体</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Map生成JSON"><span class="toc-number">3.</span> <span class="toc-text">2. Map生成JSON</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#扩展：解析到interface"><span class="toc-number">4.</span> <span class="toc-text">扩展：解析到interface</span></a></li></ol>
 		
 		</div>
 		
@@ -118,6 +118,89 @@
     Avatar     <span class="token builtin">string</span>                <span class="token string">`param:"-" xorm:"not null VARCHAR(250)"`</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>在Go语言里，StructTag是一个标记字符串，此字符串可跟随在Struct中字段定义的后面。StructTag就是一系列的key:”value”形式的组合，其中key是一个不可为空的字符串，key-value组合可以有多个，空格分隔。主要用途：</p>
+</blockquote>
+<h2 id="JSON或XML的数据映射"><a href="#JSON或XML的数据映射" class="headerlink" title="JSON或XML的数据映射:"></a>JSON或XML的数据映射:</h2><pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">package</span> main
+<span class="token keyword">import</span> <span class="token punctuation">(</span>
+    <span class="token string">"encoding/json"</span>
+    <span class="token string">"fmt"</span>
+<span class="token punctuation">)</span>
+<span class="token keyword">type</span> Person <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+    FirstName  <span class="token builtin">string</span> <span class="token string">`json:"first_name"`</span> <span class="token comment" spellcheck="true">//FirstName &lt;=> firest_name</span>
+    LastName   <span class="token builtin">string</span> <span class="token string">`json:"last_name"`</span>
+    MiddleName <span class="token builtin">string</span> <span class="token string">`json:"middle_name,omitempty"`</span><span class="token comment" spellcheck="true">//如果json数据定义中无此字段，可以在StructTag中加入”omitempty”, 标识该字段的数据可忽略</span>
+    Age   <span class="token builtin">int</span>    <span class="token string">`json:"-"`</span>              <span class="token comment" spellcheck="true">// 直接忽略该字段</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+json_string <span class="token operator">:=</span> <span class="token string">`{"first_name": "John", "last_name": "Smith",age:26}`</span>
+    person <span class="token operator">:=</span> <span class="token function">new</span><span class="token punctuation">(</span>Person<span class="token punctuation">)</span>
+    json<span class="token punctuation">.</span><span class="token function">Unmarshal</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token function">byte</span><span class="token punctuation">(</span>json_string<span class="token punctuation">)</span><span class="token punctuation">,</span> person<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">//将json数据转为 Person Struct</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>person<span class="token punctuation">)</span>
+    new_json<span class="token punctuation">,</span> <span class="token boolean">_</span> <span class="token operator">:=</span> json<span class="token punctuation">.</span><span class="token function">Marshal</span><span class="token punctuation">(</span>person<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">//将Person Sturct 转为json格式</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">"%s\n"</span><span class="token punctuation">,</span> new_json<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="1-解析JSON到结构体"><a href="#1-解析JSON到结构体" class="headerlink" title="1. 解析JSON到结构体"></a>1. 解析JSON到结构体</h2><pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">type</span> Data <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+    Id      <span class="token builtin">string</span> <span class="token string">`json:"id"`</span>
+    Numbers <span class="token builtin">string</span> <span class="token string">`json:"numbers"`</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">type</span> AjaxCourseMembers <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+    Result <span class="token builtin">int</span>    <span class="token string">`json:"result"`</span>
+    Data   <span class="token punctuation">[</span><span class="token punctuation">]</span>Data <span class="token string">`json:"data"`</span>
+    Msg    <span class="token builtin">string</span> <span class="token string">`json:"msg"`</span>
+<span class="token punctuation">}</span>
+
+ajaxCourseMembers<span class="token operator">:=</span><span class="token operator">&amp;</span>AjaxCourseMembers<span class="token punctuation">{</span><span class="token punctuation">}</span> 
+  err <span class="token operator">:=</span> json<span class="token punctuation">.</span><span class="token function">Unmarshal</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token function">byte</span><span class="token punctuation">(</span>jsonstring<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>ajaxCourseMembers<span class="token punctuation">)</span>
+    <span class="token keyword">if</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+            fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>ajaxCourseMembers<span class="token punctuation">.</span>Data<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>Numbers<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<font color="red"><strong>结构体字段变量首字母一定要大写！</strong></font>
+
+</blockquote>
+<h2 id="2-Map生成JSON"><a href="#2-Map生成JSON" class="headerlink" title="2. Map生成JSON"></a>2. Map生成JSON</h2><pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">func</span> <span class="token function">Marshal</span><span class="token punctuation">(</span>v <span class="token keyword">interface</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">byte</span><span class="token punctuation">,</span> <span class="token builtin">error</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">package</span> main
+
+<span class="token keyword">import</span> <span class="token punctuation">(</span>
+    <span class="token string">"encoding/json"</span>
+    <span class="token string">"fmt"</span>
+<span class="token punctuation">)</span>
+
+<span class="token keyword">type</span> Server <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+    ServerName <span class="token builtin">string</span>
+    ServerIP   <span class="token builtin">string</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">type</span> Serverslice <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+    Servers <span class="token punctuation">[</span><span class="token punctuation">]</span>Server
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">var</span> s Serverslice
+    s<span class="token punctuation">.</span>Servers <span class="token operator">=</span> <span class="token function">append</span><span class="token punctuation">(</span>s<span class="token punctuation">.</span>Servers<span class="token punctuation">,</span> Server<span class="token punctuation">{</span>ServerName<span class="token punctuation">:</span> <span class="token string">"Shanghai_VPN"</span><span class="token punctuation">,</span> ServerIP<span class="token punctuation">:</span> <span class="token string">"127.0.0.1"</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
+    s<span class="token punctuation">.</span>Servers <span class="token operator">=</span> <span class="token function">append</span><span class="token punctuation">(</span>s<span class="token punctuation">.</span>Servers<span class="token punctuation">,</span> Server<span class="token punctuation">{</span>ServerName<span class="token punctuation">:</span> <span class="token string">"Beijing_VPN"</span><span class="token punctuation">,</span> ServerIP<span class="token punctuation">:</span> <span class="token string">"127.0.0.2"</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
+    b<span class="token punctuation">,</span> err <span class="token operator">:=</span> json<span class="token punctuation">.</span><span class="token function">Marshal</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span>
+    <span class="token keyword">if</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+        fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">"json err:"</span><span class="token punctuation">,</span> err<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token function">string</span><span class="token punctuation">(</span>b<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="扩展：解析到interface"><a href="#扩展：解析到interface" class="headerlink" title="扩展：解析到interface"></a>扩展：解析到interface</h2><blockquote>
+<p>上面是我们知晓被解析的JSON数据的结构的前提下采取的方案，如果我们不知道被解析的数据的格式，我们可以解析到interface。</p>
+</blockquote>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">var</span> ajaxCourseMembers1 <span class="token keyword">interface</span><span class="token punctuation">{</span><span class="token punctuation">}</span>   
+<span class="token keyword">map</span> <span class="token operator">:=</span> ajaxCourseMembers<span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token keyword">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token keyword">interface</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<blockquote>
+<p>其实谢大的《Go Web 编程》中的章节<a href="https://github.com/astaxie/build-web-application-with-golang/blob/master/zh/07.2.md" target="_blank" rel="external">JSON处理</a>总结的非常全面，自己没有仔细阅读，跳了好多坑，尤其是<font color="red"><strong>结构体字段变量首字母一定要大写！</strong></font></p>
+</blockquote>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -163,9 +246,9 @@
 
 
 <div class="next">
-<a href="/2017/05/01/go语言中包的导入/"  title=" go语言中包的导入">
+<a href="/2017/05/01/go语言中包的导入/"  title="Go语言中包的导入">
  <strong>下一篇：</strong><br/> 
- <span> go语言中包的导入
+ <span>Go语言中包的导入
 </span>
 </a>
 </div>
@@ -180,7 +263,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
  
- 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#JSON或XML的数据映射"><span class="toc-number">1.</span> <span class="toc-text">JSON或XML的数据映射:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-解析JSON到结构体"><span class="toc-number">2.</span> <span class="toc-text">1. 解析JSON到结构体</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Map生成JSON"><span class="toc-number">3.</span> <span class="toc-text">2. Map生成JSON</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#扩展：解析到interface"><span class="toc-number">4.</span> <span class="toc-text">扩展：解析到interface</span></a></li></ol>
  
   </div>
 
@@ -208,11 +291,7 @@
 		  
 		
 		  
-			<li><a href="/categories/Go/" title="Go">Go<sup>1</sup></a></li>
-		  
-		
-		  
-			<li><a href="/categories/Golang/" title="Golang">Golang<sup>1</sup></a></li>
+			<li><a href="/categories/Go/" title="Go">Go<sup>3</sup></a></li>
 		  
 		
 		  
@@ -252,11 +331,11 @@
 		  
 		
 		  
-			<li><a href="/categories/Linux/跬步小流/" title="跬步小流">跬步小流<sup>1</sup></a></li>
+			<li><a href="/categories/跬步小流/" title="跬步小流">跬步小流<sup>4</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/跬步小流/" title="跬步小流">跬步小流<sup>4</sup></a></li>
+			<li><a href="/categories/Linux/跬步小流/" title="跬步小流">跬步小流<sup>1</sup></a></li>
 		  
 		
 		</ul>
@@ -277,15 +356,15 @@
 			
 		
 			
+				<li><a href="/tags/Go/" title="Go">Go<sup>3</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/Shell/" title="Shell">Shell<sup>2</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/Git/" title="Git">Git<sup>2</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/Go/" title="Go">Go<sup>2</sup></a></li>
 			
 		
 			
