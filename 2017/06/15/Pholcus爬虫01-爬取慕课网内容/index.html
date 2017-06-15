@@ -1,0 +1,822 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Pholcus爬虫01-爬取慕课网内容 | Lake Villadom&#39;Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Lake Villadom">
+    
+
+    
+    <meta name="description" content="利用纯Go语言编写的开源的支持分布式的高并发、重量级爬虫软件Pholcus（幽灵蛛）爬取慕课网课程、章节等并入库MongoDB。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Pholcus爬虫01-爬取慕课网内容">
+<meta property="og:url" content="http://www.lakevilladom.com/2017/06/15/Pholcus爬虫01-爬取慕课网内容/index.html">
+<meta property="og:site_name" content="Lake Villadom'Blog">
+<meta property="og:description" content="利用纯Go语言编写的开源的支持分布式的高并发、重量级爬虫软件Pholcus（幽灵蛛）爬取慕课网课程、章节等并入库MongoDB。">
+<meta property="og:image" content="http://www.lakevilladom.com/img/20170615/1.png">
+<meta property="og:image" content="http://www.lakevilladom.com/img/20170615/2.png">
+<meta property="og:image" content="http://www.lakevilladom.com/img/20170615/3.png">
+<meta property="og:updated_time" content="2017-06-15T08:37:55.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Pholcus爬虫01-爬取慕课网内容">
+<meta name="twitter:description" content="利用纯Go语言编写的开源的支持分布式的高并发、重量级爬虫软件Pholcus（幽灵蛛）爬取慕课网课程、章节等并入库MongoDB。">
+<meta name="twitter:image" content="http://www.lakevilladom.com/img/20170615/1.png">
+
+    
+    <link rel="alternative" href="/atom.xml" title="Lake Villadom&#39;Blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/lv.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="Lake Villadom&#39;Blog" title="Lake Villadom&#39;Blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Lake Villadom&#39;Blog">Lake Villadom&#39;Blog</a></h1>
+				<h2 class="blog-motto">追求完美，你终将如愿以偿！</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:www.lakevilladom.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2017/06/15/Pholcus爬虫01-爬取慕课网内容/" title="Pholcus爬虫01-爬取慕课网内容" itemprop="url">Pholcus爬虫01-爬取慕课网内容</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Lake Villadom" target="_blank" itemprop="author">Lake Villadom</a>
+		
+  <p class="article-time">
+    <time datetime="2017-06-15T07:55:00.000Z" itemprop="datePublished"> 发表于 2017-06-15</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#写在前面"><span class="toc-number">1.</span> <span class="toc-text">写在前面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#爬取说明"><span class="toc-number">2.</span> <span class="toc-text">爬取说明</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Spider源码"><span class="toc-number">3.</span> <span class="toc-text">Spider源码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#源码说明"><span class="toc-number">4.</span> <span class="toc-text">源码说明</span></a></li></ol>
+		
+		</div>
+		
+		<script src="/assets/js/APlayer.min.js"> </script><blockquote>
+<ul>
+<li><strong>利用纯Go语言编写的开源的支持分布式的高并发、重量级爬虫软件<a href="https://github.com/henrylee2cn/pholcus" target="_blank" rel="external">Pholcus（幽灵蛛）</a>爬取慕课网课程、章节等并入库MongoDB。</strong></li>
+</ul>
+</blockquote>
+<hr>
+<h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a><font color="red">写在前面</font></h2><blockquote>
+<p>　　个人非常热爱<a href="http://www.imooc.com/" target="_blank" rel="external">慕课网</a>，在慕课网学习两年多了,收获很大，编写此爬虫目的纯粹为了学习Pholcus， 爬虫也并未爬取慕课网视频地址(其实慕课的视频地址不是那么容易就能爬到的，好像是分割成了1M左右的小视频)，没有其他任何商业用途。同时也希望网友能爱护<a href="http://www.imooc.com/" target="_blank" rel="external">慕课网</a>，<strong>如果要爬，请轻爬！</strong></p>
+</blockquote>
+<h2 id="爬取说明"><a href="#爬取说明" class="headerlink" title="爬取说明"></a>爬取说明</h2><blockquote>
+<ol>
+<li>在图1页面爬取课程名称、课程简介等，然后点击进入在图2页面爬取学习人数、课程章节等内容。最后如图3写入数据库。</li>
+<li>爬取过程中，图1中爬取的内容并不直接如果，而是通过<code>struct request</code>中的temp字段以及<code>SetTemp()</code>、<code>GetTemp()</code>讲图1中内容与图2中的内容整合后写入数据库。</li>
+<li>因为慕课网课程内容层级结构类似于JSON,所以数据库考虑使用MongoDB，实现图3效果。</li>
+</ol>
+</blockquote>
+<p><img src="/img/20170615/1.png" alt="图1"></p>
+<hr>
+<p><img src="/img/20170615/2.png" alt="图2"></p>
+<hr>
+<p><img src="/img/20170615/3.png" alt="图3"></p>
+<h2 id="Spider源码"><a href="#Spider源码" class="headerlink" title="Spider源码"></a>Spider源码</h2><pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">package</span> imooc
+
+<span class="token keyword">import</span> <span class="token punctuation">(</span>
+    <span class="token string">"strconv"</span>
+    <span class="token string">"strings"</span>
+
+    <span class="token string">"encoding/json"</span>
+    <span class="token comment" spellcheck="true">//"io/ioutil"</span>
+    <span class="token string">"log"</span>
+    <span class="token string">"net/http"</span>
+    <span class="token string">"regexp"</span>
+
+    <span class="token string">"fmt"</span>
+    <span class="token string">"github.com/henrylee2cn/pholcus/app/downloader/request"</span>
+    <span class="token punctuation">.</span> <span class="token string">"github.com/henrylee2cn/pholcus/app/spider"</span>
+    <span class="token string">"github.com/henrylee2cn/pholcus/common/goquery"</span>
+<span class="token punctuation">)</span>
+
+<span class="token keyword">func</span> <span class="token function">init</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    Imooc<span class="token punctuation">.</span><span class="token function">Register</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token function">cleanHTML</span><span class="token punctuation">(</span>s <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token builtin">string</span> <span class="token punctuation">{</span>
+    s <span class="token operator">=</span> strings<span class="token punctuation">.</span><span class="token function">Replace</span><span class="token punctuation">(</span>s<span class="token punctuation">,</span> <span class="token string">" "</span><span class="token punctuation">,</span> <span class="token string">""</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>
+    s <span class="token operator">=</span> strings<span class="token punctuation">.</span><span class="token function">Replace</span><span class="token punctuation">(</span>s<span class="token punctuation">,</span> <span class="token string">"\n"</span><span class="token punctuation">,</span> <span class="token string">""</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>
+    s <span class="token operator">=</span> strings<span class="token punctuation">.</span><span class="token function">Replace</span><span class="token punctuation">(</span>s<span class="token punctuation">,</span> <span class="token string">"\t"</span><span class="token punctuation">,</span> <span class="token string">""</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> s
+<span class="token punctuation">}</span>
+
+<span class="token keyword">type</span> Data <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+    id      <span class="token builtin">string</span> <span class="token string">`json:"id"`</span>
+    Numbers <span class="token builtin">string</span> <span class="token string">`json:"numbers"`</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">type</span> AjaxCourseMembers <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+    result <span class="token builtin">int</span>    <span class="token string">`json:"result"`</span>
+    Data   <span class="token punctuation">[</span><span class="token punctuation">]</span>Data <span class="token string">`json:"data"`</span>
+    msg    <span class="token builtin">string</span> <span class="token string">`json:"msg"`</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">var</span> chapterin <span class="token operator">=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token keyword">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token builtin">string</span><span class="token punctuation">)</span>
+<span class="token keyword">var</span> Score <span class="token operator">=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token keyword">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token builtin">string</span><span class="token punctuation">)</span>
+<span class="token keyword">var</span> chapterout <span class="token operator">=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token keyword">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token keyword">interface</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token keyword">var</span> chapterall <span class="token operator">=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token keyword">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token keyword">interface</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+<span class="token keyword">var</span> Imooc <span class="token operator">=</span> <span class="token operator">&amp;</span>Spider<span class="token punctuation">{</span>
+    Name<span class="token punctuation">:</span>         <span class="token string">"Imooc"</span><span class="token punctuation">,</span>
+    Description<span class="token punctuation">:</span>  <span class="token string">"慕课网课程,[Auto Page][imooc.com]"</span><span class="token punctuation">,</span>
+    EnableCookie<span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+    RuleTree<span class="token punctuation">:</span> <span class="token operator">&amp;</span>RuleTree<span class="token punctuation">{</span>
+        Root<span class="token punctuation">:</span> <span class="token keyword">func</span><span class="token punctuation">(</span>ctx <span class="token operator">*</span>Context<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            ctx<span class="token punctuation">.</span><span class="token function">AddQueue</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>request<span class="token punctuation">.</span>Request<span class="token punctuation">{</span>Url<span class="token punctuation">:</span> <span class="token string">"http://www.imooc.com/course/list"</span><span class="token punctuation">,</span> Rule<span class="token punctuation">:</span> <span class="token string">"首页请求"</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        Trunk<span class="token punctuation">:</span> <span class="token keyword">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token operator">*</span>Rule<span class="token punctuation">{</span>
+            <span class="token string">"首页请求"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+                ParseFunc<span class="token punctuation">:</span> <span class="token keyword">func</span><span class="token punctuation">(</span>ctx <span class="token operator">*</span>Context<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                    tmpMp<span class="token punctuation">,</span> <span class="token boolean">_</span> <span class="token operator">:=</span> ctx<span class="token punctuation">.</span><span class="token function">GetDom</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Find</span><span class="token punctuation">(</span><span class="token string">"div.page"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Find</span><span class="token punctuation">(</span><span class="token string">"a"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Eq</span><span class="token punctuation">(</span><span class="token number">8</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Attr</span><span class="token punctuation">(</span><span class="token string">"href"</span><span class="token punctuation">)</span>
+                    maxPage<span class="token punctuation">,</span> <span class="token boolean">_</span> <span class="token operator">:=</span> strconv<span class="token punctuation">.</span><span class="token function">Atoi</span><span class="token punctuation">(</span>strings<span class="token punctuation">.</span><span class="token function">TrimLeft</span><span class="token punctuation">(</span>tmpMp<span class="token punctuation">,</span> <span class="token string">"/course/list?page="</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+                    ctx<span class="token punctuation">.</span><span class="token function">Aid</span><span class="token punctuation">(</span><span class="token keyword">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token keyword">interface</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">{</span><span class="token string">"loop"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">,</span> maxPage<span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token string">"Rule"</span><span class="token punctuation">:</span> <span class="token string">"所有课程"</span><span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token string">"所有课程"</span><span class="token punctuation">)</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+
+            <span class="token string">"所有课程"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+                AidFunc<span class="token punctuation">:</span> <span class="token keyword">func</span><span class="token punctuation">(</span>ctx <span class="token operator">*</span>Context<span class="token punctuation">,</span> aid <span class="token keyword">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token keyword">interface</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token keyword">interface</span><span class="token punctuation">{</span><span class="token punctuation">}</span> <span class="token punctuation">{</span>
+                    <span class="token keyword">for</span> loop <span class="token operator">:=</span> aid<span class="token punctuation">[</span><span class="token string">"loop"</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">)</span><span class="token punctuation">;</span> loop<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">&lt;</span> loop<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">;</span> loop<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token operator">++</span> <span class="token punctuation">{</span>
+                        ctx<span class="token punctuation">.</span><span class="token function">AddQueue</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>request<span class="token punctuation">.</span>Request<span class="token punctuation">{</span>
+                            Url<span class="token punctuation">:</span>  <span class="token string">"http://www.imooc.com/course/list?page="</span> <span class="token operator">+</span> strconv<span class="token punctuation">.</span><span class="token function">Itoa</span><span class="token punctuation">(</span>loop<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+                            Rule<span class="token punctuation">:</span> aid<span class="token punctuation">[</span><span class="token string">"Rule"</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token builtin">string</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+                        <span class="token punctuation">}</span><span class="token punctuation">)</span>
+                    <span class="token punctuation">}</span>
+                    <span class="token keyword">return</span> <span class="token boolean">nil</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+
+                ParseFunc<span class="token punctuation">:</span> <span class="token keyword">func</span><span class="token punctuation">(</span>ctx <span class="token operator">*</span>Context<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                    query <span class="token operator">:=</span> ctx<span class="token punctuation">.</span><span class="token function">GetDom</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Find</span><span class="token punctuation">(</span><span class="token string">".index-card-container"</span><span class="token punctuation">)</span>
+                    query<span class="token punctuation">.</span><span class="token function">Each</span><span class="token punctuation">(</span><span class="token keyword">func</span><span class="token punctuation">(</span>i <span class="token builtin">int</span><span class="token punctuation">,</span> goq <span class="token operator">*</span>goquery<span class="token punctuation">.</span>Selection<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                        CourseTitle <span class="token operator">:=</span> goq<span class="token punctuation">.</span><span class="token function">Find</span><span class="token punctuation">(</span><span class="token string">".course-card-name"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Text</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+                        TechStack <span class="token operator">:=</span> goq<span class="token punctuation">.</span><span class="token function">Find</span><span class="token punctuation">(</span><span class="token string">".course-card-top span"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Text</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+                        Introduction <span class="token operator">:=</span> goq<span class="token punctuation">.</span><span class="token function">Find</span><span class="token punctuation">(</span><span class="token string">"p"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Text</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+                        Attr<span class="token punctuation">,</span> ok <span class="token operator">:=</span> goq<span class="token punctuation">.</span><span class="token function">Find</span><span class="token punctuation">(</span><span class="token string">".course-card"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Attr</span><span class="token punctuation">(</span><span class="token string">"href"</span><span class="token punctuation">)</span>
+                        CourseUrlNumber <span class="token operator">:=</span> strings<span class="token punctuation">.</span><span class="token function">Join</span><span class="token punctuation">(</span>regexp<span class="token punctuation">.</span><span class="token function">MustCompile</span><span class="token punctuation">(</span><span class="token string">"[0-9]"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">FindAllString</span><span class="token punctuation">(</span>Attr<span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">""</span><span class="token punctuation">)</span>
+                        url <span class="token operator">:=</span> <span class="token string">"http://www.imooc.com/course/AjaxCourseMembers?ids="</span> <span class="token operator">+</span> CourseUrlNumber
+                        resp<span class="token punctuation">,</span> err <span class="token operator">:=</span> http<span class="token punctuation">.</span><span class="token function">Get</span><span class="token punctuation">(</span>url<span class="token punctuation">)</span>
+
+                        <span class="token comment" spellcheck="true">/***
+
+                        if err != nil {
+                            log.Println("ERROR:", err)
+                            return
+                        }
+                        doc1, _ := ioutil.ReadAll(resp.Body)
+                        ajaxCourseMembers := &amp;AjaxCourseMembers{}
+                        if err:= json.Unmarshal([]byte(string(doc1)), &amp;ajaxCourseMembers);err!=nil{
+                            log.Println("ERROR:", err)
+                            return
+                        }
+
+                        ***/</span>
+
+                        <span class="token keyword">if</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+                            log<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">"ERROR:"</span><span class="token punctuation">,</span> err<span class="token punctuation">)</span>
+                        <span class="token punctuation">}</span>
+                        <span class="token keyword">defer</span> resp<span class="token punctuation">.</span>Body<span class="token punctuation">.</span><span class="token function">Close</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+                        ajaxCourseMembers <span class="token operator">:=</span> <span class="token operator">&amp;</span>AjaxCourseMembers<span class="token punctuation">{</span><span class="token punctuation">}</span>
+                        <span class="token keyword">if</span> err <span class="token operator">:=</span> json<span class="token punctuation">.</span><span class="token function">NewDecoder</span><span class="token punctuation">(</span>resp<span class="token punctuation">.</span>Body<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Decode</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>ajaxCourseMembers<span class="token punctuation">)</span><span class="token punctuation">;</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+                            log<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">"ERROR:"</span><span class="token punctuation">,</span> err<span class="token punctuation">)</span>
+                        <span class="token punctuation">}</span>
+                        <span class="token comment" spellcheck="true">//LearnerNumber:=ajaxCourseMembers.data[0].Numbers   //此处，这么写更加方便。</span>
+                        LearnerNumber <span class="token operator">:=</span> ajaxCourseMembers<span class="token punctuation">.</span><span class="token function">getnumbers</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+                        <span class="token keyword">if</span> ok <span class="token operator">==</span> <span class="token boolean">true</span> <span class="token punctuation">{</span>
+                            ctx<span class="token punctuation">.</span><span class="token function">AddQueue</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>request<span class="token punctuation">.</span>Request<span class="token punctuation">{</span>
+                                Url<span class="token punctuation">:</span>  <span class="token string">"http://www.imooc.com"</span> <span class="token operator">+</span> Attr<span class="token punctuation">,</span>
+                                Rule<span class="token punctuation">:</span> <span class="token string">"课程详细信息"</span><span class="token punctuation">,</span>
+                                Temp<span class="token punctuation">:</span> <span class="token keyword">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token keyword">interface</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">{</span>
+                                    <span class="token string">"CourseTitle"</span><span class="token punctuation">:</span>   CourseTitle<span class="token punctuation">,</span>
+                                    <span class="token string">"TechStack"</span><span class="token punctuation">:</span>     TechStack<span class="token punctuation">,</span>
+                                    <span class="token string">"Introduction"</span><span class="token punctuation">:</span>  Introduction<span class="token punctuation">,</span>
+                                    <span class="token string">"LearnerNumber"</span><span class="token punctuation">:</span> LearnerNumber<span class="token punctuation">,</span>
+                                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                            <span class="token punctuation">}</span><span class="token punctuation">)</span>
+                        <span class="token punctuation">}</span>
+
+                    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token string">"课程详细信息"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+
+                ItemFields<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span><span class="token punctuation">{</span>
+                    <span class="token string">"课程名称"</span><span class="token punctuation">,</span>
+                    <span class="token string">"课程分类"</span><span class="token punctuation">,</span>
+                    <span class="token string">"课程简介"</span><span class="token punctuation">,</span>
+                    <span class="token string">"学习人数"</span><span class="token punctuation">,</span>
+                    <span class="token string">"课程介绍"</span><span class="token punctuation">,</span>
+                    <span class="token string">"课程路径"</span><span class="token punctuation">,</span>
+                    <span class="token string">"难度级别"</span><span class="token punctuation">,</span>
+                    <span class="token string">"课程时长"</span><span class="token punctuation">,</span>
+                    <span class="token string">"评分"</span><span class="token punctuation">,</span>
+                    <span class="token string">"章节"</span><span class="token punctuation">,</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                ParseFunc<span class="token punctuation">:</span> <span class="token keyword">func</span><span class="token punctuation">(</span>ctx <span class="token operator">*</span>Context<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                    dom <span class="token operator">:=</span> ctx<span class="token punctuation">.</span><span class="token function">GetDom</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+                    query <span class="token operator">:=</span> dom<span class="token punctuation">.</span><span class="token function">Find</span><span class="token punctuation">(</span><span class="token string">".mod-chapters > div"</span><span class="token punctuation">)</span>
+                    Summary <span class="token operator">:=</span> <span class="token function">cleanHTML</span><span class="token punctuation">(</span>dom<span class="token punctuation">.</span><span class="token function">Find</span><span class="token punctuation">(</span><span class="token string">"div.course-brief"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Text</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+                    CoursePath <span class="token operator">:=</span> <span class="token function">cleanHTML</span><span class="token punctuation">(</span>dom<span class="token punctuation">.</span><span class="token function">Find</span><span class="token punctuation">(</span><span class="token string">".course-infos"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Find</span><span class="token punctuation">(</span><span class="token string">".path"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Text</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+                    Difficulty <span class="token operator">:=</span> dom<span class="token punctuation">.</span><span class="token function">Find</span><span class="token punctuation">(</span><span class="token string">".course-infos"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Find</span><span class="token punctuation">(</span><span class="token string">"div.static-item"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Eq</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Find</span><span class="token punctuation">(</span><span class="token string">".meta-value"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Text</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+                    Duration <span class="token operator">:=</span> dom<span class="token punctuation">.</span><span class="token function">Find</span><span class="token punctuation">(</span><span class="token string">".course-infos"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Find</span><span class="token punctuation">(</span><span class="token string">"div.static-item"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Eq</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Find</span><span class="token punctuation">(</span><span class="token string">".meta-value"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Text</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+                    scoretmp <span class="token operator">:=</span> dom<span class="token punctuation">.</span><span class="token function">Find</span><span class="token punctuation">(</span><span class="token string">".course-infos"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Find</span><span class="token punctuation">(</span><span class="token string">".score-btn"</span><span class="token punctuation">)</span>
+                    vScore0 <span class="token operator">:=</span> scoretmp<span class="token punctuation">.</span><span class="token function">Find</span><span class="token punctuation">(</span><span class="token string">"span"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Eq</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Text</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+                    vScore1 <span class="token operator">:=</span> scoretmp<span class="token punctuation">.</span><span class="token function">Find</span><span class="token punctuation">(</span><span class="token string">"span"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Eq</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Text</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+                    vScore2 <span class="token operator">:=</span> scoretmp<span class="token punctuation">.</span><span class="token function">Find</span><span class="token punctuation">(</span><span class="token string">"span"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Eq</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Text</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+                    vScore3 <span class="token operator">:=</span> scoretmp<span class="token punctuation">.</span><span class="token function">Find</span><span class="token punctuation">(</span><span class="token string">"span"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Eq</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Text</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+                    vScore4 <span class="token operator">:=</span> scoretmp<span class="token punctuation">.</span><span class="token function">Find</span><span class="token punctuation">(</span><span class="token string">"span"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Eq</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Text</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+                    vScore5 <span class="token operator">:=</span> scoretmp<span class="token punctuation">.</span><span class="token function">Find</span><span class="token punctuation">(</span><span class="token string">"span"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Eq</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Text</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+                    vScore6 <span class="token operator">:=</span> scoretmp<span class="token punctuation">.</span><span class="token function">Find</span><span class="token punctuation">(</span><span class="token string">"span"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Eq</span><span class="token punctuation">(</span><span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Text</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+                    vScore7 <span class="token operator">:=</span> scoretmp<span class="token punctuation">.</span><span class="token function">Find</span><span class="token punctuation">(</span><span class="token string">"span"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Eq</span><span class="token punctuation">(</span><span class="token number">7</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Text</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+                    vScore8 <span class="token operator">:=</span> scoretmp<span class="token punctuation">.</span><span class="token function">Find</span><span class="token punctuation">(</span><span class="token string">"span"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Eq</span><span class="token punctuation">(</span><span class="token number">8</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Text</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+                    Score<span class="token punctuation">[</span>vScore0<span class="token punctuation">]</span> <span class="token operator">=</span> vScore1
+                    Score<span class="token punctuation">[</span><span class="token string">"评价数"</span><span class="token punctuation">]</span> <span class="token operator">=</span> vScore2
+                    Score<span class="token punctuation">[</span>vScore4<span class="token punctuation">]</span> <span class="token operator">=</span> vScore3
+                    Score<span class="token punctuation">[</span>vScore6<span class="token punctuation">]</span> <span class="token operator">=</span> vScore5
+                    Score<span class="token punctuation">[</span>vScore8<span class="token punctuation">]</span> <span class="token operator">=</span> vScore7
+                    query<span class="token punctuation">.</span><span class="token function">Each</span><span class="token punctuation">(</span><span class="token keyword">func</span><span class="token punctuation">(</span>i <span class="token builtin">int</span><span class="token punctuation">,</span> goq <span class="token operator">*</span>goquery<span class="token punctuation">.</span>Selection<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                        ChapterH1 <span class="token operator">:=</span> <span class="token function">cleanHTML</span><span class="token punctuation">(</span>goq<span class="token punctuation">.</span><span class="token function">Find</span><span class="token punctuation">(</span><span class="token string">"strong"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">After</span><span class="token punctuation">(</span><span class="token string">"i"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Text</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+                        ctx<span class="token punctuation">.</span><span class="token function">SetTemp</span><span class="token punctuation">(</span><span class="token string">"ChapterH1"</span><span class="token punctuation">,</span> ChapterH1<span class="token punctuation">)</span>
+                        Chapter2_html <span class="token operator">:=</span> goq<span class="token punctuation">.</span><span class="token function">Find</span><span class="token punctuation">(</span><span class="token string">"ul.video>li"</span><span class="token punctuation">)</span>
+                        Chapter2_html<span class="token punctuation">.</span><span class="token function">Each</span><span class="token punctuation">(</span><span class="token keyword">func</span><span class="token punctuation">(</span><span class="token boolean">_</span> <span class="token builtin">int</span><span class="token punctuation">,</span> goq1 <span class="token operator">*</span>goquery<span class="token punctuation">.</span>Selection<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                            Chapter2_url<span class="token punctuation">,</span> <span class="token boolean">_</span> <span class="token operator">:=</span> goq1<span class="token punctuation">.</span><span class="token function">Find</span><span class="token punctuation">(</span><span class="token string">"a"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Attr</span><span class="token punctuation">(</span><span class="token string">"href"</span><span class="token punctuation">)</span>
+                            Chapter2 <span class="token operator">:=</span> <span class="token function">cleanHTML</span><span class="token punctuation">(</span>goq1<span class="token punctuation">.</span><span class="token function">Find</span><span class="token punctuation">(</span><span class="token string">"a"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">After</span><span class="token punctuation">(</span><span class="token string">"button"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Text</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+                            chapterin<span class="token punctuation">[</span>Chapter2<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">"www.imooc.com"</span> <span class="token operator">+</span> <span class="token function">cleanHTML</span><span class="token punctuation">(</span>Chapter2_url<span class="token punctuation">)</span>
+                            ctx<span class="token punctuation">.</span><span class="token function">SetTemp</span><span class="token punctuation">(</span><span class="token string">"JsonChapterH1"</span><span class="token punctuation">,</span> chapterin<span class="token punctuation">)</span>
+                        <span class="token punctuation">}</span><span class="token punctuation">)</span>
+                        chapterout<span class="token punctuation">[</span>ctx<span class="token punctuation">.</span><span class="token function">GetTemp</span><span class="token punctuation">(</span><span class="token string">"ChapterH1"</span><span class="token punctuation">,</span> <span class="token string">""</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token builtin">string</span><span class="token punctuation">)</span><span class="token punctuation">]</span> <span class="token operator">=</span> ctx<span class="token punctuation">.</span><span class="token function">GetTemp</span><span class="token punctuation">(</span><span class="token string">"JsonChapterH1"</span><span class="token punctuation">,</span> <span class="token string">""</span><span class="token punctuation">)</span>
+                        chapterall<span class="token punctuation">[</span>ctx<span class="token punctuation">.</span><span class="token function">GetTemp</span><span class="token punctuation">(</span><span class="token string">"CourseTitle"</span><span class="token punctuation">,</span> <span class="token string">""</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token builtin">string</span><span class="token punctuation">)</span><span class="token punctuation">]</span> <span class="token operator">=</span> chapterout
+                        chapterin <span class="token operator">=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token keyword">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token builtin">string</span><span class="token punctuation">)</span>
+
+                    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+                    chapterout <span class="token operator">=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token keyword">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token keyword">interface</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
+                    ctx<span class="token punctuation">.</span><span class="token function">Output</span><span class="token punctuation">(</span><span class="token keyword">map</span><span class="token punctuation">[</span><span class="token builtin">int</span><span class="token punctuation">]</span><span class="token keyword">interface</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">{</span>
+                        <span class="token number">0</span><span class="token punctuation">:</span> ctx<span class="token punctuation">.</span><span class="token function">GetTemp</span><span class="token punctuation">(</span><span class="token string">"CourseTitle"</span><span class="token punctuation">,</span> <span class="token string">""</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token builtin">string</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+                        <span class="token number">1</span><span class="token punctuation">:</span> ctx<span class="token punctuation">.</span><span class="token function">GetTemp</span><span class="token punctuation">(</span><span class="token string">"TechStack"</span><span class="token punctuation">,</span> <span class="token string">""</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token builtin">string</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+                        <span class="token number">2</span><span class="token punctuation">:</span> ctx<span class="token punctuation">.</span><span class="token function">GetTemp</span><span class="token punctuation">(</span><span class="token string">"Introduction"</span><span class="token punctuation">,</span> <span class="token string">""</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token builtin">string</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+                        <span class="token number">3</span><span class="token punctuation">:</span> ctx<span class="token punctuation">.</span><span class="token function">GetTemp</span><span class="token punctuation">(</span><span class="token string">"LearnerNumber"</span><span class="token punctuation">,</span> <span class="token string">""</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token builtin">string</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+                        <span class="token number">4</span><span class="token punctuation">:</span> Summary<span class="token punctuation">,</span>
+                        <span class="token number">5</span><span class="token punctuation">:</span> CoursePath<span class="token punctuation">,</span>
+                        <span class="token number">6</span><span class="token punctuation">:</span> Difficulty<span class="token punctuation">,</span>
+                        <span class="token number">7</span><span class="token punctuation">:</span> Duration<span class="token punctuation">,</span>
+                        <span class="token number">8</span><span class="token punctuation">:</span> Score<span class="token punctuation">,</span>
+                        <span class="token number">9</span><span class="token punctuation">:</span> chapterall<span class="token punctuation">[</span>ctx<span class="token punctuation">.</span><span class="token function">GetTemp</span><span class="token punctuation">(</span><span class="token string">"CourseTitle"</span><span class="token punctuation">,</span> <span class="token string">""</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token builtin">string</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+                    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+                    chapterall <span class="token operator">=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token keyword">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token keyword">interface</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
+                    Score <span class="token operator">=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token keyword">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token builtin">string</span><span class="token punctuation">)</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token punctuation">(</span>s <span class="token operator">*</span>AjaxCourseMembers<span class="token punctuation">)</span> <span class="token function">getnumbers</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token builtin">string</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> s<span class="token punctuation">.</span>Data<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>Numbers
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="源码说明"><a href="#源码说明" class="headerlink" title="源码说明"></a>源码说明</h2><blockquote>
+<ol>
+<li>如上面<strong>爬取说明-&gt;2</strong>中说明，代码第115行的<code>temp</code>字段临时存放页面1爬取到的字段，并传递到下一个Rule（这是跨Rule字段传递）;代172、174等行中的<code>SetTemp()</code>、<code>GetTemp()</code>在同一请求下存取以及获取临时字段（这是同Rule字段传递）。</li>
+<li>如图4，页面2中的人数字段是通过Ajax动态加载的，所以需要通过相关接口单独获取JSON格式的人数字段。如图5，在代码第82、83行通过<code>http.Get()</code>返回Response。</li>
+<li>在代码87～96行，通过标准库<code>encoding/json</code>中的<code>Unmarshal()</code>将Response解析到<code>struct AjaxCourseMembers</code>,这段代码先将Response中的Body转换成string，然后解析，<code>Unmarshal()</code>与<code>Marshal()</code>对于解析文本等内容比较实用，对于这里直接通过http.Get(url)获取到的<code>Response.Body</code>使用这种方法，显得极不和谐，最后修改为100～107行用<code>json.NewDecoder(resp.Body).Decode</code>解析，这样优雅多了。</li>
+</ol>
+</blockquote>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Go/">Go</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Go/">Go</a><a href="/tags/Pholcus/">Pholcus</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://www.lakevilladom.com/2017/06/15/Pholcus爬虫01-爬取慕课网内容/" data-title="Pholcus爬虫01-爬取慕课网内容 | Lake Villadom&#39;Blog" data-tsina="1800807704" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2017/05/01/Linux磁盘或文件大小查看/"  title="Linux磁盘或文件大小查看">
+ <strong>下一篇：</strong><br/> 
+ <span>Linux磁盘或文件大小查看
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#写在前面"><span class="toc-number">1.</span> <span class="toc-text">写在前面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#爬取说明"><span class="toc-number">2.</span> <span class="toc-text">爬取说明</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Spider源码"><span class="toc-number">3.</span> <span class="toc-text">Spider源码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#源码说明"><span class="toc-number">4.</span> <span class="toc-text">源码说明</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github 名片</p>
+<div class="github-card" data-github="https://github.com/LakeVilladom" data-width="220" data-height="119" data-theme="medium">
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+  </div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Docker/" title="Docker">Docker<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Go/" title="Go">Go<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Hexo/" title="Hexo">Hexo<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Linux/" title="Linux">Linux<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Node-js/" title="Node.js">Node.js<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Oracle/" title="Oracle">Oracle<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/grep/" title="grep">grep<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/如歌如梭/" title="如歌如梭">如歌如梭<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/工具/" title="工具">工具<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/年终总结/" title="年终总结">年终总结<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/爬虫/" title="爬虫">爬虫<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/跬步小流/" title="跬步小流">跬步小流<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Linux/跬步小流/" title="跬步小流">跬步小流<sup>1</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/Linux/" title="Linux">Linux<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Go/" title="Go">Go<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Hexo/" title="Hexo">Hexo<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Shell/" title="Shell">Shell<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Git/" title="Git">Git<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Oracle/" title="Oracle">Oracle<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/立碑/" title="立碑">立碑<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/正则表达式/" title="正则表达式">正则表达式<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Alpine/" title="Alpine">Alpine<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/CSS选择器/" title="CSS选择器">CSS选择器<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/爬虫/" title="爬虫">爬虫<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Node-js/" title="Node.js">Node.js<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/scp/" title="scp">scp<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Linux/" title="Linux ">Linux <sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/LVM/" title="LVM">LVM<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/逻辑卷/" title="逻辑卷">逻辑卷<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Dockerfile/" title="Dockerfile">Dockerfile<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/备份/" title="备份">备份<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/拼接/" title="拼接">拼接<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/递归查询/" title="递归查询">递归查询<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+    </ul>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">新浪微博</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=1800807704&verifier=6ab1b6ac&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> May every day of your life bring you fresh hopes for tomorrow. <br/>
+			Expect the best, and you&#39;ll get it.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/1800807704" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/https://github.com/LakeVilladom" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:lakevilladom@aliyun.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2017 
+		
+		<a href="/about" target="_blank" title="Lake Villadom">Lake Villadom</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+        getSize();
+        if (myWidth >= 1024) {
+          c.click();
+        }
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
