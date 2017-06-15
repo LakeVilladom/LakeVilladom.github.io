@@ -17,7 +17,7 @@
 <meta property="og:url" content="http://www.lakevilladom.com/2017/05/01/Go-Struct-Tag/index.html">
 <meta property="og:site_name" content="Lake Villadom'Blog">
 <meta property="og:description" content="在Go语言里，StructTag是一个标记字符串，此字符串可跟随在Struct中字段定义的后面。StructTag就是一系列的key:”value”形式的组合，其中key是一个不可为空的字符串，key-value组合可以有多个，空格分隔。">
-<meta property="og:updated_time" content="2017-06-14T14:47:39.000Z">
+<meta property="og:updated_time" content="2017-06-15T13:28:22.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Go Struct Tag">
 <meta name="twitter:description" content="在Go语言里，StructTag是一个标记字符串，此字符串可跟随在Struct中字段定义的后面。StructTag就是一系列的key:”value”形式的组合，其中key是一个不可为空的字符串，key-value组合可以有多个，空格分隔。">
@@ -58,8 +58,6 @@
 						<li><a href="/">Home</a></li>
 					
 						<li><a href="/archives">Archives</a></li>
-					
-						<li><a href="/tags">Tags</a></li>
 					
 						<li><a href="/about">About</a></li>
 					
@@ -110,7 +108,7 @@
 </blockquote>
 <hr>
 <blockquote>
-<p>阅读Go项目代码时候，经常看到类似如下代码，这就是<code>Go Struct Tag</code></p>
+<p>阅读Go项目代码时候，经常看到类似如下代码，每个字段最后使用单引号声明了一个字符串，这就是<code>Go Struct Tag</code>。</p>
 </blockquote>
 <pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">type</span> MultiUsage <span class="token keyword">struct</span> <span class="token punctuation">{</span>
     Id         <span class="token builtin">int64</span>                 <span class="token string">`param:"-" xorm:"not null pk autoincr INT(11)"`</span>
@@ -121,9 +119,12 @@
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <blockquote>
-<p>在Go语言里，StructTag是一个标记字符串，此字符串可跟随在Struct中字段定义的后面。StructTag就是一系列的key:”value”形式的组合，其中key是一个不可为空的字符串，key-value组合可以有多个，空格分隔。主要用途：</p>
+<p><code>Go Struct Tag</code>是提供每个字段的元信息的一种机制，将JSON文档和结构类型里的字段一一映射起来。如果不存在标签，编码和解码过程会试图以大小写无关的方式，直接使用字段的名字进行匹配。如果无法匹配成功，对应的结构类型里的字段就包含其零值。</p>
 </blockquote>
-<h2 id="JSON或XML的数据映射"><a href="#JSON或XML的数据映射" class="headerlink" title="JSON或XML的数据映射:"></a>JSON或XML的数据映射:</h2><pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">package</span> main
+<h2 id="JSON或XML的数据映射"><a href="#JSON或XML的数据映射" class="headerlink" title="JSON或XML的数据映射:"></a>JSON或XML的数据映射:</h2><blockquote>
+<p>这种映射主要处理struct字段与对应json字段变量不同的情况，实现对应字段的绑定，因为默认情况下编码和解码过程会试图以大小写无关的方式，直接使用字段的名字进行匹配。</p>
+</blockquote>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">package</span> main
 <span class="token keyword">import</span> <span class="token punctuation">(</span>
     <span class="token string">"encoding/json"</span>
     <span class="token string">"fmt"</span>
