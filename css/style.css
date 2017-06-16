@@ -1894,6 +1894,73 @@ section.comment {
 .github-card div {
   padding: 0.5em 0;
 }
+#authorInfo {
+  overflow: hidden;
+  text-align: center;
+  padding-top: 2em;
+  margin-bottom: 1.5em;
+  border-bottom: 1px solid #ccc;
+  background-position: left bottom;
+  background-repeat: repeat-x;
+  -webkit-background-size: 5px auto;
+  -moz-background-size: 5px auto;
+  background-size: 5px auto;
+}
+@media only screen and (min-width: 768px) {
+  #authorInfo {
+    padding-top: 0.5em;
+  }
+}
+@media only screen and (min-width: 1024px) {
+  #authorInfo {
+    padding-top: 1em;
+  }
+}
+.author-info {
+  margin: 0.8em 0 0.2em;
+  line-height: 28px;
+}
+.author-img {
+  width: 6.875em;
+  height: 6.875em;
+  margin: 0 auto;
+  background: no-repeat url("../img/LakeVilladom.jpg") left top;
+  -webkit-background-size: 6.875em 6.875em;
+  -moz-background-size: 6.875em 6.875em;
+  background-size: 6.875em 6.875em;
+  border-radius: 3.4375em;
+  -webkit-transition: -webkit-transform 2s ease-out;
+  -moz-transition: -moz-transform 2s ease-out;
+  -o-transition: -o-transform 2s ease-out;
+  -ms-transition: -ms-transform 2s ease-out;
+  transition: transform 2s ease-out;
+}
+.author-img:hover {
+  -webkit-transform: rotateZ(360deg);
+  -moz-transform: rotateZ(360deg);
+  -o-transform: rotateZ(360deg);
+  -ms-transform: rotateZ(360deg);
+  transform: rotateZ(360deg);
+}
+@media only screen and (min-width: 1024px) {
+  .author-img {
+    float: none;
+    width: 9.166666666666666em;
+    height: 9.166666666666666em;
+    -webkit-background-size: 9.166666666666666em 9.166666666666666em;
+    -moz-background-size: 9.166666666666666em 9.166666666666666em;
+    background-size: 9.166666666666666em 9.166666666666666em;
+    border-radius: 4.583333333333333em;
+    margin: 0 auto;
+  }
+}
+@media only screen and (min-width: 768px) {
+  .author-img {
+    margin: 0 1em 0 0;
+    float: none;
+    margin: 0 auto;
+  }
+}
 footer {
   margin-top: 1em;
   background: #1f1f1f;
