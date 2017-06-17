@@ -91,11 +91,22 @@ a img {
 }
 /* custom Font*/
 @font-face {
+  font-family: font-cute-family;
+  font-weight: normal;
+  font-style: normal;
+  src: url("../font/font-cute-filename.woff2") format('woff2'), url("../font/font-cute-filename.woff") format('woff'), url("../font/font-cute-filename.ttf") format('truetype'), url("../font/font-cute-filename.eot") format("embedded-opentype");
+}
+@font-face {
+  font-family: font-cool-family;
+  font-weight: normal;
+  font-style: normal;
+  src: url("../font/font-cool-filename.woff2") format('woff2'), url("../font/font-cool-filename.woff") format('woff'), url("../font/font-cool-filename.ttf") format('truetype'), url("../font/font-cool-filename.eot") format("embedded-opentype");
+}
+@font-face {
   font-family: "covered_by_your_graceregular";
   font-weight: normal;
   font-style: normal;
-  src: url("../font/coveredbyyourgrace-webfont.eot");
-  src: url("../font/coveredbyyourgrace-webfont.eot?#iefix") format('embedded-opentype'), url("../font/coveredbyyourgrace-webfont.svg#covered_by_your_graceregular") format('svg'), url("../font/coveredbyyourgrace-webfont.woff") format('woff'), url("../font/coveredbyyourgrace-webfont.ttf") format('truetype');
+  src: url("../font/coveredbyyourgrace-webfont.woff2") format('woff2'), url("../font/coveredbyyourgrace-webfont.woff") format('woff'), url("../font/coveredbyyourgrace-webfont.ttf") format('truetype'), url("../font/coveredbyyourgrace-webfont.eot") format("embedded-opentype");
 }
 /* icon Font */
 @font-face {
@@ -109,8 +120,7 @@ a img {
   font-family: "fontdiao";
   font-weight: normal;
   font-style: normal;
-  src: url("../font/fontdiao.eot");
-  src: url("../font/fontdiao.eot?#iefix") format('embedded-opentype'), url("../font/fontdiao.svg#fontdiao") format('svg'), url("../font/fontdiao.woff") format('woff'), url("../font/fontdiao.ttf") format('truetype');
+  src: url("../font/fontdiao.woff2") format('woff2'), url("../font/fontdiao.woff") format('woff'), url("../font/fontdiao.ttf") format('truetype'), url("../font/fontdiao.eot") format("embedded-opentype");
 }
 /* Public style */
 * {
