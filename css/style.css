@@ -1834,6 +1834,162 @@ section.comment {
   -ms-transition: color 0.25s;
   transition: color 0.25s;
 }
+#authorInfo {
+  overflow: hidden;
+  text-align: center;
+  padding-top: 2em;
+  margin-bottom: 1.5em;
+  border-bottom: 1px solid #ccc;
+  background-position: left bottom;
+  background-repeat: repeat-x;
+  -webkit-background-size: 5px auto;
+  -moz-background-size: 5px auto;
+  background-size: 5px auto;
+}
+@media only screen and (min-width: 768px) {
+  #authorInfo {
+    padding-top: 0.5em;
+  }
+}
+@media only screen and (min-width: 1024px) {
+  #authorInfo {
+    padding-top: 1em;
+  }
+}
+.author-info {
+  margin: 0.8em 0 0.2em;
+  line-height: 28px;
+}
+.author-img {
+  width: 6.875em;
+  height: 6.875em;
+  margin: 0 auto;
+  background: no-repeat url("../img/LakeVilladom.jpg") left top;
+  -webkit-background-size: 6.875em 6.875em;
+  -moz-background-size: 6.875em 6.875em;
+  background-size: 6.875em 6.875em;
+  border-radius: 3.4375em;
+  -webkit-transition: -webkit-transform 2s ease-out;
+  -moz-transition: -moz-transform 2s ease-out;
+  -o-transition: -o-transform 2s ease-out;
+  -ms-transition: -ms-transform 2s ease-out;
+  transition: transform 2s ease-out;
+}
+.author-img:hover {
+  -webkit-transform: rotateZ(360deg);
+  -moz-transform: rotateZ(360deg);
+  -o-transform: rotateZ(360deg);
+  -ms-transform: rotateZ(360deg);
+  transform: rotateZ(360deg);
+}
+@media only screen and (min-width: 1024px) {
+  .author-img {
+    float: none;
+    width: 9.166666666666666em;
+    height: 9.166666666666666em;
+    -webkit-background-size: 9.166666666666666em 9.166666666666666em;
+    -moz-background-size: 9.166666666666666em 9.166666666666666em;
+    background-size: 9.166666666666666em 9.166666666666666em;
+    border-radius: 4.583333333333333em;
+    margin: 0 auto;
+  }
+}
+@media only screen and (min-width: 768px) {
+  .author-img {
+    margin: 0 1em 0 0;
+    float: none;
+    margin: 0 auto;
+  }
+}
+.social-info {
+  width: 100%;
+  margin: 50 auto;
+  overflow: hidden;
+  float: left;
+  text-align: center;
+}
+@media only screen and (min-width: 1024px) {
+  .social-info {
+    float: none;
+    width: auto;
+    padding: 0;
+    backgroun: #2c3e50;
+  }
+}
+.social-info a {
+  display: inline-block;
+  color: #2c3e50;
+  font-size: 180%;
+  margin: 0.5em;
+}
+@media only screen and (min-width: 768px) {
+  .social-info a {
+    float: none;
+    margin: 0;
+    padding: 0.3em;
+  }
+}
+@media only screen and (min-width: 1024px) {
+  .social-info a {
+    float: none;
+    padding: 0.3em;
+  }
+}
+.social-info a:hover:before {
+  color: #2ca6cb;
+}
+.icon-weibo:before,
+.icon-github:before,
+.icon-twitter:before,
+.icon-facebook:before,
+.icon-stack-overflow:before,
+.icon-email:before,
+.icon-google_plus:before,
+.icon-linkedin:before,
+.icon-tumblr:before {
+  font-family: "FontAwesome";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.icon-weibo:before {
+  content: "\f18a";
+}
+.icon-github:before {
+  content: "\f09b";
+}
+.icon-twitter:before {
+  content: "\f099";
+}
+.icon-facebook:before {
+  content: "\f09a";
+}
+.icon-stack-overflow:before {
+  content: "\f16c";
+}
+.icon-email:before {
+  content: "\f003";
+}
+.icon-google_plus:before {
+  content: "\f0d5";
+}
+.icon-linkedin:before {
+  content: "\f08c";
+}
+.icon-tumblr:before {
+  content: "\f174";
+}
+.icon-douban:before {
+  font-family: "fontdiao";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  content: "\f111";
+}
+.icon-zhihu:before {
+  font-family: "fontdiao";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  content: "\f142";
+}
 .weiboshow {
   margin-top: 0.5em;
 }
