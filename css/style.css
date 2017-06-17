@@ -423,60 +423,32 @@ body >header a {
   display: block;
   color: #fff;
 }
-#imglogo_left {
-  float: left;
-  width: 6em;
-  height: 6em;
+#imglogo {
+  margin: auto;
+  width: 4em;
+  height: 4em;
 }
 @media only screen and (min-width: 768px) {
-  #imglogo_left {
-    width: 7em;
+  #imglogo {
+    width: 5em;
   }
 }
 @media only screen and (min-width: 1024px) {
-  #imglogo_left {
-    width: 7.5em;
+  #imglogo {
+    width: 5.5em;
   }
 }
-#imglogo_left img {
-  width: 6em;
+#imglogo img {
+  width: 4em;
 }
 @media only screen and (min-width: 768px) {
-  #imglogo_left img {
-    width: 7em;
+  #imglogo img {
+    width: 5em;
   }
 }
 @media only screen and (min-width: 1024px) {
-  #imglogo_left img {
-    width: 7.5em;
-  }
-}
-#imglogo_right {
-  float: right;
-  width: 6em;
-  height: 6em;
-}
-@media only screen and (min-width: 768px) {
-  #imglogo_right {
-    width: 7em;
-  }
-}
-@media only screen and (min-width: 1024px) {
-  #imglogo_right {
-    width: 7.5em;
-  }
-}
-#imglogo_right img {
-  width: 6em;
-}
-@media only screen and (min-width: 768px) {
-  #imglogo_right img {
-    width: 7em;
-  }
-}
-@media only screen and (min-width: 1024px) {
-  #imglogo_right img {
-    width: 7.5em;
+  #imglogo img {
+    width: 5.5em;
   }
 }
 #textlogo {
