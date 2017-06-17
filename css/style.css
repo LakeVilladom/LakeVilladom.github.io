@@ -459,7 +459,7 @@ body >header a {
 #textlogo {
   margin: auto;
   text-align: center;
-  width: 50%;
+  width: 75%;
 }
 #textlogo a {
   margin: auto;
@@ -468,7 +468,7 @@ body >header a {
 #textlogo h1.site-name {
   text-align: center;
   margin: auto;
-  width: 60%;
+  width: 80%;
   font-family: "chalkboardse-bold-webfont";
   font-size: 200%;
   line-height: 1.5;
