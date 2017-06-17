@@ -484,6 +484,7 @@ body >header a {
   }
 }
 #textlogo h2.blog-motto {
+  height: auto;
   font-size: 120%;
   font-weight: normal;
 }
