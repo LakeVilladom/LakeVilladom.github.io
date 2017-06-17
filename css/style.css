@@ -426,7 +426,7 @@ body >header a {
 #imglogo {
   margin: auto;
   width: 6em;
-  height: 6em;
+  height: 6.6em;
 }
 @media only screen and (min-width: 768px) {
   #imglogo {
