@@ -403,6 +403,11 @@ body >header {
   color: #fff;
   padding: 5em 0 0.8em;
 }
+@media only screen and (min-width: 768px) {
+  body >header {
+    padding: 1.8em 0 1.5em;
+  }
+}
 @media only screen and (min-width: 1024px) {
   body >header {
     padding: 5em 0 1.5em;
