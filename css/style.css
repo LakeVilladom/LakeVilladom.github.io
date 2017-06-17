@@ -425,17 +425,17 @@ body >header a {
 }
 #imglogo {
   margin: auto;
-  width: 6em;
-  height: 8em;
+  width: 120px;
+  height: 120px;
 }
 @media only screen and (min-width: 768px) {
   #imglogo {
-    width: 7em;
+    width: 121px;
   }
 }
 @media only screen and (min-width: 1024px) {
   #imglogo {
-    width: 7.5em;
+    width: 121.5px;
   }
 }
 #imglogo img {
