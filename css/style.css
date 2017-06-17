@@ -426,7 +426,7 @@ body >header a {
 #imglogo {
   margin: auto;
   width: 6em;
-  height: 6.6em;
+  height: 6em;
 }
 @media only screen and (min-width: 768px) {
   #imglogo {
@@ -484,14 +484,12 @@ body >header a {
   }
 }
 #textlogo h2.blog-motto {
-  margin: auto;
-  margin-top: 10px;
-  font-size: 0.8em;
+  font-size: 0.7em;
   font-weight: normal;
 }
 @media only screen and (min-width: 768px) {
   #textlogo h2.blog-motto {
-    font-size: font-size-0 0.1;
+    font-size: 100%;
   }
 }
 @media only screen and (min-width: 1024px) {
@@ -576,6 +574,7 @@ header nav ul li a:hover {
   max-height: 40em;
 }
 .search {
+  display: none;
   padding: 0.1em 0 0 1em;
 }
 .search input {
@@ -603,9 +602,6 @@ header nav ul li a:hover {
 }
 .search label {
   display: none;
-}
-.divcenter {
-  margin: auto;
 }
 /* index layout */
 #container {
