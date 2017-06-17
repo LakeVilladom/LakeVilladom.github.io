@@ -91,6 +91,13 @@ a img {
 }
 /* custom Font*/
 @font-face {
+  font-family: "chalkboardse-bold-webfont";
+  font-weight: normal;
+  font-style: normal;
+  src: url("../font/chalkboardse-bold-webfont.eot");
+  src: url("../font/chalkboardse-bold-webfont.eot?#iefix") format('embedded-opentype'), url("../font/chalkboardse-bold-webfont.svg#chalkboardse-bold-webfont") format('svg'), url("../font/chalkboardse-bold-webfont.woff") format('woff'), url("../font/chalkboardse-bold-webfont.ttf") format('truetype');
+}
+@font-face {
   font-family: "covered_by_your_graceregular";
   font-weight: normal;
   font-style: normal;
