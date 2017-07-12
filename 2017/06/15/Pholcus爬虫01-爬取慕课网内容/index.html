@@ -20,7 +20,7 @@
 <meta property="og:image" content="http://www.lakevilladom.com/img/20170615/1.png">
 <meta property="og:image" content="http://www.lakevilladom.com/img/20170615/2.png">
 <meta property="og:image" content="http://www.lakevilladom.com/img/20170615/3.png">
-<meta property="og:updated_time" content="2017-06-15T09:31:06.000Z">
+<meta property="og:updated_time" content="2017-07-12T13:25:29.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Pholcus爬虫01-爬取慕课网内容">
 <meta name="twitter:description" content="利用纯Go语言编写的开源的支持分布式的高并发、重量级爬虫软件Pholcus（幽灵蛛）爬取慕课网课程、章节等并入库MongoDB。">
@@ -47,14 +47,11 @@
 		
 			<div id="imglogo">
 				<a href="/"><img src="/img/logo.png" alt="Lake Villadom" title="Lake Villadom"/></a>
-				<p>
 			</div>
 			
 			<div id="textlogo">
-				<h1 class="site-name">Lake Villadom</h1></br>
-				<h2 class="blog-motto">May every day of your life bring you fresh hopes for tomorrow. Expect the best, and you&#39;ll get it.</h2>
-
-				<h2 class="blog-motto">愿你生命中的每一天都对未来充满新的希望。追求完美  你终将如愿以偿！</h2>
+				<h1 class="site-name"><a href="/" title="Lake Villadom">Lake Villadom</a></h1>
+				<h2 class="blog-motto"></h2>
 			</div>
 			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
 			</a></div>
@@ -66,7 +63,7 @@
 					
 						<li><a href="/archives">归档｜Archives</a></li>
 					
-						<li><a href="/categories">归类｜Categories</a></li>
+						<li><a href="/categories">分类｜Categories</a></li>
 					
 						<li><a href="/about">关于｜About</a></li>
 					
@@ -83,6 +80,7 @@
 			</nav>			
 </div>
     </header>
+
     <div id="container">
       <div id="main" class="post" itemscope itemprop="blogPost">
   
@@ -230,6 +228,9 @@
 
                         ***/</span>
 
+                        <span class="token comment" spellcheck="true">//myjson, _ := ioutil.ReadAll(resp.Body)</span>
+                        <span class="token comment" spellcheck="true">//fmt.Println(string(myjson))  //resp的body内容OK</span>
+
                         <span class="token keyword">if</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
                             log<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">"ERROR:"</span><span class="token punctuation">,</span> err<span class="token punctuation">)</span>
                         <span class="token punctuation">}</span>
@@ -333,12 +334,12 @@
 <span class="token keyword">func</span> <span class="token punctuation">(</span>s <span class="token operator">*</span>AjaxCourseMembers<span class="token punctuation">)</span> <span class="token function">getnumbers</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token builtin">string</span> <span class="token punctuation">{</span>
     <span class="token keyword">return</span> s<span class="token punctuation">.</span>Data<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>Numbers
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="源码说明"><a href="#源码说明" class="headerlink" title="源码说明"></a>源码说明</h2><blockquote>
 <ol>
 <li>如上面<strong>爬取说明-&gt;2</strong>中说明，代码第115行的<code>temp</code>字段临时存放页面1爬取到的字段，并传递到下一个Rule（这是跨Rule字段传递）;代172、174等行中的<code>SetTemp()</code>、<code>GetTemp()</code>在同一请求下存取以及获取临时字段（这是同Rule字段传递）。</li>
 <li>如图4，页面2中的人数字段是通过Ajax动态加载的，所以需要通过相关接口单独获取JSON格式的人数字段。如图5，在代码第82、83行通过<code>http.Get()</code>返回Response。</li>
-<li>在代码87～96行，通过标准库<code>encoding/json</code>中的<code>Unmarshal()</code>将Response解析到<code>struct AjaxCourseMembers</code>,这段代码先将Response中的Body转换成string，然后解析，<code>Unmarshal()</code>与<code>Marshal()</code>对于解析文本等内容比较实用，对于这里直接通过http.Get(url)获取到的<code>Response.Body</code>使用这种方法，显得极不和谐，最后修改为100～107行用<code>json.NewDecoder(resp.Body).Decode</code>解析，这样优雅多了。</li>
+<li>在代码87～96行，通过标准库<code>encoding/json</code>中的<code>Unmarshal()</code>将Response解析到<code>struct AjaxCourseMembers</code>,这段代码先将Response中的Body转换成string，然后解析，<code>Unmarshal()</code>与<code>Marshal()</code>对于解析文本等内容比较实用，对于这里直接通过http.Get(url)获取到的<code>Response.Body</code>使用这种方法，显得极不和谐，最后修改为100～107行用<code>json.NewDecoder(resp.Body).Decode</code>解析，这样优雅多了，具体相关区别可以参考<a href="/2017/05/01/Go-Struct-Tag">《Go Struct Tag》的扩展二</a>。</li>
 </ol>
 </blockquote>
   
@@ -376,6 +377,14 @@
 	
 <nav class="article-nav clearfix">
  
+ <div class="prev" >
+ <a href="/2017/07/10/Go练习01-批量查询域名是否被注册/" title="Go练习01-批量查询域名是否被注册">
+  <strong>上一篇：</strong><br/>
+  <span>
+  Go练习01-批量查询域名是否被注册</span>
+</a>
+</div>
+
 
 <div class="next">
 <a href="/2017/05/01/Linux磁盘或文件大小查看/"  title="Linux磁盘或文件大小查看">
@@ -573,13 +582,6 @@
 </div>
 
 
-  <div class="linkslist">
-  <p class="asidetitle">友情链接</p>
-    <ul>
-        
-    </ul>
-</div>
-
   <div class="weiboshow">
   <p class="asidetitle">新浪微博</p>
     <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=1800807704&verifier=6ab1b6ac&dpc=1"></iframe>
@@ -601,7 +603,7 @@
 	</p>
 </div>
 </footer>
-    <script src="/js/jquery-2.0.3.min.js"></script>
+    <script src="/js/jquery-3.2.1.min.js"></script>
 <script src="/js/jquery.imagesloaded.min.js"></script>
 <script src="/js/gallery.js"></script>
 <script src="/js/jquery.qrcode-0.12.0.min.js"></script>

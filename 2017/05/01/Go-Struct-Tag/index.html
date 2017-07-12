@@ -17,10 +17,13 @@
 <meta property="og:url" content="http://www.lakevilladom.com/2017/05/01/Go-Struct-Tag/index.html">
 <meta property="og:site_name" content="Lake Villadom">
 <meta property="og:description" content="在Go语言里，StructTag是一个标记字符串，此字符串可跟随在Struct中字段定义的后面。StructTag就是一系列的key:”value”形式的组合，其中key是一个不可为空的字符串，key-value组合可以有多个，空格分隔。">
-<meta property="og:updated_time" content="2017-06-15T13:28:22.000Z">
+<meta property="og:image" content="http://www.lakevilladom.com/img/20170501/20170709_1.png">
+<meta property="og:image" content="http://www.lakevilladom.com/img/20170710/20170709_2.png">
+<meta property="og:updated_time" content="2017-07-12T13:20:31.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Go Struct Tag">
 <meta name="twitter:description" content="在Go语言里，StructTag是一个标记字符串，此字符串可跟随在Struct中字段定义的后面。StructTag就是一系列的key:”value”形式的组合，其中key是一个不可为空的字符串，key-value组合可以有多个，空格分隔。">
+<meta name="twitter:image" content="http://www.lakevilladom.com/img/20170501/20170709_1.png">
 
     
     <link rel="alternative" href="/atom.xml" title="Lake Villadom" type="application/atom+xml">
@@ -43,14 +46,11 @@
 		
 			<div id="imglogo">
 				<a href="/"><img src="/img/logo.png" alt="Lake Villadom" title="Lake Villadom"/></a>
-				<p>
 			</div>
 			
 			<div id="textlogo">
-				<h1 class="site-name">Lake Villadom</h1></br>
-				<h2 class="blog-motto">May every day of your life bring you fresh hopes for tomorrow. Expect the best, and you&#39;ll get it.</h2>
-
-				<h2 class="blog-motto">愿你生命中的每一天都对未来充满新的希望。追求完美  你终将如愿以偿！</h2>
+				<h1 class="site-name"><a href="/" title="Lake Villadom">Lake Villadom</a></h1>
+				<h2 class="blog-motto"></h2>
 			</div>
 			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
 			</a></div>
@@ -62,7 +62,7 @@
 					
 						<li><a href="/archives">归档｜Archives</a></li>
 					
-						<li><a href="/categories">归类｜Categories</a></li>
+						<li><a href="/categories">分类｜Categories</a></li>
 					
 						<li><a href="/about">关于｜About</a></li>
 					
@@ -79,6 +79,7 @@
 			</nav>			
 </div>
     </header>
+
     <div id="container">
       <div id="main" class="post" itemscope itemprop="blogPost">
   
@@ -102,7 +103,7 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#JSON或XML的数据映射"><span class="toc-number">1.</span> <span class="toc-text">JSON或XML的数据映射:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-解析JSON到结构体"><span class="toc-number">2.</span> <span class="toc-text">1. 解析JSON到结构体</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Map生成JSON"><span class="toc-number">3.</span> <span class="toc-text">2. Map生成JSON</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#扩展：解析到interface"><span class="toc-number">4.</span> <span class="toc-text">扩展：解析到interface</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#JSON或XML的数据映射"><span class="toc-number">1.</span> <span class="toc-text">JSON或XML的数据映射:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-解析JSON到结构体"><span class="toc-number">2.</span> <span class="toc-text">1. 解析JSON到结构体</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Map生成JSON"><span class="toc-number">3.</span> <span class="toc-text">2. Map生成JSON</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#扩展1：解析到interface"><span class="toc-number">4.</span> <span class="toc-text">扩展1：解析到interface</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#扩展2：把JSON-字符串转为go-struct-的两种方式（转）"><span class="toc-number">5.</span> <span class="toc-text">扩展2：把JSON 字符串转为go struct 的两种方式（转）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#扩展3：通过API接口获取数据"><span class="toc-number">6.</span> <span class="toc-text">扩展3：通过API接口获取数据</span></a></li></ol>
 		
 		</div>
 		
@@ -200,7 +201,12 @@ ajaxCourseMembers<span class="token operator">:=</span><span class="token operat
     fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token function">string</span><span class="token punctuation">(</span>b<span class="token punctuation">)</span><span class="token punctuation">)</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="扩展：解析到interface"><a href="#扩展：解析到interface" class="headerlink" title="扩展：解析到interface"></a>扩展：解析到interface</h2><blockquote>
+<blockquote>
+<p>这里如果解析成功，err 将会为 nil，b 将会是一个包含 JSON 数据的<code>[]byte</code>:</p>
+</blockquote>
+<pre class="line-numbers language-go"><code class="language-go">b <span class="token operator">==</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token function">byte</span><span class="token punctuation">(</span><span class="token string">`{"Servers":[{"ServerName":"Shanghai_VPN","ServerIP":"127.0.0.1"},{"ServerName":"Beijing_VPN","ServerIP":"127.0.0.2"}]}`</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="扩展1：解析到interface"><a href="#扩展1：解析到interface" class="headerlink" title="扩展1：解析到interface"></a>扩展1：解析到interface</h2><blockquote>
 <p>上面是我们知晓被解析的JSON数据的结构的前提下采取的方案，如果我们不知道被解析的数据的格式，我们可以解析到interface。</p>
 </blockquote>
 <pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">var</span> ajaxCourseMembers1 <span class="token keyword">interface</span><span class="token punctuation">{</span><span class="token punctuation">}</span>   
@@ -209,6 +215,26 @@ ajaxCourseMembers<span class="token operator">:=</span><span class="token operat
 <blockquote>
 <p>其实谢大的《Go Web 编程》中的章节<a href="https://github.com/astaxie/build-web-application-with-golang/blob/master/zh/07.2.md" target="_blank" rel="external">JSON处理</a>总结的非常全面，自己没有仔细阅读，跳了好多坑，尤其是<font color="red"><strong>结构体字段变量首字母一定要大写！</strong></font></p>
 </blockquote>
+<h2 id="扩展2：把JSON-字符串转为go-struct-的两种方式（转）"><a href="#扩展2：把JSON-字符串转为go-struct-的两种方式（转）" class="headerlink" title="扩展2：把JSON 字符串转为go struct 的两种方式（转）"></a>扩展2：<a href="http://www.golangnote.com/topic/82.html" target="_blank" rel="external">把JSON 字符串转为go struct 的两种方式（转）</a></h2><p><strong>摘录如下：</strong></p>
+<blockquote>
+<p><strong>把一个JSON 字符串转为一个go struct 有两种方式:</strong></p>
+<p><strong>1. 用<code>json.Unmarshal()</code></strong></p>
+<pre class="line-numbers language-go"><code class="language-go">data<span class="token punctuation">,</span> err <span class="token operator">:=</span> ioutil<span class="token punctuation">.</span><span class="token function">ReadAll</span><span class="token punctuation">(</span>resp<span class="token punctuation">.</span>Body<span class="token punctuation">)</span>
+<span class="token keyword">if</span> err <span class="token operator">==</span> <span class="token boolean">nil</span> <span class="token operator">&amp;&amp;</span> data <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+    err <span class="token operator">=</span> json<span class="token punctuation">.</span><span class="token function">Unmarshal</span><span class="token punctuation">(</span>data<span class="token punctuation">,</span> value<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>2. 用<code>json.NewDecoder().Decode()</code></strong></p>
+<pre class="line-numbers language-go"><code class="language-go">err <span class="token operator">=</span> json<span class="token punctuation">.</span><span class="token function">NewDecoder</span><span class="token punctuation">(</span>resp<span class="token punctuation">.</span>Body<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Decode</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>选择那种方式，取决于自己的字符串来源：</p>
+<ul>
+<li><strong>JSON 数据本来就在内存(包括从文本等去读取)里，就选用<code>json.Unmarshal()</code></strong></li>
+<li><strong>当来自 io.Reader stream(流) 时就选用<code>json.NewDecoder().Decode()</code></strong></li>
+<li><strong><code>json.NewDecoder(strings.NewReader(json_string)).Decode()</code></strong></li>
+</ul>
+</blockquote>
+<h2 id="扩展3：通过API接口获取数据"><a href="#扩展3：通过API接口获取数据" class="headerlink" title="扩展3：通过API接口获取数据"></a>扩展3：通过API接口获取数据</h2><p>相同的表象下的实质大不相同，需要注意<code>resp.Body</code>返回结果，应该是完整的源代码内容：<br><img src="/img/20170501/20170709_1.png" alt="图1"><br><img src="/img/20170710/20170709_2.png" alt="图2"><br>需要区别对待。</p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -449,13 +475,6 @@ ajaxCourseMembers<span class="token operator">:=</span><span class="token operat
 </div>
 
 
-  <div class="linkslist">
-  <p class="asidetitle">友情链接</p>
-    <ul>
-        
-    </ul>
-</div>
-
   <div class="weiboshow">
   <p class="asidetitle">新浪微博</p>
     <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=1800807704&verifier=6ab1b6ac&dpc=1"></iframe>
@@ -477,7 +496,7 @@ ajaxCourseMembers<span class="token operator">:=</span><span class="token operat
 	</p>
 </div>
 </footer>
-    <script src="/js/jquery-2.0.3.min.js"></script>
+    <script src="/js/jquery-3.2.1.min.js"></script>
 <script src="/js/jquery.imagesloaded.min.js"></script>
 <script src="/js/gallery.js"></script>
 <script src="/js/jquery.qrcode-0.12.0.min.js"></script>

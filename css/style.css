@@ -396,27 +396,18 @@ input[type="search"]::-webkit-search-decoration {
   }
 }
 body >header {
+padding
   width: 100%;
   -webkit-box-shadow: 2px 4px 5px rgba(3,3,3,0.2);
   box-shadow: 2px 4px 5px rgba(3,3,3,0.2);
   background: url("../") center #2c3e50;
   color: #fff;
-  padding: 3.6em 0 0.8em;
-}
-@media only screen and (min-width: 768px) {
-  body >header {
-    padding: 1.8em 0 1.5em;
-  }
-}
-@media only screen and (min-width: 1024px) {
-  body >header {
-    padding: 3.6em 0 1.5em;
-  }
 }
 body >header >div {
-  width: 95%;
+  width: 100%;
   margin: 0 auto;
   position: relative;
+  float: left;
   overflow: hidden;
 }
 @media only screen and (min-width: 1024px) {
@@ -427,6 +418,38 @@ body >header >div {
 body >header a {
   display: block;
   color: #fff;
+}
+#header {
+  width: 100vw;
+  height: 80vh;
+  padding: 9em 0 0;
+}
+@media only screen and (min-width: 768px) {
+  #header {
+    padding: 0 0 0;
+  }
+}
+@media only screen and (min-width: 1024px) {
+  #header {
+    padding: 9em 0 0;
+  }
+}
+#windbell {
+  z-index: 1;
+  width: 100vw;
+  height: 75vh;
+  position: absolute;
+  padding: 0 0 0;
+}
+@media only screen and (min-width: 768px) {
+  #windbell {
+    padding: 0 0 0;
+  }
+}
+@media only screen and (min-width: 1024px) {
+  #windbell {
+    padding: 0 0 0;
+  }
 }
 #imglogo {
   margin: auto;
@@ -444,16 +467,16 @@ body >header a {
   }
 }
 #imglogo img {
-  width: 6em;
+  width: 6.8em;
 }
 @media only screen and (min-width: 768px) {
   #imglogo img {
-    width: 7em;
+    width: 7.8em;
   }
 }
 @media only screen and (min-width: 1024px) {
   #imglogo img {
-    width: 7.5em;
+    width: 8.3em;
   }
 }
 #textlogo {
@@ -526,7 +549,7 @@ body >header a {
   padding-left: 1em;
 }
 header nav {
-  float: left;
+  float: auto;
   width: 100%;
   font-size: 112.5%;
   padding-top: 0.5em;
@@ -544,12 +567,12 @@ header nav {
 }
 @media only screen and (min-width: 1024px) {
   header nav {
-    float: right;
+    float: auto;
     position: relative;
     left: -50%;
     text-align: left;
     width: auto;
-    margin-top: 1em;
+    margin-top: 5em;
     max-height: none;
   }
 }
@@ -570,7 +593,7 @@ header nav ul li a {
 }
 @media only screen and (min-width: 1024px) {
   header nav ul li a {
-    padding: 0.2em 1.5em;
+    padding: 0.2em 2em;
   }
 }
 header nav ul li a:hover {

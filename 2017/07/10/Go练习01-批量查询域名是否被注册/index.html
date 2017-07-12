@@ -1,0 +1,675 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Go练习01-批量查询域名是否被注册 | Lake Villadom</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Lake Villadom">
+    
+
+    
+    <meta name="description" content="参考 《Python: 批量查询域名是否被注册》，作为练习Go的小项目">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Go练习01-批量查询域名是否被注册">
+<meta property="og:url" content="http://www.lakevilladom.com/2017/07/10/Go练习01-批量查询域名是否被注册/index.html">
+<meta property="og:site_name" content="Lake Villadom">
+<meta property="og:description" content="参考 《Python: 批量查询域名是否被注册》，作为练习Go的小项目">
+<meta property="og:image" content="http://www.lakevilladom.com/img/20170710/20170709_1.png">
+<meta property="og:image" content="http://www.lakevilladom.com/img/20170710/20170709_3.png">
+<meta property="og:image" content="http://www.lakevilladom.com/img/20170710/20170709_2.png">
+<meta property="og:updated_time" content="2017-07-12T13:18:35.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Go练习01-批量查询域名是否被注册">
+<meta name="twitter:description" content="参考 《Python: 批量查询域名是否被注册》，作为练习Go的小项目">
+<meta name="twitter:image" content="http://www.lakevilladom.com/img/20170710/20170709_1.png">
+
+    
+    <link rel="alternative" href="/atom.xml" title="Lake Villadom" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/lv.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="Lake Villadom" title="Lake Villadom"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Lake Villadom">Lake Villadom</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页｜Home</a></li>
+					
+						<li><a href="/archives">归档｜Archives</a></li>
+					
+						<li><a href="/categories">分类｜Categories</a></li>
+					
+						<li><a href="/about">关于｜About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:www.lakevilladom.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2017/07/10/Go练习01-批量查询域名是否被注册/" title="Go练习01-批量查询域名是否被注册" itemprop="url">Go练习01-批量查询域名是否被注册</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Lake Villadom" target="_blank" itemprop="author">Lake Villadom</a>
+		
+  <p class="article-time">
+    <time datetime="2017-07-10T14:44:07.000Z" itemprop="datePublished"> 发表于 2017-07-10</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#源码"><span class="toc-number">1.</span> <span class="toc-text">源码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#说明"><span class="toc-number">2.</span> <span class="toc-text">说明</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#扩展"><span class="toc-number">3.</span> <span class="toc-text">扩展</span></a></li></ol>
+		
+		</div>
+		
+		<script src="/assets/js/APlayer.min.js"> </script><blockquote>
+<ul>
+<li><strong>参考 <a href="http://www.jianshu.com/p/2325e0240da0" target="_blank" rel="external">《Python: 批量查询域名是否被注册》</a>，作为练习Go的小项目</strong></li>
+</ul>
+</blockquote>
+<hr>
+<h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2><pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">package</span> main
+
+<span class="token keyword">import</span> <span class="token punctuation">(</span>
+    <span class="token string">"database/sql"</span>
+    <span class="token string">"encoding/json"</span>
+    <span class="token string">"fmt"</span>
+    <span class="token string">"log"</span>
+
+    <span class="token string">"github.com/PuerkitoBio/goquery"</span>
+    <span class="token boolean">_</span> <span class="token string">"github.com/go-sql-driver/mysql"</span>
+
+    <span class="token string">"strconv"</span>
+    <span class="token string">"strings"</span>
+<span class="token punctuation">)</span>
+
+<span class="token keyword">type</span> domainAjax <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+    StateID    <span class="token builtin">int64</span>  <span class="token string">`json:"StateID"`</span>
+    DomainName <span class="token builtin">string</span> <span class="token string">`json:"DomainName"`</span>
+    Result     <span class="token builtin">string</span> <span class="token string">`json:"Result"`</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+    <span class="token keyword">var</span> word <span class="token builtin">string</span>
+    <span class="token keyword">var</span> count <span class="token builtin">int64</span>
+
+    db<span class="token punctuation">,</span> err <span class="token operator">:=</span> sql<span class="token punctuation">.</span><span class="token function">Open</span><span class="token punctuation">(</span><span class="token string">"mysql"</span><span class="token punctuation">,</span> <span class="token string">"root:root@tcp(localhost:3306)/spider?charset=utf8"</span><span class="token punctuation">)</span>
+    <span class="token keyword">if</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+        fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">"Open:"</span><span class="token punctuation">,</span> err<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+    rows<span class="token punctuation">,</span> err <span class="token operator">:=</span> db<span class="token punctuation">.</span><span class="token function">Query</span><span class="token punctuation">(</span><span class="token string">"select word from words"</span><span class="token punctuation">)</span>
+    <span class="token keyword">if</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+        fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">"Query:"</span><span class="token punctuation">,</span> err<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">for</span> rows<span class="token punctuation">.</span><span class="token function">Next</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        err <span class="token operator">=</span> rows<span class="token punctuation">.</span><span class="token function">Scan</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>word<span class="token punctuation">)</span>
+        <span class="token keyword">if</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+            fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">"Scan:"</span><span class="token punctuation">,</span> err<span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+        url <span class="token operator">:=</span> <span class="token string">"http://www.aaw8.com/Api/DomainApi.aspx?domain="</span> <span class="token operator">+</span> word <span class="token operator">+</span> <span class="token string">".com"</span>
+        doc<span class="token punctuation">,</span> err <span class="token operator">:=</span> goquery<span class="token punctuation">.</span><span class="token function">NewDocument</span><span class="token punctuation">(</span>url<span class="token punctuation">)</span>
+        <span class="token keyword">if</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+            log<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">"ERROR:"</span><span class="token punctuation">,</span> err<span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+        bodyjson <span class="token operator">:=</span> doc<span class="token punctuation">.</span><span class="token function">Find</span><span class="token punctuation">(</span><span class="token string">"body"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Text</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        domainAjax <span class="token operator">:=</span> <span class="token operator">&amp;</span>domainAjax<span class="token punctuation">{</span><span class="token punctuation">}</span>
+        <span class="token keyword">if</span> err <span class="token operator">:=</span> json<span class="token punctuation">.</span><span class="token function">NewDecoder</span><span class="token punctuation">(</span>strings<span class="token punctuation">.</span><span class="token function">NewReader</span><span class="token punctuation">(</span>bodyjson<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Decode</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>domainAjax<span class="token punctuation">)</span><span class="token punctuation">;</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+            fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">"ERROR:"</span><span class="token punctuation">,</span> err<span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+        StateID <span class="token operator">:=</span> domainAjax<span class="token punctuation">.</span>StateID
+        <span class="token keyword">switch</span> StateID <span class="token punctuation">{</span>
+        <span class="token keyword">case</span> <span class="token number">210</span><span class="token punctuation">:</span>
+            fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">"第"</span> <span class="token operator">+</span> strconv<span class="token punctuation">.</span><span class="token function">FormatInt</span><span class="token punctuation">(</span>count<span class="token punctuation">,</span><span class="token number">10</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">"次，"</span> <span class="token operator">+</span> word <span class="token operator">+</span> <span class="token string">".com可以注册"</span><span class="token punctuation">)</span>
+        <span class="token keyword">case</span> <span class="token number">211</span><span class="token punctuation">:</span>
+            fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">"第"</span> <span class="token operator">+</span> strconv<span class="token punctuation">.</span><span class="token function">FormatInt</span><span class="token punctuation">(</span>count<span class="token punctuation">,</span><span class="token number">10</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">"次，"</span> <span class="token operator">+</span> word <span class="token operator">+</span> <span class="token string">".com已经被注册"</span><span class="token punctuation">)</span>
+        <span class="token keyword">default</span><span class="token punctuation">:</span>
+            fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">"第"</span> <span class="token operator">+</span> strconv<span class="token punctuation">.</span><span class="token function">FormatInt</span><span class="token punctuation">(</span>count<span class="token punctuation">,</span><span class="token number">10</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">"次，"</span> <span class="token operator">+</span> word <span class="token operator">+</span> <span class="token string">"未知错误"</span><span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+        count <span class="token operator">+=</span> <span class="token number">1</span>
+    <span class="token punctuation">}</span>
+
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><blockquote>
+<ol>
+<li><p>count变量的申明，刚开始犯错申明在36行<code>for rows.Next() {}</code>大括号以内，导致count每次被初始化。</p>
+</li>
+<li><p>通过调用API返回JSON数据，因为在<a href="/2017/06/15/Pholcus爬虫01-爬取慕课网内容/">《Pholcus爬虫01-爬取慕课网内容》</a>第82行有相同的例子，浏览器返回的结果内容相似：<br><img src="/img/20170710/20170709_1.png" alt="图1"><br>但是在运行过程中出现如下报错：<br><img src="/img/20170710/20170709_3.png" alt="图2"><br>最后发现相同的表象下的实质大不相同：<br><img src="/img/20170710/20170709_2.png" alt="图3"></p>
+</li>
+</ol>
+</blockquote>
+<font color="red"><strong>刚开始有一个理解误区，以为<code>json.NewDecoder(resp.Body).Decode(value)</code>获得的是接口返回的JSON，而不是完整HTML,其实http.Get().Body返回的结果就是完整的HTML内容</strong></font>
+
+<h2 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h2><ol>
+<li><p><a href="http://blog.csdn.net/pkueecser/article/details/50433460" target="_blank" rel="external"><strong>go语言string、int、int64互相转换（转）</strong></a></p>
+<pre class="line-numbers language-go"><code class="language-go">#<span class="token builtin">string</span>到<span class="token builtin">int</span>  
+<span class="token builtin">int</span><span class="token punctuation">,</span>err<span class="token operator">:=</span>strconv<span class="token punctuation">.</span><span class="token function">Atoi</span><span class="token punctuation">(</span><span class="token builtin">string</span><span class="token punctuation">)</span>  
+#<span class="token builtin">string</span>到<span class="token builtin">int64</span>  
+<span class="token builtin">int64</span><span class="token punctuation">,</span> err <span class="token operator">:=</span> strconv<span class="token punctuation">.</span><span class="token function">ParseInt</span><span class="token punctuation">(</span><span class="token builtin">string</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">64</span><span class="token punctuation">)</span>  
+#<span class="token builtin">int</span>到<span class="token builtin">string</span>  
+<span class="token builtin">string</span><span class="token operator">:=</span>strconv<span class="token punctuation">.</span><span class="token function">Itoa</span><span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">)</span>  
+#<span class="token builtin">int64</span>到<span class="token builtin">string</span>  
+<span class="token builtin">string</span><span class="token operator">:=</span>strconv<span class="token punctuation">.</span><span class="token function">FormatInt</span><span class="token punctuation">(</span><span class="token builtin">int64</span><span class="token punctuation">,</span><span class="token number">10</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><p><strong>math包下一些最大值、最小值常量</strong></p>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">const</span> <span class="token punctuation">(</span>
+     MaxInt8   <span class="token operator">=</span> <span class="token number">1</span><span class="token operator">&lt;&lt;</span><span class="token number">7</span> <span class="token operator">-</span> <span class="token number">1</span>
+     MinInt8   <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1</span> <span class="token operator">&lt;&lt;</span> <span class="token number">7</span>
+     MaxInt16  <span class="token operator">=</span> <span class="token number">1</span><span class="token operator">&lt;&lt;</span><span class="token number">15</span> <span class="token operator">-</span> <span class="token number">1</span>
+     MinInt16  <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1</span> <span class="token operator">&lt;&lt;</span> <span class="token number">15</span>
+     MaxInt32  <span class="token operator">=</span> <span class="token number">1</span><span class="token operator">&lt;&lt;</span><span class="token number">31</span> <span class="token operator">-</span> <span class="token number">1</span>
+     MinInt32  <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1</span> <span class="token operator">&lt;&lt;</span> <span class="token number">31</span>
+     MaxInt64  <span class="token operator">=</span> <span class="token number">1</span><span class="token operator">&lt;&lt;</span><span class="token number">63</span> <span class="token operator">-</span> <span class="token number">1</span>
+     MinInt64  <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1</span> <span class="token operator">&lt;&lt;</span> <span class="token number">63</span>
+     MaxUint8  <span class="token operator">=</span> <span class="token number">1</span><span class="token operator">&lt;&lt;</span><span class="token number">8</span> <span class="token operator">-</span> <span class="token number">1</span>
+     MaxUint16 <span class="token operator">=</span> <span class="token number">1</span><span class="token operator">&lt;&lt;</span><span class="token number">16</span> <span class="token operator">-</span> <span class="token number">1</span>
+     MaxUint32 <span class="token operator">=</span> <span class="token number">1</span><span class="token operator">&lt;&lt;</span><span class="token number">32</span> <span class="token operator">-</span> <span class="token number">1</span>
+     MaxUint64 <span class="token operator">=</span> <span class="token number">1</span><span class="token operator">&lt;&lt;</span><span class="token number">64</span> <span class="token operator">-</span> <span class="token number">1</span>
+<span class="token punctuation">)</span>
+fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>math<span class="token punctuation">.</span>MaxUint64<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+</ol>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://www.lakevilladom.com/2017/07/10/Go练习01-批量查询域名是否被注册/" data-title="Go练习01-批量查询域名是否被注册 | Lake Villadom" data-tsina="1800807704" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2017/06/15/Pholcus爬虫01-爬取慕课网内容/"  title="Pholcus爬虫01-爬取慕课网内容">
+ <strong>下一篇：</strong><br/> 
+ <span>Pholcus爬虫01-爬取慕课网内容
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+<div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+<div id="authorInfo">
+	
+		<div class="author-img"></div>		
+	
+	<div class="social-info" class="clearfix">
+		
+		<a href="http://weibo.com/1800807704" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/https://github.com/LakeVilladom" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:lakevilladom@aliyun.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+</div>
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Docker/" title="Docker">Docker<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Go/" title="Go">Go<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Hexo/" title="Hexo">Hexo<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Linux/" title="Linux">Linux<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Node-js/" title="Node.js">Node.js<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Oracle/" title="Oracle">Oracle<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/grep/" title="grep">grep<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/如歌如梭/" title="如歌如梭">如歌如梭<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/工具/" title="工具">工具<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/年终总结/" title="年终总结">年终总结<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/爬虫/" title="爬虫">爬虫<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/跬步小流/" title="跬步小流">跬步小流<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Linux/跬步小流/" title="跬步小流">跬步小流<sup>1</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/Linux/" title="Linux">Linux<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Go/" title="Go">Go<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Hexo/" title="Hexo">Hexo<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Shell/" title="Shell">Shell<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Git/" title="Git">Git<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Oracle/" title="Oracle">Oracle<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/立碑/" title="立碑">立碑<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/正则表达式/" title="正则表达式">正则表达式<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Alpine/" title="Alpine">Alpine<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/CSS选择器/" title="CSS选择器">CSS选择器<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/爬虫/" title="爬虫">爬虫<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Node-js/" title="Node.js">Node.js<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/scp/" title="scp">scp<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Linux/" title="Linux ">Linux <sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/LVM/" title="LVM">LVM<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/逻辑卷/" title="逻辑卷">逻辑卷<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Dockerfile/" title="Dockerfile">Dockerfile<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/备份/" title="备份">备份<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/拼接/" title="拼接">拼接<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/递归查询/" title="递归查询">递归查询<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="weiboshow">
+  <p class="asidetitle">新浪微博</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=1800807704&verifier=6ab1b6ac&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	
+
+	<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2017 
+		
+		<a href="/about" target="_blank" title="Lake Villadom">Lake Villadom</a>
+		
+	</p>
+</div>
+</footer>
+    <script src="/js/jquery-3.2.1.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+        getSize();
+        if (myWidth >= 1024) {
+          c.click();
+        }
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+<script>
+  var cloudTieConfig = {
+    url: document.location.href,
+    sourceId: "",
+    productKey: "74383012b1584977a3ac91b146806169",
+    target: "cloud-tie-wrapper"
+  };
+</script>
+<script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
