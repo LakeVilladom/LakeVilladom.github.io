@@ -22,14 +22,14 @@
 <meta name="twitter:description" content="常思常想，莫失莫忘。">
 
     
-    <link rel="alternative" href="/atom.xml" title="Lake Villadom" type="application/atom+xml">
+    <link rel="alternative" href="atom.xml" title="Lake Villadom" type="application/atom+xml">
     
     
-    <link rel="icon" href="/img/lv.ico">
+    <link rel="icon" href="/img/unnamed4_n_mSY_icon.ico">
     
     
-    <link rel="apple-touch-icon" href="/img/jacman.jpg">
-    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon" href="/img/profile.png">
+    <link rel="apple-touch-icon-precomposed" href="/img/profile.png">
     
     <link rel="stylesheet" href="/css/style.css">
 <link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
@@ -38,2163 +38,607 @@
   <body>
     <header>
       
-
-<div id="windbell">
-	<script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-<script src="//cdn.bootcss.com/kineticjs/5.2.0/kinetic.min.js"></script>
-
-<div class="context_div">
-    <div id="BUTTONS_DIV"></div>
-</div>
-
-<script>
-var sources = {
-    cx: '/img/CX.png',
-    cs: '/img/CS.png',
-    ms: '/img/MS.png',
-    mw: '/img/MW.png',
-};
-
-var audio_file = "/media/windbell.mp3";
-var audio_volume = .2;
-
-function loadImages(sources, callback) {
-    var images = {};
-    var loadedImages = 0;
-    var numImages = 0;
-    for (var src in sources) {
-        numImages++;
-    }
-    for (var src in sources) {
-        images[src] = new Image();
-        images[src].onload = function() {
-            if (++loadedImages >= numImages) {
-                callback(images);
-            }
-        };
-        images[src].src = sources[src];
-    }
-}
-
-function draw(images) {
-    var amplitude = 10.00;
-    var period = 2000;
-    var stage = new Kinetic.Stage({
-        container: 'BUTTONS_DIV',
-        width: document.documentElement.clientWidth,
-        height: document.documentElement.clientHeight
-    });
-
-    var layer1 = new Kinetic.Layer();
-    var line1 = line(1);
-    var patternHexagon1 = hexagon(1, images.cx);
-    layer1.add(line1);
-    layer1.add(patternHexagon1);
-    stage.add(layer1);
-    layer1.setZIndex(1);
-
-    var sound_obj1 = new Audio(audio_file);
-    sound_obj1.volume = audio_volume;
-    var sound_obj1_volume = audio_volume;
-    sound_obj1.loop = false;
-    sound_obj1.load();
-
-    var amplitude_1 = amplitude;
-    var anim1 = new Kinetic.Animation(
-        function(frame) {
-            if (amplitude_1 > 0.6) {
-                layer1.setX(amplitude_1 * Math.sin(frame.time * 2 * Math.PI / period));
-                amplitude_1 -= amplitude_1 / 250;
-                if (sound_obj1_volume > 0.0003) {
-                    sound_obj1_volume -= 0.0003;
-                    sound_obj1.volume = sound_obj1_volume;
-                }
-            } else {
-                frame.time = 0;
-                sound_obj1.currentTime = 0;
-                sound_obj1.pause();
-                sound_obj1.volume = audio_volume;
-                sound_obj1_volume = audio_volume;
-                anim1.stop();
-                amplitude_1 = amplitude;
-            }
-        },
-        layer1
-    );
-    patternHexagon1.on(
-        'mouseover',
-        function() {
-            document.body.style.cursor = 'pointer';
-            sound_obj1.play();
-            anim1.start();
-        }
-    );
-    patternHexagon1.on(
-        'mouseout',
-        function() {
-            document.body.style.cursor = 'default';
-        }
-    );
-
-    var layer2 = new Kinetic.Layer();
-    var line2 = line(2);
-    var patternHexagon2 = hexagon(2, images.cs);
-    layer2.add(line2);
-    layer2.add(patternHexagon2);
-    stage.add(layer2);
-    layer2.setZIndex(1);
-
-    var sound_obj2 = new Audio(audio_file);
-    sound_obj2.volume = audio_volume;
-    var sound_obj2_volume = audio_volume;
-    sound_obj2.loop = false;
-    sound_obj2.load();
-
-    var amplitude_2 = amplitude;
-    var anim2 = new Kinetic.Animation(
-        function(frame) {
-            if (amplitude_2 > 0.6) {
-                layer2.setX(amplitude_2 * Math.sin(frame.time * 2 * Math.PI / period));
-                amplitude_2 -= amplitude_2 / 250;
-                if (sound_obj2_volume > 0.0003) {
-                    sound_obj2_volume -= 0.0003;
-                    sound_obj2.volume = sound_obj2_volume;
-                }
-            } else {
-                frame.time = 0;
-                sound_obj2.currentTime = 0;
-                sound_obj2.pause();
-                sound_obj2.volume = audio_volume;
-                sound_obj2_volume = audio_volume;
-                anim2.stop();
-                amplitude_2 = amplitude;
-            }
-        },
-        layer2
-    );
-    patternHexagon2.on(
-        'mouseover',
-        function() {
-            document.body.style.cursor = 'pointer';
-            sound_obj2.play();
-            anim2.start();
-        }
-    );
-    patternHexagon2.on(
-        'mouseout',
-        function() {
-            document.body.style.cursor = 'default';
-        }
-    );
-
-    var layer5 = new Kinetic.Layer();
-    var line5 = line(5);
-    var patternHexagon5 = hexagon(5, images.ms);
-    layer5.add(line5);
-    layer5.add(patternHexagon5);
-    stage.add(layer5);
-    layer5.setZIndex(10);
-
-    var sound_obj5 = new Audio(audio_file);
-    sound_obj5.volume = audio_volume;
-    var sound_obj5_volume = audio_volume;
-    sound_obj5.loop = false;
-    sound_obj5.load();
-
-    var amplitude_5 = amplitude;
-    var anim5 = new Kinetic.Animation(
-        function(frame) {
-            if (amplitude_5 > 0.6) {
-                layer5.setX(amplitude_5 * Math.sin(frame.time * 2 * Math.PI / period));
-                amplitude_5 -= amplitude_5 / 250;
-                if (sound_obj5_volume > 0.0003) {
-                    sound_obj5_volume -= 0.0003;
-                    sound_obj5.volume = sound_obj5_volume;
-                }
-            } else {
-                frame.time = 0;
-                sound_obj5.currentTime = 0;
-                sound_obj5.pause();
-                sound_obj5.volume = audio_volume;
-                sound_obj5_volume = audio_volume;
-                anim5.stop();
-                amplitude_5 = amplitude;
-            }
-        },
-        layer5
-    );
-    patternHexagon5.on(
-        'mouseover',
-        function() {
-            document.body.style.cursor = 'pointer';
-            sound_obj5.play();
-            anim5.start();
-        }
-    );
-    patternHexagon5.on(
-        'mouseout',
-        function() {
-            document.body.style.cursor = 'default';
-        }
-    );
-
-    var layer6 = new Kinetic.Layer();
-    var line6 = line(6);
-    var patternHexagon6 = hexagon(6, images.mw);
-    layer6.add(line6);
-    layer6.add(patternHexagon6);
-    stage.add(layer6);
-    layer6.setZIndex(10);
-
-    var sound_obj6 = new Audio(audio_file);
-    sound_obj6.volume = audio_volume;
-    var sound_obj6_volume = audio_volume;
-    sound_obj6.loop = false;
-    sound_obj6.load();
-
-    var amplitude_6 = amplitude;
-    var anim6 = new Kinetic.Animation(
-        function(frame) {
-            if (amplitude_6 > 0.6) {
-                layer6.setX(amplitude_6 * Math.sin(frame.time * 2 * Math.PI / period));
-                amplitude_6 -= amplitude_6 / 250;
-                if (sound_obj6_volume > 0.0003) {
-                    sound_obj6_volume -= 0.0003;
-                    sound_obj6.volume = sound_obj6_volume;
-                }
-            } else {
-                frame.time = 0;
-                sound_obj6.currentTime = 0;
-                sound_obj6.pause();
-                sound_obj6.volume = audio_volume;
-                sound_obj6_volume = audio_volume;
-                anim6.stop();
-                amplitude_6 = amplitude;
-            }
-        },
-        layer6
-    );
-    patternHexagon6.on(
-        'mouseover',
-        function() {
-            document.body.style.cursor = 'pointer';
-            sound_obj6.play();
-            anim6.start();
-        }
-    );
-    patternHexagon6.on(
-        'mouseout',
-        function() {
-            document.body.style.cursor = 'default';
-        }
-    );
-
-}
-
-document_width=1300
-bigradius=78
-smallradius=66
-line1_x=155
-line1_y=0
-line1_l=305
-line2_x=355
-line2_y=0
-line2_l=185
-
-function hexagon(base_num, fillPatternImage) {
-    var x, y;
-    switch (base_num) {
-        case 1:
-            radius= bigradius;
-            x = line1_x;
-            y = line1_l+radius;
-            radius= bigradius;
-            break;
-        case 2:
-            radius= smallradius;
-            x = line2_x;
-            y = line2_l+radius;
-            break;
-        case 5:
-            radius= smallradius;
-            x = document_width-line2_x;
-            y = line2_l+radius;
-            break;
-        case 6:
-            radius= bigradius;
-            x = document_width-line1_x;
-            y = line1_l+radius;
-            break;
-        default:
-            break;
-    }
-    var fill_pattern_rotation = Math.PI / 2 - 300 * Math.PI / 360;
-    return new Kinetic.RegularPolygon({
-        x: x,
-        y: y,
-        sides: 6,
-        radius: radius,
-        //stroke: '#96a090',
-        strokeWidth: 5,
-        rotationDeg: 0,
-        fillPatternRotation: fill_pattern_rotation,
-        fillPatternImage: fillPatternImage,
-        fillPriority: 'pattern',
-        fillPatternRepeat: "no-repeat",
-        fillPatternX: -60,
-        fillPatternY: -60,
-        fillPatternOffset: [78, 85],
-        draggable: false
-    });
-}
-
-function line(base_num) {
-    var line_points;
-    switch (base_num) {
-        case 1:
-            line_points = [line1_x, 0, line1_x, line1_l+3];
-            break;
-        case 2:
-            line_points = [line2_x, 0, line2_x, line2_l+3];
-            break;
-        case 5:
-            line_points = [document_width-line2_x, 0, document_width-line2_x, line2_l+3];
-            break;
-        case 6:
-            line_points = [document_width-line1_x, 0, document_width-line1_x, line1_l+3];
-            break;
-        default:
-            break;
-    }
-    return new Kinetic.Line({
-        points: line_points,
-        stroke: '#96a090',
-        strokeWidth: 5
-    });
-}
-
-
-loadImages(
-    sources,
-    function(images) {
-        draw(images);
-    }
-);
-</script>
-</div>
-<div id="header">
-	
-		<div id="imglogo">
-			<a href="/"><img src="/img/logo.png" alt="Lake Villadom" title="Lake Villadom"/></a>
-			<p>
-		</div>
-	
-	<div id="textlogo">
-		<h1 class="site-name">Lake Villadom</h1></br>
-		<h2 class="blog-motto">May every day of your life bring you fresh hopes for tomorrow. Expect the best, and you&#39;ll get it.</h2>
-
-		<h2 class="blog-motto">愿你生命中的每一天都对未来充满新的希望。追求完美  你终将如愿以偿！</h2>
-	</div>
-	<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
-	</a></div>
-	<nav class="animated">
-			<ul>
-			 
-				<li><a href="/">主页｜Home</a></li>
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="Lake Villadom" title="Lake Villadom"/></a>
+			</div>
 			
-				<li><a href="/archives">归档｜Archives</a></li>
-			
-				<li><a href="/categories">分类｜Categories</a></li>
-			
-				<li><a href="/about">关于｜About</a></li>
-			
-			<li>
-				
-			<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
-				<label>Search</label>
-				<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
-				<input type="hidden" name="q" value="site:www.lakevilladom.com">
-			</form>
-			
-			</li>
-		</ul>
-	</nav>			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Lake Villadom">Lake Villadom</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:www.lakevilladom.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
 </div>
     </header>
     <div id="container">
       <div id="main">
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2017/07/10/Go练习01-批量查询域名是否被注册/" title="Go练习01-批量查询域名是否被注册" itemprop="url">Go练习01-批量查询域名是否被注册</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Lake Villadom" target="_blank" itemprop="author">Lake Villadom</a>
-		
-  <p class="article-time">
-    <time datetime="2017-07-10T14:44:07.000Z" itemprop="datePublished"> 发表于 2017-07-10</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <script src="/assets/js/APlayer.min.js"> </script><blockquote>
-<ul>
-<li><strong>参考 <a href="http://www.jianshu.com/p/2325e0240da0" target="_blank" rel="external">《Python: 批量查询域名是否被注册》</a>，作为练习Go的小项目</strong></li>
-</ul>
-</blockquote>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2017/07/10/Go练习01-批量查询域名是否被注册/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2017/06/15/Pholcus爬虫01-爬取慕课网内容/" title="Pholcus爬虫01-爬取慕课网内容" itemprop="url">Pholcus爬虫01-爬取慕课网内容</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Lake Villadom" target="_blank" itemprop="author">Lake Villadom</a>
-		
-  <p class="article-time">
-    <time datetime="2017-06-15T07:55:00.000Z" itemprop="datePublished"> 发表于 2017-06-15</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <script src="/assets/js/APlayer.min.js"> </script><blockquote>
-<ul>
-<li><strong>利用纯Go语言编写的开源的支持分布式的高并发、重量级爬虫软件<a href="https://github.com/henrylee2cn/pholcus" target="_blank" rel="external">Pholcus（幽灵蛛）</a>爬取慕课网课程、章节等并入库MongoDB。</strong></li>
-</ul>
-</blockquote>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2017/06/15/Pholcus爬虫01-爬取慕课网内容/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/Go/">Go</a>
-</div>
-
-
-  <div class="article-tags">
   
-  <span></span> <a href="/tags/Go/">Go</a><a href="/tags/Pholcus/">Pholcus</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2017/05/01/Linux磁盘或文件大小查看/" title="Linux磁盘或文件大小查看" itemprop="url">Linux磁盘或文件大小查看</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Lake Villadom" target="_blank" itemprop="author">Lake Villadom</a>
-		
-  <p class="article-time">
-    <time datetime="2017-05-01T12:09:00.000Z" itemprop="datePublished"> 发表于 2017-05-01</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <script src="/assets/js/APlayer.min.js"> </script><blockquote>
-<ul>
-<li><strong> df:查看磁盘空间使用情况 </strong></li>
-<li><strong> du:查看各目录或文件所占空间</strong></li>
-</ul>
-</blockquote>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2017/05/01/Linux磁盘或文件大小查看/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/Linux/">Linux</a>
-</div>
-
-
-  <div class="article-tags">
+<section class="post" itemscope itemprop="blogitem">
   
-  <span></span> <a href="/tags/Linux/">Linux</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2017/05/01/Go-Struct-Tag/" title="Go Struct Tag" itemprop="url">Go Struct Tag</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Lake Villadom" target="_blank" itemprop="author">Lake Villadom</a>
-		
-  <p class="article-time">
-    <time datetime="2017-05-01T07:34:00.000Z" itemprop="datePublished"> 发表于 2017-05-01</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <script src="/assets/js/APlayer.min.js"> </script><blockquote>
-<ul>
-<li><strong>在Go语言里，StructTag是一个标记字符串，此字符串可跟随在Struct中字段定义的后面。StructTag就是一系列的key:”value”形式的组合，其中key是一个不可为空的字符串，key-value组合可以有多个，空格分隔。</strong></li>
-</ul>
-</blockquote>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2017/05/01/Go-Struct-Tag/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/Go/">Go</a>
-</div>
-
-
-  <div class="article-tags">
+    <a href="/2017/07/10/Go练习01-批量查询域名是否被注册/" title="Go练习01-批量查询域名是否被注册" itemprop="url">
   
-  <span></span> <a href="/tags/Go/">Go</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
+    <h1 itemprop="name">Go练习01-批量查询域名是否被注册</h1>
     
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
+     
+       <p itemprop="description" >参考 《Python: 批量查询域名是否被注册》，作为练习Go的小项目</p>
+      
     
-      <a href="/2017/05/01/go语言中包的导入/" title="Go语言中包的导入" itemprop="url">Go语言中包的导入</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Lake Villadom" target="_blank" itemprop="author">Lake Villadom</a>
-		
-  <p class="article-time">
-    <time datetime="2017-05-01T02:46:00.000Z" itemprop="datePublished"> 发表于 2017-05-01</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <script src="/assets/js/APlayer.min.js"> </script><blockquote>
-<ul>
-<li><strong>import导入参数是<code>路径</code>,而非<code>包名</code>。尽管习惯将包名和目录名保持一致，但这并非强制规定。在代码中引用包成员时，使用<code>包名</code>而非<code>路径名</code></strong></li>
-</ul>
-</blockquote>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2017/05/01/go语言中包的导入/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/Go/">Go</a>
-</div>
+    <time datetime="2017-07-10T14:44:07.000Z" itemprop="datePublished">2017-07-10</time>
+  </a>
+</section>
 
 
-  <div class="article-tags">
+
+
+
+
   
-  <span></span> <a href="/tags/Go/">Go</a><a href="/tags/package/">package</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2017/04/23/CSS-选择器/" title="CSS 选择器" itemprop="url">CSS 选择器</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Lake Villadom" target="_blank" itemprop="author">Lake Villadom</a>
-		
-  <p class="article-time">
-    <time datetime="2017-04-23T03:01:00.000Z" itemprop="datePublished"> 发表于 2017-04-23</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <script src="/assets/js/APlayer.min.js"> </script><blockquote>
-<ul>
-<li><strong>学习爬虫，用到CSS选择器，基础用法已经掌握，现从网络摘抄整理更为详细全面的CSS选择器,方便查阅。</strong></li>
-</ul>
-</blockquote>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2017/04/23/CSS-选择器/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/爬虫/">爬虫</a>
-</div>
-
-
-  <div class="article-tags">
+<section class="post" itemscope itemprop="blogitem">
   
-  <span></span> <a href="/tags/CSS选择器/">CSS选择器</a><a href="/tags/爬虫/">爬虫</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2017/02/21/Go标准库01之os包/" title="Go标准库01之os包" itemprop="url">Go标准库01之os包</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Lake Villadom" target="_blank" itemprop="author">Lake Villadom</a>
-		
-  <p class="article-time">
-    <time datetime="2017-02-21T12:18:00.000Z" itemprop="datePublished"> 发表于 2017-02-21</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <script src="/assets/js/APlayer.min.js"> </script><blockquote>
-<ul>
-<li><strong> Go标准库之os包。</strong></li>
-</ul>
-</blockquote>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2017/02/21/Go标准库01之os包/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/Go/">Go</a>
-</div>
-
-
-  <div class="article-tags">
+    <a href="/2017/06/15/Pholcus爬虫01-爬取慕课网内容/" title="Pholcus爬虫01-爬取慕课网内容" itemprop="url">
   
-  <span></span> <a href="/tags/Go/">Go</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
+    <h1 itemprop="name">Pholcus爬虫01-爬取慕课网内容</h1>
     
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
+     
+       <p itemprop="description" >利用纯Go语言编写的开源的支持分布式的高并发、重量级爬虫软件Pholcus（幽灵蛛）爬取慕课网课程、章节等并入库MongoDB。</p>
+      
     
-      <a href="/2017/01/24/zsh配置/" title="zsh配置实用技巧" itemprop="url">zsh配置实用技巧</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Lake Villadom" target="_blank" itemprop="author">Lake Villadom</a>
-		
-  <p class="article-time">
-    <time datetime="2017-01-24T05:20:36.000Z" itemprop="datePublished"> 发表于 2017-01-24</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <script src="/assets/js/APlayer.min.js"> </script><ul>
-<li>HOME键和END键失效解决办法:</li>
-</ul>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2017/01/24/zsh配置/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
+    <time datetime="2017-06-15T07:55:00.000Z" itemprop="datePublished">2017-06-15</time>
+  </a>
+</section>
 
 
 
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2017/01/11/Visual-Studio-Code-配置指南/" title="Visual Studio Code 配置指南" itemprop="url">Visual Studio Code 配置指南</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Lake Villadom" target="_blank" itemprop="author">Lake Villadom</a>
-		
-  <p class="article-time">
-    <time datetime="2017-01-11T13:35:00.000Z" itemprop="datePublished"> 发表于 2017-01-11</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <script src="/assets/js/APlayer.min.js"> </script><blockquote>
-<ul>
-<li><strong> Visual Studio Code 配置总结。</strong></li>
-</ul>
-</blockquote>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2017/01/11/Visual-Studio-Code-配置指南/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/工具/">工具</a>
-</div>
-
-
-  <div class="article-tags">
   
-  <span></span> <a href="/tags/工具/">工具</a><a href="/tags/Visual-Studio-Code/">Visual Studio Code</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2017/01/02/一年又一年之2016年终总结与2017新年计划/" title="一年又一年之2016年终总结与2017新年计划" itemprop="url">一年又一年之2016年终总结与2017新年计划</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Lake Villadom" target="_blank" itemprop="author">Lake Villadom</a>
-		
-  <p class="article-time">
-    <time datetime="2017-01-02T09:17:00.000Z" itemprop="datePublished"> 发表于 2017-01-02</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <script src="/assets/js/APlayer.min.js"> </script><blockquote>
-<ul>
-<li><strong> 年终总结 ● 新初计划 </strong></li>
-</ul>
-</blockquote>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2017/01/02/一年又一年之2016年终总结与2017新年计划/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/年终总结/">年终总结</a>
-</div>
-
-
-  <div class="article-tags">
+<section class="post" itemscope itemprop="blogitem">
   
-  <span></span> <a href="/tags/年终总结/">年终总结</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2017/01/02/正则表达式应用-一-之行首行位批量添加字符/" title="正则表达式应用(一)之行首行尾批量添加字符" itemprop="url">正则表达式应用(一)之行首行尾批量添加字符</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Lake Villadom" target="_blank" itemprop="author">Lake Villadom</a>
-		
-  <p class="article-time">
-    <time datetime="2017-01-02T07:55:00.000Z" itemprop="datePublished"> 发表于 2017-01-02</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <script src="/assets/js/APlayer.min.js"> </script><blockquote>
-<ul>
-<li><strong> 通过正则表达式实现行首行尾批量添加字符，与<a href="/2016/12/15/Oracle中的列转行实现字段拼接用例/">Oracle字段拼接</a>有异曲同工之效。</strong></li>
-</ul>
-</blockquote>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2017/01/02/正则表达式应用-一-之行首行位批量添加字符/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/grep/">grep</a>
-</div>
-
-
-  <div class="article-tags">
+    <a href="/2017/05/01/Linux磁盘或文件大小查看/" title="Linux磁盘或文件大小查看" itemprop="url">
   
-  <span></span> <a href="/tags/grep/">grep</a><a href="/tags/正则表达式/">正则表达式</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
+    <h1 itemprop="name">Linux磁盘或文件大小查看</h1>
     
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
+     
+       <p itemprop="description" >df:查看磁盘空间使用情况 
+ du:查看各目录或文件所占空间</p>
+      
     
-      <a href="/2016/12/15/Oracle中的列转行实现字段拼接用例/" title="Oracle中的列转行实现字段拼接用例" itemprop="url">Oracle中的列转行实现字段拼接用例</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Lake Villadom" target="_blank" itemprop="author">Lake Villadom</a>
-		
-  <p class="article-time">
-    <time datetime="2016-12-15T14:33:00.000Z" itemprop="datePublished"> 发表于 2016-12-15</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <script src="/assets/js/APlayer.min.js"> </script><blockquote>
-<ul>
-<li><strong> Oracle中的列转行实现字段拼接</strong></li>
-</ul>
-</blockquote>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2016/12/15/Oracle中的列转行实现字段拼接用例/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/Oracle/">Oracle</a>
-</div>
+    <time datetime="2017-05-01T12:09:00.000Z" itemprop="datePublished">2017-05-01</time>
+  </a>
+</section>
 
 
-  <div class="article-tags">
+
+
+
+
   
-  <span></span> <a href="/tags/Oracle/">Oracle</a><a href="/tags/拼接/">拼接</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2016/12/06/java下war的打包、解压以及jar的安装/" title="java环境下war的打包、解压以及jar的安装" itemprop="url">java环境下war的打包、解压以及jar的安装</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Lake Villadom" target="_blank" itemprop="author">Lake Villadom</a>
-		
-  <p class="article-time">
-    <time datetime="2016-12-06T14:22:22.000Z" itemprop="datePublished"> 发表于 2016-12-06</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <script src="/assets/js/APlayer.min.js"> </script><blockquote>
-<ul>
-<li><strong> java环境下war的打包、解压以及jar的安装</strong></li>
-</ul>
-</blockquote>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2016/12/06/java下war的打包、解压以及jar的安装/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2016/12/06/Oracle级联查询-Hierarchical-Queries/" title="Oracle级联查询(Hierarchical Queries)" itemprop="url">Oracle级联查询(Hierarchical Queries)</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Lake Villadom" target="_blank" itemprop="author">Lake Villadom</a>
-		
-  <p class="article-time">
-    <time datetime="2016-12-06T14:12:00.000Z" itemprop="datePublished"> 发表于 2016-12-06</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <script src="/assets/js/APlayer.min.js"> </script><blockquote>
-<ul>
-<li><strong> 查询层次结构数据:主要用于B树结构类型的数据递归查询，给出B树结构类型中的任意一个结点，遍历其最终父结点或者子结点;树结构的数据存放在表中，数据之间的层次关系即父子关系，通过表中的列与列间的关系来描述。</strong></li>
-</ul>
-</blockquote>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2016/12/06/Oracle级联查询-Hierarchical-Queries/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/Oracle/">Oracle</a>
-</div>
-
-
-  <div class="article-tags">
+<section class="post" itemscope itemprop="blogitem">
   
-  <span></span> <a href="/tags/Oracle/">Oracle</a><a href="/tags/递归查询/">递归查询</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2016/11/05/Linux文本处理之Sed-流编辑器/" title="Linux文本处理之Sed(流编辑器)" itemprop="url">Linux文本处理之Sed(流编辑器)</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Lake Villadom" target="_blank" itemprop="author">Lake Villadom</a>
-		
-  <p class="article-time">
-    <time datetime="2016-11-05T13:23:29.000Z" itemprop="datePublished"> 发表于 2016-11-05</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <script src="/assets/js/APlayer.min.js"> </script><blockquote>
-<ul>
-<li><strong> Sed是Stream Editor(流编辑器)缩写，是操作、过滤和转换文本内容的强大工具。常用功能有增删改查，过滤，取行、修改配置文件(如 xml、json、ini、yaml )</strong></li>
-</ul>
-</blockquote>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2016/11/05/Linux文本处理之Sed-流编辑器/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2016/11/04/Linux磁盘管理LVM逻辑卷管理/" title="Linux磁盘管理之LVM(逻辑卷)管理" itemprop="url">Linux磁盘管理之LVM(逻辑卷)管理</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Lake Villadom" target="_blank" itemprop="author">Lake Villadom</a>
-		
-  <p class="article-time">
-    <time datetime="2016-11-04T04:12:00.000Z" itemprop="datePublished"> 发表于 2016-11-04</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <script src="/assets/js/APlayer.min.js"> </script><blockquote>
-<ul>
-<li><strong> LVM是 Logical Volume Manager（逻辑卷管理）的简写，它是Linux环境下对磁盘分区进行管理的一种机制。可以方便地将新的硬盘添加到LVM，以直接扩展已经存在的逻辑,LVM并不需重启就可以让内核知道分区的存在。</strong></li>
-</ul>
-</blockquote>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2016/11/04/Linux磁盘管理LVM逻辑卷管理/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/Linux/">Linux</a>
-</div>
-
-
-  <div class="article-tags">
+    <a href="/2017/05/01/Go-Struct-Tag/" title="Go Struct Tag" itemprop="url">
   
-  <span></span> <a href="/tags/Linux/">Linux </a><a href="/tags/LVM/">LVM</a><a href="/tags/逻辑卷/">逻辑卷</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
+    <h1 itemprop="name">Go Struct Tag</h1>
     
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
+     
+       <p itemprop="description" >在Go语言里，StructTag是一个标记字符串，此字符串可跟随在Struct中字段定义的后面。StructTag就是一系列的key:”value”形式的组合，其中key是一个不可为空的字符串，key-value组合可以有多个，空格分隔。</p>
+      
     
-      <a href="/2016/10/24/Hexo博客实战/" title="Hexo博客实用技巧" itemprop="url">Hexo博客实用技巧</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Lake Villadom" target="_blank" itemprop="author">Lake Villadom</a>
-		
-  <p class="article-time">
-    <time datetime="2016-10-24T12:29:00.000Z" itemprop="datePublished"> 发表于 2016-10-24</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <script src="/assets/js/APlayer.min.js"> </script><blockquote>
-<ul>
-<li><strong>Hexo博客实用技巧</strong></li>
-</ul>
-</blockquote>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2016/10/24/Hexo博客实战/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
+    <time datetime="2017-05-01T07:34:00.000Z" itemprop="datePublished">2017-05-01</time>
+  </a>
+</section>
 
 
 
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2016/10/24/Node-js安装配置/" title="Node.js安装配置" itemprop="url">Node.js安装配置</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Lake Villadom" target="_blank" itemprop="author">Lake Villadom</a>
-		
-  <p class="article-time">
-    <time datetime="2016-10-24T11:56:00.000Z" itemprop="datePublished"> 发表于 2016-10-24</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <script src="/assets/js/APlayer.min.js"> </script><blockquote>
-<ul>
-<li><strong> 梳理Node.js不同的安装方式以及镜像源的修改 </strong></li>
-</ul>
-</blockquote>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2016/10/24/Node-js安装配置/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/Node-js/">Node.js</a>
-</div>
-
-
-  <div class="article-tags">
   
-  <span></span> <a href="/tags/Node-js/">Node.js</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2016/10/23/Alpine-Linux配置操作说明/" title="Alpine Linux配置使用" itemprop="url">Alpine Linux配置使用</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Lake Villadom" target="_blank" itemprop="author">Lake Villadom</a>
-		
-  <p class="article-time">
-    <time datetime="2016-10-23T18:38:00.000Z" itemprop="datePublished"> 发表于 2016-10-23</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <script src="/assets/js/APlayer.min.js"> </script><blockquote>
-<ul>
-<li><strong> 缘起：最近在构建Docker镜像时使用Alpine Linux作为基础镜像,故有必要学习Alpine Linux，在此记录学习成果。</strong></li>
-</ul>
-</blockquote>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2016/10/23/Alpine-Linux配置操作说明/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/Linux/">Linux</a>
-</div>
-
-
-  <div class="article-tags">
+<section class="post" itemscope itemprop="blogitem">
   
-  <span></span> <a href="/tags/Linux/">Linux</a><a href="/tags/Alpine/">Alpine</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2016/10/01/Docker学习笔记系列-Dockerfile-1/" title="Docker学习笔记系列:Dockerfile" itemprop="url">Docker学习笔记系列:Dockerfile</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Lake Villadom" target="_blank" itemprop="author">Lake Villadom</a>
-		
-  <p class="article-time">
-    <time datetime="2016-10-01T01:13:00.000Z" itemprop="datePublished"> 发表于 2016-10-01</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <script src="/assets/js/APlayer.min.js"> </script><blockquote>
-<ul>
-<li><strong> Build(构建), Ship(交付) and Run(运行) any App, Anywhere. </strong></li>
-</ul>
-</blockquote>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2016/10/01/Docker学习笔记系列-Dockerfile-1/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/Docker/">Docker</a>
-</div>
-
-
-  <div class="article-tags">
+    <a href="/2017/05/01/go语言中包的导入/" title="Go语言中包的导入" itemprop="url">
   
-  <span></span> <a href="/tags/Dockerfile/">Dockerfile</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
+    <h1 itemprop="name">Go语言中包的导入</h1>
     
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
+     
+       <p itemprop="description" >import导入参数是路径,而非包名。尽管习惯将包名和目录名保持一致，但这并非强制规定。在代码中引用包成员时，使用包名而非路径名</p>
+      
     
-      <a href="/2016/09/30/读shell学shell系列-002/" title="读shell学shell系列:002" itemprop="url">读shell学shell系列:002</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Lake Villadom" target="_blank" itemprop="author">Lake Villadom</a>
-		
-  <p class="article-time">
-    <time datetime="2016-09-30T12:05:00.000Z" itemprop="datePublished"> 发表于 2016-09-30</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <script src="/assets/js/APlayer.min.js"> </script><blockquote>
-<ul>
-<li><strong> 通过阅读shell脚本来达到学习shell编程的目的不失为一种好的学习方法! </strong></li>
-</ul>
-</blockquote>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2016/09/30/读shell学shell系列-002/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/Linux/">Linux</a>
-</div>
+    <time datetime="2017-05-01T02:46:00.000Z" itemprop="datePublished">2017-05-01</time>
+  </a>
+</section>
 
 
-  <div class="article-tags">
+
+
+
+
   
-  <span></span> <a href="/tags/Shell/">Shell</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2016/09/30/Git命令大全/" title="Git命令大全" itemprop="url">Git命令大全</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Lake Villadom" target="_blank" itemprop="author">Lake Villadom</a>
-		
-  <p class="article-time">
-    <time datetime="2016-09-30T11:05:00.000Z" itemprop="datePublished"> 发表于 2016-09-30</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <script src="/assets/js/APlayer.min.js"> </script><blockquote>
-<ul>
-<li><strong> git命令全整理，摘自网络！</strong></li>
-</ul>
-</blockquote>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2016/09/30/Git命令大全/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/跬步小流/">跬步小流</a>
-</div>
-
-
-  <div class="article-tags">
+<section class="post" itemscope itemprop="blogitem">
   
-  <span></span> <a href="/tags/Git/">Git</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2016/09/25/20160925Hexo博客搭建历程从简单玩到专注写/" title="Hexo博客搭建历程—从简单玩到专注写" itemprop="url">Hexo博客搭建历程—从简单玩到专注写</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Lake Villadom" target="_blank" itemprop="author">Lake Villadom</a>
-		
-  <p class="article-time">
-    <time datetime="2016-09-25T21:28:00.000Z" itemprop="datePublished"> 发表于 2016-09-25</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <script src="/assets/js/APlayer.min.js"> </script><blockquote>
-<ul>
-<li><strong> 缘起:记录下与Hexo从初识到到相知的点滴！ </strong></li>
-</ul>
-</blockquote>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2016/09/25/20160925Hexo博客搭建历程从简单玩到专注写/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/Hexo/">Hexo</a>
-</div>
-
-
-  <div class="article-tags">
+    <a href="/2017/04/23/CSS-选择器/" title="CSS 选择器" itemprop="url">
   
-  <span></span> <a href="/tags/Hexo/">Hexo</a><a href="/tags/备份/">备份</a><a href="/tags/Git/">Git</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
+    <h1 itemprop="name">CSS 选择器</h1>
     
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
+     
+       <p itemprop="description" >学习爬虫，用到CSS选择器，基础用法已经掌握，现从网络摘抄整理更为详细全面的CSS选择器,方便查阅。</p>
+      
     
-      <a href="/2016/09/20/定制私人密钥对并公用到各个环境/" title="定制私人密钥并共用到git、coding" itemprop="url">定制私人密钥并共用到git、coding</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Lake Villadom" target="_blank" itemprop="author">Lake Villadom</a>
-		
-  <p class="article-time">
-    <time datetime="2016-09-20T18:20:00.000Z" itemprop="datePublished"> 发表于 2016-09-20</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <script src="/assets/js/APlayer.min.js"> </script><blockquote>
-<ul>
-<li><strong> 缘起：构想能否定制一个自己的私人密钥对，保存下来，在自己的需要的环境拿过来通过配置直接使用,是为序。</strong></li>
-</ul>
-</blockquote>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2016/09/20/定制私人密钥对并公用到各个环境/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/跬步小流/">跬步小流</a>
-</div>
+    <time datetime="2017-04-23T03:01:00.000Z" itemprop="datePublished">2017-04-23</time>
+  </a>
+</section>
 
 
-  <div class="article-tags">
+
+
+
+
   
-  <span></span> <a href="/tags/SSH/">SSH</a><a href="/tags/密钥/">密钥</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2016/09/17/Linux目录文件显示统计/" title="Linux目录文件显示统计" itemprop="url">Linux目录文件显示统计</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Lake Villadom" target="_blank" itemprop="author">Lake Villadom</a>
-		
-  <p class="article-time">
-    <time datetime="2016-09-17T18:28:00.000Z" itemprop="datePublished"> 发表于 2016-09-17</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <script src="/assets/js/APlayer.min.js"> </script><blockquote>
-<ul>
-<li><strong> 缘起：查看文件夹及其向下(递归)文件(夹)的信息。</strong></li>
-</ul>
-</blockquote>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2016/09/17/Linux目录文件显示统计/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/Linux/">Linux</a>
-</div>
-
-
-  <div class="article-tags">
+<section class="post" itemscope itemprop="blogitem">
   
-  <span></span> <a href="/tags/Linux/">Linux</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2016/09/16/易读易写-Markdown语法速学/" title="易读易写--Markdown语法速学" itemprop="url">易读易写--Markdown语法速学</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Lake Villadom" target="_blank" itemprop="author">Lake Villadom</a>
-		
-  <p class="article-time">
-    <time datetime="2016-09-16T13:19:00.000Z" itemprop="datePublished"> 发表于 2016-09-16</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <script src="/assets/js/APlayer.min.js"> </script><blockquote>
-<ul>
-<li><strong> 缘起：用Markdown写博客先从学习Markdown语法开始</strong></li>
-</ul>
-</blockquote>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2016/09/16/易读易写-Markdown语法速学/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/跬步小流/">跬步小流</a>
-</div>
-
-
-  <div class="article-tags">
+    <a href="/2017/02/21/Go标准库01之os包/" title="Go标准库01之os包" itemprop="url">
   
-  <span></span> <a href="/tags/Markdown/">Markdown</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
+    <h1 itemprop="name">Go标准库01之os包</h1>
     
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
+     
+       <p itemprop="description" >Go标准库之os包。</p>
+      
     
-      <a href="/2016/09/14/Linux从服务器上拷贝文件到客户机上/" title="Linux从服务器上拷贝文件到客户机上" itemprop="url">Linux从服务器上拷贝文件到客户机上</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Lake Villadom" target="_blank" itemprop="author">Lake Villadom</a>
-		
-  <p class="article-time">
-    <time datetime="2016-09-14T14:21:00.000Z" itemprop="datePublished"> 发表于 2016-09-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <script src="/assets/js/APlayer.min.js"> </script><blockquote>
-<ul>
-<li><strong> 缘起：将云服务器（腾讯云主机）上的一个文件拷贝到客户机上</strong></li>
-</ul>
-</blockquote>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2016/09/14/Linux从服务器上拷贝文件到客户机上/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/Linux/">Linux</a>►<a class="article-category-link" href="/categories/Linux/跬步小流/">跬步小流</a>
-</div>
+    <time datetime="2017-02-21T12:18:00.000Z" itemprop="datePublished">2017-02-21</time>
+  </a>
+</section>
 
 
-  <div class="article-tags">
+
+
+
+
   
-  <span></span> <a href="/tags/Linux/">Linux</a><a href="/tags/scp/">scp</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2016/09/13/搭建Hexo中Nginx的配置/" title="搭建Hexo中Nginx的配置" itemprop="url">搭建Hexo中Nginx的配置</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Lake Villadom" target="_blank" itemprop="author">Lake Villadom</a>
-		
-  <p class="article-time">
-    <time datetime="2016-09-13T22:42:00.000Z" itemprop="datePublished"> 发表于 2016-09-13</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <script src="/assets/js/APlayer.min.js"> </script><blockquote>
-<ul>
-<li><strong> 缘起：Hexo博客可以使用Hexo内置的服务，用Nginx做反向代理，也可以生成静态文件部署到Nginx上</strong></li>
-</ul>
-</blockquote>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2016/09/13/搭建Hexo中Nginx的配置/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/跬步小流/">跬步小流</a>
-</div>
-
-
-  <div class="article-tags">
+<section class="post" itemscope itemprop="blogitem">
   
-  <span></span> <a href="/tags/Hexo/">Hexo</a><a href="/tags/Nginx/">Nginx</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
+    <a href="/2017/01/24/zsh配置/" title="zsh配置实用技巧" itemprop="url">
+  
+    <h1 itemprop="name">zsh配置实用技巧</h1>
+    
+     
+       <p itemprop="description" >HOME键和END键失效解决办法:</p>
+      
+    
+    <time datetime="2017-01-24T05:20:36.000Z" itemprop="datePublished">2017-01-24</time>
+  </a>
+</section>
 
 
 
 
 
 
+  
+<section class="post" itemscope itemprop="blogitem">
+  
+    <a href="/2017/01/11/Visual-Studio-Code-配置指南/" title="Visual Studio Code 配置指南" itemprop="url">
+  
+    <h1 itemprop="name">Visual Studio Code 配置指南</h1>
+    
+     
+       <p itemprop="description" >Visual Studio Code 配置总结。</p>
+      
+    
+    <time datetime="2017-01-11T13:35:00.000Z" itemprop="datePublished">2017-01-11</time>
+  </a>
+</section>
 
-  <nav id="page-nav" class="clearfix">
+
+
+
+
+
+  
+<section class="post" itemscope itemprop="blogitem">
+  
+    <a href="/2017/01/02/一年又一年之2016年终总结与2017新年计划/" title="一年又一年之2016年终总结与2017新年计划" itemprop="url">
+  
+    <h1 itemprop="name">一年又一年之2016年终总结与2017新年计划</h1>
+    
+     
+       <p itemprop="description" >年终总结 ● 新初计划</p>
+      
+    
+    <time datetime="2017-01-02T09:17:00.000Z" itemprop="datePublished">2017-01-02</time>
+  </a>
+</section>
+
+
+
+
+
+
+  
+<section class="post" itemscope itemprop="blogitem">
+  
+    <a href="/2017/01/02/正则表达式应用-一-之行首行位批量添加字符/" title="正则表达式应用(一)之行首行尾批量添加字符" itemprop="url">
+  
+    <h1 itemprop="name">正则表达式应用(一)之行首行尾批量添加字符</h1>
+    
+     
+       <p itemprop="description" >通过正则表达式实现行首行尾批量添加字符，与Oracle字段拼接有异曲同工之效。</p>
+      
+    
+    <time datetime="2017-01-02T07:55:00.000Z" itemprop="datePublished">2017-01-02</time>
+  </a>
+</section>
+
+
+
+
+
+
+  
+<section class="post" itemscope itemprop="blogitem">
+  
+    <a href="/2016/12/15/Oracle中的列转行实现字段拼接用例/" title="Oracle中的列转行实现字段拼接用例" itemprop="url">
+  
+    <h1 itemprop="name">Oracle中的列转行实现字段拼接用例</h1>
+    
+     
+       <p itemprop="description" >Oracle中的列转行实现字段拼接</p>
+      
+    
+    <time datetime="2016-12-15T14:33:00.000Z" itemprop="datePublished">2016-12-15</time>
+  </a>
+</section>
+
+
+
+
+
+
+  
+<section class="post" itemscope itemprop="blogitem">
+  
+    <a href="/2016/12/06/java下war的打包、解压以及jar的安装/" title="java环境下war的打包、解压以及jar的安装" itemprop="url">
+  
+    <h1 itemprop="name">java环境下war的打包、解压以及jar的安装</h1>
+    
+     
+       <p itemprop="description" >java环境下war的打包、解压以及jar的安装</p>
+      
+    
+    <time datetime="2016-12-06T14:22:22.000Z" itemprop="datePublished">2016-12-06</time>
+  </a>
+</section>
+
+
+
+
+
+
+  
+<section class="post" itemscope itemprop="blogitem">
+  
+    <a href="/2016/12/06/Oracle级联查询-Hierarchical-Queries/" title="Oracle级联查询(Hierarchical Queries)" itemprop="url">
+  
+    <h1 itemprop="name">Oracle级联查询(Hierarchical Queries)</h1>
+    
+     
+       <p itemprop="description" >查询层次结构数据:主要用于B树结构类型的数据递归查询，给出B树结构类型中的任意一个结点，遍历其最终父结点或者子结点;树结构的数据存放在表中，数据之间的层次关系即父子关系，通过表中的列与列间的关系来描述。</p>
+      
+    
+    <time datetime="2016-12-06T14:12:00.000Z" itemprop="datePublished">2016-12-06</time>
+  </a>
+</section>
+
+
+
+
+
+
+  
+<section class="post" itemscope itemprop="blogitem">
+  
+    <a href="/2016/11/05/Linux文本处理之Sed-流编辑器/" title="Linux文本处理之Sed(流编辑器)" itemprop="url">
+  
+    <h1 itemprop="name">Linux文本处理之Sed(流编辑器)</h1>
+    
+     
+       <p itemprop="description" >Sed是Stream Editor(流编辑器)缩写，是操作、过滤和转换文本内容的强大工具。常用功能有增删改查，过滤，取行、修改配置文件(如 xml、json、ini、yaml )</p>
+      
+    
+    <time datetime="2016-11-05T13:23:29.000Z" itemprop="datePublished">2016-11-05</time>
+  </a>
+</section>
+
+
+
+
+
+
+  
+<section class="post" itemscope itemprop="blogitem">
+  
+    <a href="/2016/11/04/Linux磁盘管理LVM逻辑卷管理/" title="Linux磁盘管理之LVM(逻辑卷)管理" itemprop="url">
+  
+    <h1 itemprop="name">Linux磁盘管理之LVM(逻辑卷)管理</h1>
+    
+     
+       <p itemprop="description" >LVM是 Logical Volume Manager（逻辑卷管理）的简写，它是Linux环境下对磁盘分区进行管理的一种机制。可以方便地将新的硬盘添加到LVM，以直接扩展已经存在的逻辑,LVM并不需重启就可以让内核知道分区的存在。</p>
+      
+    
+    <time datetime="2016-11-04T04:12:00.000Z" itemprop="datePublished">2016-11-04</time>
+  </a>
+</section>
+
+
+
+
+
+
+  
+<section class="post" itemscope itemprop="blogitem">
+  
+    <a href="/2016/10/24/Hexo博客实战/" title="Hexo博客实用技巧" itemprop="url">
+  
+    <h1 itemprop="name">Hexo博客实用技巧</h1>
+    
+     
+       <p itemprop="description" >Hexo博客实用技巧</p>
+      
+    
+    <time datetime="2016-10-24T12:29:00.000Z" itemprop="datePublished">2016-10-24</time>
+  </a>
+</section>
+
+
+
+
+
+
+  
+<section class="post" itemscope itemprop="blogitem">
+  
+    <a href="/2016/10/24/Node-js安装配置/" title="Node.js安装配置" itemprop="url">
+  
+    <h1 itemprop="name">Node.js安装配置</h1>
+    
+     
+       <p itemprop="description" >梳理Node.js不同的安装方式以及镜像源的修改</p>
+      
+    
+    <time datetime="2016-10-24T11:56:00.000Z" itemprop="datePublished">2016-10-24</time>
+  </a>
+</section>
+
+
+
+
+
+
+  
+<section class="post" itemscope itemprop="blogitem">
+  
+    <a href="/2016/10/23/Alpine-Linux配置操作说明/" title="Alpine Linux配置使用" itemprop="url">
+  
+    <h1 itemprop="name">Alpine Linux配置使用</h1>
+    
+     
+       <p itemprop="description" >缘起：最近在构建Docker镜像时使用Alpine Linux作为基础镜像,故有必要学习Alpine Linux，在此记录学习成果。</p>
+      
+    
+    <time datetime="2016-10-23T18:38:00.000Z" itemprop="datePublished">2016-10-23</time>
+  </a>
+</section>
+
+
+
+
+
+
+  
+<section class="post" itemscope itemprop="blogitem">
+  
+    <a href="/2016/10/01/Docker学习笔记系列-Dockerfile-1/" title="Docker学习笔记系列:Dockerfile" itemprop="url">
+  
+    <h1 itemprop="name">Docker学习笔记系列:Dockerfile</h1>
+    
+     
+       <p itemprop="description" >Build(构建), Ship(交付) and Run(运行) any App, Anywhere.</p>
+      
+    
+    <time datetime="2016-10-01T01:13:00.000Z" itemprop="datePublished">2016-10-01</time>
+  </a>
+</section>
+
+
+
+
+
+
+  
+<section class="post" itemscope itemprop="blogitem">
+  
+    <a href="/2016/09/30/读shell学shell系列-002/" title="读shell学shell系列:002" itemprop="url">
+  
+    <h1 itemprop="name">读shell学shell系列:002</h1>
+    
+     
+       <p itemprop="description" >通过阅读shell脚本来达到学习shell编程的目的不失为一种好的学习方法!</p>
+      
+    
+    <time datetime="2016-09-30T12:05:00.000Z" itemprop="datePublished">2016-09-30</time>
+  </a>
+</section>
+
+
+
+
+
+
+  
+<section class="post" itemscope itemprop="blogitem">
+  
+    <a href="/2016/09/30/Git命令大全/" title="Git命令大全" itemprop="url">
+  
+    <h1 itemprop="name">Git命令大全</h1>
+    
+     
+       <p itemprop="description" >git命令全整理，摘自网络！</p>
+      
+    
+    <time datetime="2016-09-30T11:05:00.000Z" itemprop="datePublished">2016-09-30</time>
+  </a>
+</section>
+
+
+
+
+
+
+  
+<section class="post" itemscope itemprop="blogitem">
+  
+    <a href="/2016/09/25/20160925Hexo博客搭建历程从简单玩到专注写/" title="Hexo博客搭建历程—从简单玩到专注写" itemprop="url">
+  
+    <h1 itemprop="name">Hexo博客搭建历程—从简单玩到专注写</h1>
+    
+     
+       <p itemprop="description" >缘起:记录下与Hexo从初识到到相知的点滴！</p>
+      
+    
+    <time datetime="2016-09-25T21:28:00.000Z" itemprop="datePublished">2016-09-25</time>
+  </a>
+</section>
+
+
+
+
+
+
+  
+<section class="post" itemscope itemprop="blogitem">
+  
+    <a href="/2016/09/20/定制私人密钥对并公用到各个环境/" title="定制私人密钥并共用到git、coding" itemprop="url">
+  
+    <h1 itemprop="name">定制私人密钥并共用到git、coding</h1>
+    
+     
+       <p itemprop="description" >缘起：构想能否定制一个自己的私人密钥对，保存下来，在自己的需要的环境拿过来通过配置直接使用,是为序。</p>
+      
+    
+    <time datetime="2016-09-20T18:20:00.000Z" itemprop="datePublished">2016-09-20</time>
+  </a>
+</section>
+
+
+
+
+
+
+  
+<section class="post" itemscope itemprop="blogitem">
+  
+    <a href="/2016/09/17/Linux目录文件显示统计/" title="Linux目录文件显示统计" itemprop="url">
+  
+    <h1 itemprop="name">Linux目录文件显示统计</h1>
+    
+     
+       <p itemprop="description" >缘起：查看文件夹及其向下(递归)文件(夹)的信息。</p>
+      
+    
+    <time datetime="2016-09-17T18:28:00.000Z" itemprop="datePublished">2016-09-17</time>
+  </a>
+</section>
+
+
+
+
+
+
+  
+<section class="post" itemscope itemprop="blogitem">
+  
+    <a href="/2016/09/16/易读易写-Markdown语法速学/" title="易读易写--Markdown语法速学" itemprop="url">
+  
+    <h1 itemprop="name">易读易写--Markdown语法速学</h1>
+    
+     
+       <p itemprop="description" >缘起：用Markdown写博客先从学习Markdown语法开始</p>
+      
+    
+    <time datetime="2016-09-16T13:19:00.000Z" itemprop="datePublished">2016-09-16</time>
+  </a>
+</section>
+
+
+
+
+
+
+  
+<section class="post" itemscope itemprop="blogitem">
+  
+    <a href="/2016/09/14/Linux从服务器上拷贝文件到客户机上/" title="Linux从服务器上拷贝文件到客户机上" itemprop="url">
+  
+    <h1 itemprop="name">Linux从服务器上拷贝文件到客户机上</h1>
+    
+     
+       <p itemprop="description" >缘起：将云服务器（腾讯云主机）上的一个文件拷贝到客户机上</p>
+      
+    
+    <time datetime="2016-09-14T14:21:00.000Z" itemprop="datePublished">2016-09-14</time>
+  </a>
+</section>
+
+
+
+
+
+
+  
+<section class="post" itemscope itemprop="blogitem">
+  
+    <a href="/2016/09/13/搭建Hexo中Nginx的配置/" title="搭建Hexo中Nginx的配置" itemprop="url">
+  
+    <h1 itemprop="name">搭建Hexo中Nginx的配置</h1>
+    
+     
+       <p itemprop="description" >缘起：Hexo博客可以使用Hexo内置的服务，用Nginx做反向代理，也可以生成静态文件部署到Nginx上</p>
+      
+    
+    <time datetime="2016-09-13T22:42:00.000Z" itemprop="datePublished">2016-09-13</time>
+  </a>
+</section>
+
+
+
+
+
+
+
+  <nav id="page-nav" class="clearfix unexpand">
     <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next<span></span></a>
   </nav>
 
@@ -2210,11 +654,8 @@ loadImages(
 	
 	<div class="social-info" class="clearfix">
 		
-		<a href="http://weibo.com/1800807704" target="_blank" class="icon-weibo" title="微博"></a>
 		
-		
-		<a href="https://github.com/https://github.com/LakeVilladom" target="_blank" class="icon-github" title="github"></a>
-		
+		<a href="https://github.com/hsihohuang" target="_blank" class="icon-github" title="github"></a>
 		
 		
 		
@@ -2224,8 +665,12 @@ loadImages(
 		
 		
 		
-		<a href="mailto:lakevilladom@aliyun.com" target="_blank" class="icon-email" title="Email Me"></a>
+		<a href="http://hsihohuang.tumblr.com" target="_blank" class="icon-tumblr" title="Tumblr"></a>
 		
+		
+		<a href="mailto:hsihohuang@hotmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+
 	</div>
 </div>
 
@@ -2279,11 +724,11 @@ loadImages(
 		  
 		
 		  
-			<li><a href="/categories/跬步小流/" title="跬步小流">跬步小流<sup>4</sup></a></li>
+			<li><a href="/categories/Linux/跬步小流/" title="跬步小流">跬步小流<sup>1</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/Linux/跬步小流/" title="跬步小流">跬步小流<sup>1</sup></a></li>
+			<li><a href="/categories/跬步小流/" title="跬步小流">跬步小流<sup>4</sup></a></li>
 		  
 		
 		</ul>
@@ -2324,7 +769,7 @@ loadImages(
 			
 		
 			
-				<li><a href="/tags/正则表达式/" title="正则表达式">正则表达式<sup>1</sup></a></li>
+				<li><a href="/tags/Markdown/" title="Markdown">Markdown<sup>1</sup></a></li>
 			
 		
 			
@@ -2379,28 +824,23 @@ loadImages(
 </div>
 
 
-  <div class="weiboshow">
-  <p class="asidetitle">新浪微博</p>
-    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=1800807704&verifier=6ab1b6ac&dpc=1"></iframe>
-</div>
-
-
 </aside>
 </div>
     </div>
     <footer><div id="footer" >
-	
-	
+		
+		
 
-	<p class="copyright">
-		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2017 
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/hsihohuang/kiddochan" target="_blank" title="Kiddochan">Kiddochan</a> © 2017 
 		
 		<a href="/about" target="_blank" title="Lake Villadom">Lake Villadom</a>
 		
-	</p>
+		
+		</p>
 </div>
 </footer>
-    <script src="/js/jquery-3.2.1.min.js"></script>
+    <script src="/js/jquery-2.0.3.min.js"></script>
 <script src="/js/jquery.imagesloaded.min.js"></script>
 <script src="/js/gallery.js"></script>
 <script src="/js/jquery.qrcode-0.12.0.min.js"></script>
@@ -2485,16 +925,6 @@ $(document).ready(function(){
 <!-- Analytics Begin -->
 
 
-
-<script>
-var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
-  var s = document.getElementsByTagName("script")[0]; 
-  s.parentNode.insertBefore(hm, s);
-})();
-</script>
 
 
 
