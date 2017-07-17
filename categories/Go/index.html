@@ -38,387 +38,41 @@
     <body>
       <header>
         
-
-<div id="windbell">
-	<script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-<script src="//cdn.bootcss.com/kineticjs/5.2.0/kinetic.min.js"></script>
-
-<div class="context_div">
-    <div id="BUTTONS_DIV"></div>
-</div>
-
-<script>
-var sources = {
-    cx: '/img/CX.png',
-    cs: '/img/CS.png',
-    ms: '/img/MS.png',
-    mw: '/img/MW.png',
-};
-
-var audio_file = "/media/windbell.mp3";
-var audio_volume = .2;
-
-function loadImages(sources, callback) {
-    var images = {};
-    var loadedImages = 0;
-    var numImages = 0;
-    for (var src in sources) {
-        numImages++;
-    }
-    for (var src in sources) {
-        images[src] = new Image();
-        images[src].onload = function() {
-            if (++loadedImages >= numImages) {
-                callback(images);
-            }
-        };
-        images[src].src = sources[src];
-    }
-}
-
-function draw(images) {
-    var amplitude = 10.00;
-    var period = 2000;
-    var stage = new Kinetic.Stage({
-        container: 'BUTTONS_DIV',
-        width: document.documentElement.clientWidth,
-        height: document.documentElement.clientHeight
-    });
-
-    var layer1 = new Kinetic.Layer();
-    var line1 = line(1);
-    var patternHexagon1 = hexagon(1, images.cx);
-    layer1.add(line1);
-    layer1.add(patternHexagon1);
-    stage.add(layer1);
-    layer1.setZIndex(1);
-
-    var sound_obj1 = new Audio(audio_file);
-    sound_obj1.volume = audio_volume;
-    var sound_obj1_volume = audio_volume;
-    sound_obj1.loop = false;
-    sound_obj1.load();
-
-    var amplitude_1 = amplitude;
-    var anim1 = new Kinetic.Animation(
-        function(frame) {
-            if (amplitude_1 > 0.6) {
-                layer1.setX(amplitude_1 * Math.sin(frame.time * 2 * Math.PI / period));
-                amplitude_1 -= amplitude_1 / 250;
-                if (sound_obj1_volume > 0.0003) {
-                    sound_obj1_volume -= 0.0003;
-                    sound_obj1.volume = sound_obj1_volume;
-                }
-            } else {
-                frame.time = 0;
-                sound_obj1.currentTime = 0;
-                sound_obj1.pause();
-                sound_obj1.volume = audio_volume;
-                sound_obj1_volume = audio_volume;
-                anim1.stop();
-                amplitude_1 = amplitude;
-            }
-        },
-        layer1
-    );
-    patternHexagon1.on(
-        'mouseover',
-        function() {
-            document.body.style.cursor = 'pointer';
-            sound_obj1.play();
-            anim1.start();
-        }
-    );
-    patternHexagon1.on(
-        'mouseout',
-        function() {
-            document.body.style.cursor = 'default';
-        }
-    );
-
-    var layer2 = new Kinetic.Layer();
-    var line2 = line(2);
-    var patternHexagon2 = hexagon(2, images.cs);
-    layer2.add(line2);
-    layer2.add(patternHexagon2);
-    stage.add(layer2);
-    layer2.setZIndex(1);
-
-    var sound_obj2 = new Audio(audio_file);
-    sound_obj2.volume = audio_volume;
-    var sound_obj2_volume = audio_volume;
-    sound_obj2.loop = false;
-    sound_obj2.load();
-
-    var amplitude_2 = amplitude;
-    var anim2 = new Kinetic.Animation(
-        function(frame) {
-            if (amplitude_2 > 0.6) {
-                layer2.setX(amplitude_2 * Math.sin(frame.time * 2 * Math.PI / period));
-                amplitude_2 -= amplitude_2 / 250;
-                if (sound_obj2_volume > 0.0003) {
-                    sound_obj2_volume -= 0.0003;
-                    sound_obj2.volume = sound_obj2_volume;
-                }
-            } else {
-                frame.time = 0;
-                sound_obj2.currentTime = 0;
-                sound_obj2.pause();
-                sound_obj2.volume = audio_volume;
-                sound_obj2_volume = audio_volume;
-                anim2.stop();
-                amplitude_2 = amplitude;
-            }
-        },
-        layer2
-    );
-    patternHexagon2.on(
-        'mouseover',
-        function() {
-            document.body.style.cursor = 'pointer';
-            sound_obj2.play();
-            anim2.start();
-        }
-    );
-    patternHexagon2.on(
-        'mouseout',
-        function() {
-            document.body.style.cursor = 'default';
-        }
-    );
-
-    var layer5 = new Kinetic.Layer();
-    var line5 = line(5);
-    var patternHexagon5 = hexagon(5, images.ms);
-    layer5.add(line5);
-    layer5.add(patternHexagon5);
-    stage.add(layer5);
-    layer5.setZIndex(10);
-
-    var sound_obj5 = new Audio(audio_file);
-    sound_obj5.volume = audio_volume;
-    var sound_obj5_volume = audio_volume;
-    sound_obj5.loop = false;
-    sound_obj5.load();
-
-    var amplitude_5 = amplitude;
-    var anim5 = new Kinetic.Animation(
-        function(frame) {
-            if (amplitude_5 > 0.6) {
-                layer5.setX(amplitude_5 * Math.sin(frame.time * 2 * Math.PI / period));
-                amplitude_5 -= amplitude_5 / 250;
-                if (sound_obj5_volume > 0.0003) {
-                    sound_obj5_volume -= 0.0003;
-                    sound_obj5.volume = sound_obj5_volume;
-                }
-            } else {
-                frame.time = 0;
-                sound_obj5.currentTime = 0;
-                sound_obj5.pause();
-                sound_obj5.volume = audio_volume;
-                sound_obj5_volume = audio_volume;
-                anim5.stop();
-                amplitude_5 = amplitude;
-            }
-        },
-        layer5
-    );
-    patternHexagon5.on(
-        'mouseover',
-        function() {
-            document.body.style.cursor = 'pointer';
-            sound_obj5.play();
-            anim5.start();
-        }
-    );
-    patternHexagon5.on(
-        'mouseout',
-        function() {
-            document.body.style.cursor = 'default';
-        }
-    );
-
-    var layer6 = new Kinetic.Layer();
-    var line6 = line(6);
-    var patternHexagon6 = hexagon(6, images.mw);
-    layer6.add(line6);
-    layer6.add(patternHexagon6);
-    stage.add(layer6);
-    layer6.setZIndex(10);
-
-    var sound_obj6 = new Audio(audio_file);
-    sound_obj6.volume = audio_volume;
-    var sound_obj6_volume = audio_volume;
-    sound_obj6.loop = false;
-    sound_obj6.load();
-
-    var amplitude_6 = amplitude;
-    var anim6 = new Kinetic.Animation(
-        function(frame) {
-            if (amplitude_6 > 0.6) {
-                layer6.setX(amplitude_6 * Math.sin(frame.time * 2 * Math.PI / period));
-                amplitude_6 -= amplitude_6 / 250;
-                if (sound_obj6_volume > 0.0003) {
-                    sound_obj6_volume -= 0.0003;
-                    sound_obj6.volume = sound_obj6_volume;
-                }
-            } else {
-                frame.time = 0;
-                sound_obj6.currentTime = 0;
-                sound_obj6.pause();
-                sound_obj6.volume = audio_volume;
-                sound_obj6_volume = audio_volume;
-                anim6.stop();
-                amplitude_6 = amplitude;
-            }
-        },
-        layer6
-    );
-    patternHexagon6.on(
-        'mouseover',
-        function() {
-            document.body.style.cursor = 'pointer';
-            sound_obj6.play();
-            anim6.start();
-        }
-    );
-    patternHexagon6.on(
-        'mouseout',
-        function() {
-            document.body.style.cursor = 'default';
-        }
-    );
-
-}
-
-document_width=1300
-bigradius=78
-smallradius=66
-line1_x=155
-line1_y=0
-line1_l=305
-line2_x=355
-line2_y=0
-line2_l=185
-
-function hexagon(base_num, fillPatternImage) {
-    var x, y;
-    switch (base_num) {
-        case 1:
-            radius= bigradius;
-            x = line1_x;
-            y = line1_l+radius;
-            radius= bigradius;
-            break;
-        case 2:
-            radius= smallradius;
-            x = line2_x;
-            y = line2_l+radius;
-            break;
-        case 5:
-            radius= smallradius;
-            x = document_width-line2_x;
-            y = line2_l+radius;
-            break;
-        case 6:
-            radius= bigradius;
-            x = document_width-line1_x;
-            y = line1_l+radius;
-            break;
-        default:
-            break;
-    }
-    var fill_pattern_rotation = Math.PI / 2 - 300 * Math.PI / 360;
-    return new Kinetic.RegularPolygon({
-        x: x,
-        y: y,
-        sides: 6,
-        radius: radius,
-        //stroke: '#96a090',
-        strokeWidth: 5,
-        rotationDeg: 0,
-        fillPatternRotation: fill_pattern_rotation,
-        fillPatternImage: fillPatternImage,
-        fillPriority: 'pattern',
-        fillPatternRepeat: "no-repeat",
-        fillPatternX: -60,
-        fillPatternY: -60,
-        fillPatternOffset: [78, 85],
-        draggable: false
-    });
-}
-
-function line(base_num) {
-    var line_points;
-    switch (base_num) {
-        case 1:
-            line_points = [line1_x, 0, line1_x, line1_l+3];
-            break;
-        case 2:
-            line_points = [line2_x, 0, line2_x, line2_l+3];
-            break;
-        case 5:
-            line_points = [document_width-line2_x, 0, document_width-line2_x, line2_l+3];
-            break;
-        case 6:
-            line_points = [document_width-line1_x, 0, document_width-line1_x, line1_l+3];
-            break;
-        default:
-            break;
-    }
-    return new Kinetic.Line({
-        points: line_points,
-        stroke: '#96a090',
-        strokeWidth: 5
-    });
-}
-
-
-loadImages(
-    sources,
-    function(images) {
-        draw(images);
-    }
-);
-</script>
-</div>
-<div id="header">
-	
-		<div id="imglogo">
-			<a href="/"><img src="/img/logo.png" alt="Lake Villadom" title="Lake Villadom"/></a>
-			<p>
-		</div>
-	
-	<div id="textlogo">
-		<h1 class="site-name">Lake Villadom</h1></br>
-		<h2 class="blog-motto">May every day of your life bring you fresh hopes for tomorrow. Expect the best, and you&#39;ll get it.</h2>
-
-		<h2 class="blog-motto">愿你生命中的每一天都对未来充满新的希望。追求完美  你终将如愿以偿！</h2>
-	</div>
-	<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
-	</a></div>
-	<nav class="animated">
-			<ul>
-			 
-				<li><a href="/">主页｜Home</a></li>
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="Lake Villadom" title="Lake Villadom"/></a>
+			</div>
 			
-				<li><a href="/archives">归档｜Archives</a></li>
-			
-				<li><a href="/categories">分类｜Categories</a></li>
-			
-				<li><a href="/about">关于｜About</a></li>
-			
-			<li>
-				
-			<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
-				<label>Search</label>
-				<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
-				<input type="hidden" name="q" value="site:www.lakevilladom.com">
-			</form>
-			
-			</li>
-		</ul>
-	</nav>			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Lake Villadom">Lake Villadom</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页｜Home</a></li>
+					
+						<li><a href="/archives">归档｜Archives</a></li>
+					
+						<li><a href="/categories">分类｜Categories</a></li>
+					
+						<li><a href="/about">关于｜About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:www.lakevilladom.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
 </div>
       </header>
       <div id="container">
@@ -490,17 +144,48 @@ loadImages(
       </div>
       <footer><div id="footer" >
 	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
 	
+	
+	<section class="info">
+		<p> May every day of your life bring you fresh hopes for tomorrow. <br/>
+			Expect the best, and you&#39;ll get it.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/1800807704" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/https://github.com/LakeVilladom" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:lakevilladom@aliyun.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
 
-	<p class="copyright">
+		<p class="copyright">
 		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2017 
 		
 		<a href="/about" target="_blank" title="Lake Villadom">Lake Villadom</a>
 		
-	</p>
+		
+		</p>
 </div>
 </footer>
-      <script src="/js/jquery-3.2.1.min.js"></script>
+      <script src="/js/jquery-2.0.3.min.js"></script>
 <script src="/js/jquery.imagesloaded.min.js"></script>
 <script src="/js/gallery.js"></script>
 <script src="/js/jquery.qrcode-0.12.0.min.js"></script>
@@ -621,4 +306,3 @@ var _hmt = _hmt || [];
 
     </body>
    </html>
-
