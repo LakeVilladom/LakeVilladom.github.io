@@ -11,16 +11,16 @@
     
 
     
-    <meta name="description" content="缘起：构想能否定制一个自己的私人密钥对，保存下来，在自己的需要的环境拿过来通过配置直接使用,是为序。">
+    <meta name="description" content="缘起：构想能否定制一个自己的私人密钥对，保存下来，在自己的需要的环境拿过来通过配置直接使用。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="定制私人密钥并共用到git、coding">
 <meta property="og:url" content="http://www.lakevilladom.com/2016/09/20/定制私人密钥对并公用到各个环境/index.html">
 <meta property="og:site_name" content="Lake Villadom">
-<meta property="og:description" content="缘起：构想能否定制一个自己的私人密钥对，保存下来，在自己的需要的环境拿过来通过配置直接使用,是为序。">
-<meta property="og:updated_time" content="2017-09-21T15:14:42.000Z">
+<meta property="og:description" content="缘起：构想能否定制一个自己的私人密钥对，保存下来，在自己的需要的环境拿过来通过配置直接使用。">
+<meta property="og:updated_time" content="2017-09-21T15:25:54.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="定制私人密钥并共用到git、coding">
-<meta name="twitter:description" content="缘起：构想能否定制一个自己的私人密钥对，保存下来，在自己的需要的环境拿过来通过配置直接使用,是为序。">
+<meta name="twitter:description" content="缘起：构想能否定制一个自己的私人密钥对，保存下来，在自己的需要的环境拿过来通过配置直接使用。">
 
     
     <link rel="alternative" href="/atom.xml" title="Lake Villadom" type="application/atom+xml">
@@ -105,7 +105,7 @@
 		
 		<script src="/assets/js/APlayer.min.js"> </script><blockquote>
 <ul>
-<li><strong> 缘起：构想能否定制一个自己的私人密钥对，保存下来，在自己的需要的环境拿过来通过配置直接使用,是为序。</strong></li>
+<li><strong> 缘起：构想能否定制一个自己的私人密钥对，保存下来，在自己的需要的环境拿过来通过配置直接使用。</strong></li>
 </ul>
 </blockquote>
 <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><blockquote>
@@ -117,10 +117,11 @@
  ● -f 定义了输出的证书文件名，不需要写后缀
  ● -b 指定密钥长度,对于RSA密钥默认是2048位
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="上传私钥并设定权限"><a href="#上传私钥并设定权限" class="headerlink" title="上传私钥并设定权限"></a>上传私钥并设定权限</h2><pre><code>[LV@LV-Cloud]$ scp rsa_nkey.lvc loginname@yourdomain.com:.ssh
-[LV@LV-Cloud]$ chmod 600 ~/.ssh/rsa_nkey.lvc     #将ssh认证文件权限设置为只有自己可以读写
-[LV@LV-Cloud]$ chmod 700 ~/.ssh                  #将~/.ssh目录设置权限为只有自己可以访问
-</code></pre><h2 id="配置过程"><a href="#配置过程" class="headerlink" title="配置过程"></a>配置过程</h2><ul>
+<h2 id="上传私钥并设定权限"><a href="#上传私钥并设定权限" class="headerlink" title="上传私钥并设定权限"></a>上传私钥并设定权限</h2><pre class="line-numbers language-bash"><code class="language-bash"><span class="token punctuation">[</span>LV@LV-Cloud<span class="token punctuation">]</span>$ <span class="token function">scp</span> rsa_nkey.lvc loginname@yourdomain.com:.ssh
+<span class="token punctuation">[</span>LV@LV-Cloud<span class="token punctuation">]</span>$ <span class="token function">chmod</span> 600 ~/.ssh/rsa_nkey.lvc     <span class="token comment" spellcheck="true">#将ssh认证文件权限设置为只有自己可以读写</span>
+<span class="token punctuation">[</span>LV@LV-Cloud<span class="token punctuation">]</span>$ <span class="token function">chmod</span> 700 ~/.ssh                  <span class="token comment" spellcheck="true">#将~/.ssh目录设置权限为只有自己可以访问</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h2 id="配置过程"><a href="#配置过程" class="headerlink" title="配置过程"></a>配置过程</h2><ul>
 <li>通过配置/etc/ssh_config文件</li>
 </ul>
 <ol>
@@ -143,11 +144,12 @@ debug1: No <span class="token function">more</span> authentication methods to tr
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 </li>
 <li><p><strong>重启服务</strong>，测试通过，刚开始用这种思路这么配置一直无法通过，遂采用了第二种方法配置，后来想是没重启服务的原因，遂重新测试，写博客前测试通过。</p>
-<pre><code>[LV@LV-Cloud]$ sudo service ssh restart
-[LV@LV-Cloud]$ ssh  git@github.com
-Hi LakeVilladom! You&#39;ve successfully authenticated, but GitHub   does not provide shell access.
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token punctuation">[</span>LV@LV-Cloud<span class="token punctuation">]</span>$ <span class="token function">sudo</span> <span class="token function">service</span> <span class="token function">ssh</span> restart
+<span class="token punctuation">[</span>LV@LV-Cloud<span class="token punctuation">]</span>$ <span class="token function">ssh</span>  git@github.com
+Hi LakeVilladom<span class="token operator">!</span> You've successfully authenticated, but GitHub   does not provide shell access.
 Connection to github.com closed.
-</code></pre></li>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
 </ol>
 <ul>
 <li>通过在.ssh/下添加config文件</li>
@@ -155,34 +157,39 @@ Connection to github.com closed.
 <blockquote>
 <p>其实道理和上面一样，一个是全局用户生效，一个是当前用户生效,主要参考网上关于一个主机上管理多个ssh密钥对的方法，不同的应用方向，相同的原理。</p>
 <p>配置文件(.ssh/config)参数说明:</p>
-<pre><code>  Host         #配置项标识了一个配置区段，配置项参数值可以使用通配符，可以随意命名
+</blockquote>
+<pre class="line-numbers language-sh"><code class="language-sh">  Host          #配置项标识了一个配置区段，配置项参数值可以使用通配符，可以随意命名
    HostName     #指定远程主机名，必须是正确的主机名，可以直接使用数字IP地址
    IdentityFile #指定密钥认证使用的私钥文件路径
    Port         #指定远程主机端口号，默认为 22
    User         #指定登录用户名
-</code></pre><p>这些参数很多都是可有可无的，可根据实际情况选择使用。</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>这些参数很多都是可有可无的，可根据实际情况选择使用。</p>
 </blockquote>
 <ol>
 <li><p>创建.ssh/config文件</p>
-<pre><code>[LV@LV-Cloud]$ vim .ssh/config
-Host mygithub   #Host自定义
-hostname github.com
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token punctuation">[</span>LV@LV-Cloud<span class="token punctuation">]</span>$ vim .ssh/config
+Host mygithub   <span class="token comment" spellcheck="true">#Host自定义</span>
+<span class="token function">hostname</span> github.com
 User user_github
 IdentityFile ~/.ssh/rsa_nkey.lvc
-Host mycoding    #Host自定义
-hostname git.coding.net
+Host mycoding    <span class="token comment" spellcheck="true">#Host自定义</span>
+<span class="token function">hostname</span> git.coding.net
 User user_github
 IdentityFile ~/.ssh/rsa_nkey.lvc
-</code></pre></li>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
 <li><p>测试：</p>
-<pre><code>
-[LV@LV-Cloud]$ ssh -vT git@mygithub  #直接可以通过自定义的Host:mygithub访问github.com
-......
-Hi ! You&#39;ve successfully authenticated, but GitHub does not provide shell access.
+<pre class="line-numbers language-bash"><code class="language-bash">
+<span class="token punctuation">[</span>LV@LV-Cloud<span class="token punctuation">]</span>$ <span class="token function">ssh</span> -vT git@mygithub  <span class="token comment" spellcheck="true">#直接可以通过自定义的Host:mygithub访问github.com</span>
+<span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span>
+Hi <span class="token operator">!</span> You<span class="token string">'ve successfully authenticated, but GitHub does not provide shell access.
 [LV@LV-Cloud]$ ssh -vT git@mycoding  #直接可以通过自定义的Host:mycoding访问git.coding.net
 ......
-Hello ! You&#39;ve connected to Coding.net via SSH successfully!
-</code></pre><blockquote>
+Hello ! You'</span>ve connected to Coding.net via SSH successfully<span class="token operator">!</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
 <p>通过<code>-v</code>参数可以梳理出通过ssh大致的匹配流程：</p>
 <ol>
 <li>读取/home/hxxz/.ssh/config，匹配其中的Host；</li>
@@ -192,38 +199,40 @@ Hello ! You&#39;ve connected to Coding.net via SSH successfully!
 </blockquote>
 </li>
 <li><p>通过如下多种配置方式验证配置情况：</p>
-<pre><code>[LV@LV-Cloud]$ vim .ssh/config
-Host *      #host直接使用通配符
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token punctuation">[</span>LV@LV-Cloud<span class="token punctuation">]</span>$ vim .ssh/config
+Host *      <span class="token comment" spellcheck="true">#host直接使用通配符</span>
 IdentityFile ~/.ssh/rsa_nkey.lvc
-[LV@LV-Cloud]$ ssh -T git@github.com  # 此处必须使用正确的hostname才能成功
-[LV@LV-Cloud]$ ssh -T git@git.coding.com   # 此处必须使用正确的hostname才能成功
-</code></pre><pre><code>[LV@LV-Cloud]$ vim .ssh/config
+<span class="token punctuation">[</span>LV@LV-Cloud<span class="token punctuation">]</span>$ <span class="token function">ssh</span> -T git@github.com  <span class="token comment" spellcheck="true"># 此处必须使用正确的hostname才能成功</span>
+<span class="token punctuation">[</span>LV@LV-Cloud<span class="token punctuation">]</span>$ <span class="token function">ssh</span> -T git@git.coding.com   <span class="token comment" spellcheck="true"># 此处必须使用正确的hostname才能成功</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token punctuation">[</span>LV@LV-Cloud<span class="token punctuation">]</span>$ vim .ssh/config
 Host git.coding.net
 IdentityFile ~/.ssh/rsa_nkey.lvc
 Host github.com
 IdentityFile ~/.ssh/rsa_nkey.lvc
-ssh -T git@git.coding.net  #成功
-ssh -T git@github.com    #成功
-</code></pre><pre><code>[LV@LV-Cloud]$ vim .ssh/config
+<span class="token function">ssh</span> -T git@git.coding.net  <span class="token comment" spellcheck="true">#成功</span>
+<span class="token function">ssh</span> -T git@github.com    <span class="token comment" spellcheck="true">#成功</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token punctuation">[</span>LV@LV-Cloud<span class="token punctuation">]</span>$ vim .ssh/config
 Host gitcoding  
 IdentityFile ~/.ssh/rsa_nkey.lvc
 Host github
 IdentityFile ~/.ssh/rsa_nkey.lvc
 
-[LV@LV-Cloud]$ ssh -T git@gitcoding   #失败&quot;Name or service not known&quot;，匹配到Host,但是无法找到真实的Hostname
-[LV@LV-Cloud]$ ssh -T git@github.com   #失败&quot;Name or service not known&quot;，匹配到Host,但是无法找到真实的Hostname
-[LV@LV-Cloud]$ ssh -T git@git.coding.net #失败&quot;Permission denied (publickey)&quot;,匹配不到Host,直接使用@后面的内容，能连接到真实的Hostname,但是不能读取IdentityFile，得不到正确的私钥
-[LV@LV-Cloud]$ ssh -T git@github.com  #失败&quot;Permission denied (publickey)&quot;,匹配不到Host,直接使用@后面的内容，能连接到真实的Hostname,但是不能读取IdentityFile，得不到正确的私钥
-</code></pre></li>
+<span class="token punctuation">[</span>LV@LV-Cloud<span class="token punctuation">]</span>$ <span class="token function">ssh</span> -T git@gitcoding   <span class="token comment" spellcheck="true">#失败"Name or service not known"，匹配到Host,但是无法找到真实的Hostname</span>
+<span class="token punctuation">[</span>LV@LV-Cloud<span class="token punctuation">]</span>$ <span class="token function">ssh</span> -T git@github.com   <span class="token comment" spellcheck="true">#失败"Name or service not known"，匹配到Host,但是无法找到真实的Hostname</span>
+<span class="token punctuation">[</span>LV@LV-Cloud<span class="token punctuation">]</span>$ <span class="token function">ssh</span> -T git@git.coding.net <span class="token comment" spellcheck="true">#失败"Permission denied (publickey)",匹配不到Host,直接使用@后面的内容，能连接到真实的Hostname,但是不能读取IdentityFile，得不到正确的私钥</span>
+<span class="token punctuation">[</span>LV@LV-Cloud<span class="token punctuation">]</span>$ <span class="token function">ssh</span> -T git@github.com  <span class="token comment" spellcheck="true">#失败"Permission denied (publickey)",匹配不到Host,直接使用@后面的内容，能连接到真实的Hostname,但是不能读取IdentityFile，得不到正确的私钥</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
 </ol>
-<h2 id="技巧"><a href="#技巧" class="headerlink" title="技巧"></a>技巧</h2><ol>
-<li>不交互生成SSH密钥对</li>
-</ol>
+<h2 id="技巧"><a href="#技巧" class="headerlink" title="技巧"></a>技巧</h2><p><strong> 1. 不交互生成SSH密钥对 </strong></p>
 <blockquote>
 <p>在编写脚本时候经常在不需要交互(比如回车)情况下直接生成密钥对，可通过如下命令直接产生:</p>
+<pre class="line-numbers language-bash"><code class="language-bash">ssh-keygen -t rsa -P <span class="token string">''</span> -f ~/.ssh/id_rsa    <span class="token comment" spellcheck="true">#-t参数可省略，默认生成rsa协议，如果是其他协议必须指定具体协议，-P指定密码，此处为空，-f 指定密钥对存放位置</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 </blockquote>
-<pre><code>ssh-keygen -t rsa -P &#39;&#39; -f ~/.ssh/id_rsa    #-t参数可省略，默认生成rsa协议，如果是其他协议必须指定具体协议，-P指定密码，此处为空，-f 指定密钥对存放位置
-</code></pre><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><blockquote>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><blockquote>
 <ul>
 <li>总体来说，在/etc/ssh/ssh_config下配置更为简单。</li>
 <li>可以运用到各种场景：多Linux免密码登录、多站点使用不同的ssh key、同一站点不同用户使用不同的ssh key等。</li>
