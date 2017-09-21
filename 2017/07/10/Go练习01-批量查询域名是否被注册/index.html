@@ -20,7 +20,7 @@
 <meta property="og:image" content="http://www.lakevilladom.com/img/20170710/20170709_1.png">
 <meta property="og:image" content="http://www.lakevilladom.com/img/20170710/20170709_3.png">
 <meta property="og:image" content="http://www.lakevilladom.com/img/20170710/20170709_2.png">
-<meta property="og:updated_time" content="2017-07-12T13:18:35.000Z">
+<meta property="og:updated_time" content="2017-08-01T06:50:22.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Go练习01-批量查询域名是否被注册">
 <meta name="twitter:description" content="参考 《Python: 批量查询域名是否被注册》，作为练习Go的小项目">
@@ -188,7 +188,7 @@
 <font color="red"><strong>刚开始有一个理解误区，以为<code>json.NewDecoder(resp.Body).Decode(value)</code>获得的是接口返回的JSON，而不是完整HTML,其实http.Get().Body返回的结果就是完整的HTML内容</strong></font>
 
 <h2 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h2><ol>
-<li><p><a href="http://blog.csdn.net/pkueecser/article/details/50433460" target="_blank" rel="external"><strong>go语言string、int、int64互相转换（转）</strong></a></p>
+<li><p>数值转换：<a href="http://blog.csdn.net/pkueecser/article/details/50433460" target="_blank" rel="external"><strong>go语言string、int、int64互相转换（转）</strong></a></p>
 <pre class="line-numbers language-go"><code class="language-go">#<span class="token builtin">string</span>到<span class="token builtin">int</span>  
 <span class="token builtin">int</span><span class="token punctuation">,</span>err<span class="token operator">:=</span>strconv<span class="token punctuation">.</span><span class="token function">Atoi</span><span class="token punctuation">(</span><span class="token builtin">string</span><span class="token punctuation">)</span>  
 #<span class="token builtin">string</span>到<span class="token builtin">int64</span>  
@@ -197,27 +197,48 @@
 <span class="token builtin">string</span><span class="token operator">:=</span>strconv<span class="token punctuation">.</span><span class="token function">Itoa</span><span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">)</span>  
 #<span class="token builtin">int64</span>到<span class="token builtin">string</span>  
 <span class="token builtin">string</span><span class="token operator">:=</span>strconv<span class="token punctuation">.</span><span class="token function">FormatInt</span><span class="token punctuation">(</span><span class="token builtin">int64</span><span class="token punctuation">,</span><span class="token number">10</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+##<span class="token builtin">int</span>到<span class="token builtin">int64</span>
+<span class="token builtin">int64</span><span class="token operator">:=</span><span class="token function">int64</span><span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 </li>
-<li><p><strong>math包下一些最大值、最小值常量</strong></p>
+<li><p><strong>数据类型最大值、最小值</strong></p>
+</li>
+</ol>
 <pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">const</span> <span class="token punctuation">(</span>
-     MaxInt8   <span class="token operator">=</span> <span class="token number">1</span><span class="token operator">&lt;&lt;</span><span class="token number">7</span> <span class="token operator">-</span> <span class="token number">1</span>
-     MinInt8   <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1</span> <span class="token operator">&lt;&lt;</span> <span class="token number">7</span>
-     MaxInt16  <span class="token operator">=</span> <span class="token number">1</span><span class="token operator">&lt;&lt;</span><span class="token number">15</span> <span class="token operator">-</span> <span class="token number">1</span>
-     MinInt16  <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1</span> <span class="token operator">&lt;&lt;</span> <span class="token number">15</span>
-     MaxInt32  <span class="token operator">=</span> <span class="token number">1</span><span class="token operator">&lt;&lt;</span><span class="token number">31</span> <span class="token operator">-</span> <span class="token number">1</span>
-     MinInt32  <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1</span> <span class="token operator">&lt;&lt;</span> <span class="token number">31</span>
-     MaxInt64  <span class="token operator">=</span> <span class="token number">1</span><span class="token operator">&lt;&lt;</span><span class="token number">63</span> <span class="token operator">-</span> <span class="token number">1</span>
-     MinInt64  <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1</span> <span class="token operator">&lt;&lt;</span> <span class="token number">63</span>
-     MaxUint8  <span class="token operator">=</span> <span class="token number">1</span><span class="token operator">&lt;&lt;</span><span class="token number">8</span> <span class="token operator">-</span> <span class="token number">1</span>
-     MaxUint16 <span class="token operator">=</span> <span class="token number">1</span><span class="token operator">&lt;&lt;</span><span class="token number">16</span> <span class="token operator">-</span> <span class="token number">1</span>
-     MaxUint32 <span class="token operator">=</span> <span class="token number">1</span><span class="token operator">&lt;&lt;</span><span class="token number">32</span> <span class="token operator">-</span> <span class="token number">1</span>
-     MaxUint64 <span class="token operator">=</span> <span class="token number">1</span><span class="token operator">&lt;&lt;</span><span class="token number">64</span> <span class="token operator">-</span> <span class="token number">1</span>
+        MaxInt8   <span class="token operator">=</span> <span class="token number">1</span><span class="token operator">&lt;&lt;</span><span class="token number">7</span> <span class="token operator">-</span> <span class="token number">1</span>
+        MinInt8   <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1</span> <span class="token operator">&lt;&lt;</span> <span class="token number">7</span>
+        MaxInt16  <span class="token operator">=</span> <span class="token number">1</span><span class="token operator">&lt;&lt;</span><span class="token number">15</span> <span class="token operator">-</span> <span class="token number">1</span>
+        MinInt16  <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1</span> <span class="token operator">&lt;&lt;</span> <span class="token number">15</span>
+        MaxInt32  <span class="token operator">=</span> <span class="token number">1</span><span class="token operator">&lt;&lt;</span><span class="token number">31</span> <span class="token operator">-</span> <span class="token number">1</span>
+        MinInt32  <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1</span> <span class="token operator">&lt;&lt;</span> <span class="token number">31</span>
+        MaxInt64  <span class="token operator">=</span> <span class="token number">1</span><span class="token operator">&lt;&lt;</span><span class="token number">63</span> <span class="token operator">-</span> <span class="token number">1</span>
+        MinInt64  <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1</span> <span class="token operator">&lt;&lt;</span> <span class="token number">63</span>
+        MaxUint8  <span class="token operator">=</span> <span class="token number">1</span><span class="token operator">&lt;&lt;</span><span class="token number">8</span> <span class="token operator">-</span> <span class="token number">1</span>
+        MaxUint16 <span class="token operator">=</span> <span class="token number">1</span><span class="token operator">&lt;&lt;</span><span class="token number">16</span> <span class="token operator">-</span> <span class="token number">1</span>
+        MaxUint32 <span class="token operator">=</span> <span class="token number">1</span><span class="token operator">&lt;&lt;</span><span class="token number">32</span> <span class="token operator">-</span> <span class="token number">1</span>
+        MaxUint64 <span class="token operator">=</span> <span class="token number">1</span><span class="token operator">&lt;&lt;</span><span class="token number">64</span> <span class="token operator">-</span> <span class="token number">1</span>
 <span class="token punctuation">)</span>
 fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>math<span class="token punctuation">.</span>MaxUint64<span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ol>
+<p>整数：</p>
+<ul>
+<li>int8（-128 -&gt; 127）</li>
+<li>int16（-32768 -&gt; 32767）</li>
+<li>int32（-2,147,483,648 -&gt; 2,147,483,647）</li>
+<li>int64（-9,223,372,036,854,775,808 -&gt; 9,223,372,036,854,775,807）</li>
+</ul>
+<p>无符号整数：</p>
+<ul>
+<li>uint8（0 -&gt; 255）</li>
+<li>uint16（0 -&gt; 65,535）</li>
+<li>uint32（0 -&gt; 4,294,967,295）</li>
+<li>uint64（0 -&gt; 18,446,744,073,709,551,615）</li>
+</ul>
+<p>浮点型（IEEE-754 标准）：</p>
+<ul>
+<li>float32（+- 1e-45 -&gt; +- 3.4 * 1e38）</li>
+<li>float64（+- 5 <em> 1e-324 -&gt; 107 </em> 1e308）</li>
+</ul>
   
 	</div>
 		<footer class="article-footer clearfix">
